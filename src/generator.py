@@ -12,6 +12,7 @@ from dataclasses import dataclass
 class TickGroundTruth:
     anomalous_factors: list[str]
     correct_action: str
+    acceptable_actions: list[str]  # Any of these count as "correct"
     relevant_factors: list[str]
     is_multi_factor: bool = False
 
@@ -44,14 +45,14 @@ PHASE_ANOMALY_WEIGHTS = {
     },
 }
 
-# Single-factor anomaly -> action mapping
+# Single-factor anomaly -> primary action + acceptable alternatives
 ANOMALY_ACTION_MAP = {
-    "load": "shed_load",
-    "generation": "start_gas_turbine",
-    "frequency": "ramp_plant",
-    "voltage": "adjust_voltage",
-    "weather": "curtail_renewable",
-    "reserve": "deploy_battery",
+    "load": {"primary": "shed_load", "acceptable": ["shed_load", "start_gas_turbine", "ramp_plant"]},
+    "generation": {"primary": "start_gas_turbine", "acceptable": ["start_gas_turbine", "ramp_plant", "deploy_battery"]},
+    "frequency": {"primary": "ramp_plant", "acceptable": ["ramp_plant", "start_gas_turbine"]},
+    "voltage": {"primary": "adjust_voltage", "acceptable": ["adjust_voltage", "ramp_plant"]},
+    "weather": {"primary": "curtail_renewable", "acceptable": ["curtail_renewable", "deploy_battery", "start_gas_turbine"]},
+    "reserve": {"primary": "deploy_battery", "acceptable": ["deploy_battery", "start_gas_turbine", "charge_battery"]},
 }
 
 # FIX 2: Multi-factor combinations and their correct actions.
@@ -136,6 +137,7 @@ class TickGenerator:
                 "ground_truth": {
                     "anomalous_factors": ground_truth.anomalous_factors,
                     "correct_action": ground_truth.correct_action,
+                    "acceptable_actions": ground_truth.acceptable_actions,
                     "relevant_factors": ground_truth.relevant_factors,
                     "is_multi_factor": ground_truth.is_multi_factor,
                 },
@@ -159,15 +161,22 @@ class TickGenerator:
 
         if anomalous:
             primary = anomalous[0]
-            correct_action = ANOMALY_ACTION_MAP[primary]
+            action_info = ANOMALY_ACTION_MAP[primary]
+            correct_action = action_info["primary"]
+            # Merge acceptable actions from all anomalous factors
+            all_acceptable = set()
+            for f in anomalous:
+                all_acceptable.update(ANOMALY_ACTION_MAP[f]["acceptable"])
             relevant = anomalous.copy()
         else:
             correct_action = "hold_steady"
+            all_acceptable = {"hold_steady"}
             relevant = []
 
         return tick_data, TickGroundTruth(
             anomalous_factors=anomalous,
             correct_action=correct_action,
+            acceptable_actions=sorted(all_acceptable),
             relevant_factors=relevant if relevant else ["all"],
             is_multi_factor=False,
         )
@@ -193,9 +202,15 @@ class TickGenerator:
             tick_data = self._inject_anomaly(tick_data, extra)
             anomalous.append(extra)
 
+        # Merge acceptable actions from all anomalous factors
+        all_acceptable = {correct_action}
+        for f in anomalous:
+            all_acceptable.update(ANOMALY_ACTION_MAP[f]["acceptable"])
+
         return tick_data, TickGroundTruth(
             anomalous_factors=anomalous,
             correct_action=correct_action,
+            acceptable_actions=sorted(all_acceptable),
             relevant_factors=relevant,
             is_multi_factor=True,
         )

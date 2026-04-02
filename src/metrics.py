@@ -29,9 +29,20 @@ def fixation_index(token_counts: dict[str, int]) -> float:
     return max_count / total
 
 
-def decision_accuracy(predicted_action: str, correct_action: str) -> float:
-    """DA: 1.0 if the agent chose the correct action, 0.0 otherwise."""
-    return 1.0 if predicted_action.strip().lower() == correct_action.strip().lower() else 0.0
+def decision_accuracy(
+    predicted_action: str,
+    correct_action: str,
+    acceptable_actions: list[str] | None = None,
+) -> float:
+    """DA: 1.0 if the agent chose an acceptable action, 0.0 otherwise.
+
+    If acceptable_actions is provided, any of those count as correct.
+    Otherwise falls back to exact match on correct_action.
+    """
+    pred = predicted_action.strip().lower()
+    if acceptable_actions:
+        return 1.0 if pred in [a.strip().lower() for a in acceptable_actions] else 0.0
+    return 1.0 if pred == correct_action.strip().lower() else 0.0
 
 
 def anomaly_detection_rate(
