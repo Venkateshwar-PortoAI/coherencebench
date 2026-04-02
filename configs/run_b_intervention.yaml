@@ -1,0 +1,19 @@
+# Run B: Intervention — reminders at ticks 50, 100, 150
+name: run_b_intervention
+description: >
+  Measures intervention recovery. Same as Run A but with explicit
+  "you are dropping factors" reminders at ticks 50, 100, and 150.
+  Tests how long the wake-up effect lasts (IR metric).
+
+num_ticks: 200
+seeds: [42, 137, 256, 389, 501, 617, 733, 842, 951, 1024]
+
+providers:
+  - claude
+  - gpt4o
+  - gemini
+  - llama
+
+context_reset_interval: null
+intervention_ticks: [50, 100, 150]
+force_checklist: false

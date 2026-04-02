@@ -1,0 +1,18 @@
+# Run A: Baseline — continuous session, no intervention
+name: run_a_baseline
+description: >
+  Baseline run. 200-tick continuous session with no interventions,
+  no context resets, and no checklists. Measures natural FC degradation.
+
+num_ticks: 200
+seeds: [42, 137, 256, 389, 501, 617, 733, 842, 951, 1024]
+
+providers:
+  - claude
+  - gpt4o
+  - gemini
+  - llama
+
+context_reset_interval: null
+intervention_ticks: []
+force_checklist: false

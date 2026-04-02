@@ -1,0 +1,19 @@
+# Run D: Checklist — mandatory 6-factor checklist appended to every tick
+name: run_d_checklist
+description: >
+  Tests whether a simple structural prompt intervention prevents collapse.
+  Every tick prompt includes a reminder to analyze all 6 factors.
+  If FC stays high, the degradation is addressable via prompt engineering.
+
+num_ticks: 200
+seeds: [42, 137, 256, 389, 501, 617, 733, 842, 951, 1024]
+
+providers:
+  - claude
+  - gpt4o
+  - gemini
+  - llama
+
+context_reset_interval: null
+intervention_ticks: []
+force_checklist: true

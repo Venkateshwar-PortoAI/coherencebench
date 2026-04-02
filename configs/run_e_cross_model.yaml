@@ -1,0 +1,19 @@
+# Run E: Cross-Model — Run A (baseline) across all providers
+name: run_e_cross_model
+description: >
+  Cross-model comparison using Run A (baseline) parameters.
+  Runs all 4 providers to compare degradation rates and fixation
+  patterns across model families.
+
+num_ticks: 200
+seeds: [42, 137, 256, 389, 501, 617, 733, 842, 951, 1024]
+
+providers:
+  - claude
+  - gpt4o
+  - gemini
+  - llama
+
+context_reset_interval: null
+intervention_ticks: []
+force_checklist: false

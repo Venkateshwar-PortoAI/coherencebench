@@ -1,0 +1,20 @@
+# Run C: Context Reset — cleared every 40 ticks with state re-injection
+name: run_c_context_reset
+description: >
+  Tests whether attention collapse is caused by context accumulation.
+  Context is cleared every 40 ticks and the current grid state is
+  re-injected as a summary. If FC recovers after reset, collapse is
+  context-length-driven. If not, it's intrinsic to the model.
+
+num_ticks: 200
+seeds: [42, 137, 256, 389, 501, 617, 733, 842, 951, 1024]
+
+providers:
+  - claude
+  - gpt4o
+  - gemini
+  - llama
+
+context_reset_interval: 40
+intervention_ticks: []
+force_checklist: false
