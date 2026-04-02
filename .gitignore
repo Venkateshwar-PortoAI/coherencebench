@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+results/*.json
+results/*.jsonl
+results/*.png
+results/*.csv
+!results/.gitkeep
+.venv/
+dist/
+*.egg-info/
+.DS_Store
