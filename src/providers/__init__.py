@@ -5,9 +5,13 @@ from .anthropic import AnthropicProvider
 from .openai import OpenAIProvider
 from .google import GoogleProvider
 from .together import TogetherProvider
+from .claude_cli import ClaudeCliProvider
+from .codex_cli import CodexCliProvider
 
 PROVIDERS = {
     "claude": AnthropicProvider,
+    "claude-cli": ClaudeCliProvider,
+    "codex": CodexCliProvider,
     "gpt4o": OpenAIProvider,
     "gemini": GoogleProvider,
     "llama": TogetherProvider,
