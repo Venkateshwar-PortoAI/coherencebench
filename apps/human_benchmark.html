@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoherenceBench — Human Benchmark</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2333;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-dim: #8b949e;
+  --green: #3fb950;
+  --red: #f85149;
+  --yellow: #d29922;
+  --blue: #58a6ff;
+  --purple: #bc8cff;
+  --cyan: #39d353;
+  --orange: #f0883e;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.mono { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace; }
+
+/* Header */
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+#header h1 { font-size: 16px; font-weight: 600; }
+#header .scenario-tag {
+  background: var(--blue);
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* Progress bar */
+#progress-bar-container {
+  height: 3px;
+  background: var(--surface2);
+}
+#progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  transition: width 0.3s ease;
+  width: 0;
+}
+
+/* Stats bar */
+#stats-bar {
+  display: flex;
+  gap: 24px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+}
+.stat { display: flex; align-items: center; gap: 6px; }
+.stat-label { color: var(--text-dim); }
+.stat-value { font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat-value.good { color: var(--green); }
+.stat-value.bad { color: var(--red); }
+.stat-value.neutral { color: var(--yellow); }
+
+/* Main layout */
+#main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+/* Factor grid */
+#factor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.factor-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  min-height: 90px;
+}
+.factor-panel.anomalous { border-color: var(--yellow); }
+.factor-panel .factor-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.factor-panel .factor-label .badge {
+  background: var(--yellow);
+  color: #000;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  display: none;
+}
+.factor-panel.anomalous .factor-label .badge { display: inline; }
+.factor-panel .factor-data {
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text);
+}
+
+/* Actions */
+#actions-section {
+  margin-bottom: 20px;
+}
+#actions-section h3 {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+#action-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.action-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 12px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+}
+.action-btn:hover {
+  background: var(--border);
+  border-color: var(--blue);
+}
+.action-btn:active { transform: scale(0.97); }
+.action-btn.correct {
+  background: #0d2818;
+  border-color: var(--green);
+  color: var(--green);
+}
+.action-btn.incorrect {
+  background: #2d1216;
+  border-color: var(--red);
+  color: var(--red);
+}
+.action-btn.acceptable {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  background: #2d2200;
+}
+.action-btn.disabled { pointer-events: none; opacity: 0.4; }
+
+/* Feedback */
+#feedback {
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none;
+  font-size: 14px;
+}
+#feedback.correct { background: #0d2818; border: 1px solid var(--green); }
+#feedback.incorrect { background: #2d1216; border: 1px solid var(--red); }
+#feedback .feedback-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+#feedback .feedback-detail { color: var(--text-dim); font-size: 13px; }
+#feedback .acceptable-list { margin-top: 6px; font-family: 'SF Mono', Consolas, monospace; font-size: 12px; }
+
+#next-btn {
+  background: var(--blue);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  display: none;
+}
+#next-btn:hover { opacity: 0.9; }
+
+/* Landing */
+#landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+}
+#landing h2 { font-size: 28px; margin-bottom: 8px; }
+#landing .subtitle { color: var(--text-dim); font-size: 15px; margin-bottom: 32px; max-width: 540px; }
+#landing .btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.landing-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 16px 28px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.landing-btn:hover { border-color: var(--blue); background: var(--surface); }
+.landing-btn.primary { background: var(--blue); color: #000; border-color: var(--blue); font-weight: 600; }
+.landing-btn.primary:hover { opacity: 0.9; }
+#file-input { display: none; }
+#tick-config {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+#tick-config input {
+  width: 60px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* Game area hide */
+#game { display: none; }
+
+/* Summary */
+#summary {
+  display: none;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+#summary h2 { font-size: 24px; margin-bottom: 24px; text-align: center; }
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.summary-card .card-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.summary-card .card-value { font-size: 28px; font-weight: 700; }
+.summary-card .card-sub { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+#chart-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+#chart-container h3 { font-size: 14px; margin-bottom: 12px; color: var(--text-dim); }
+canvas { width: 100%; }
+
+.factor-da-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.factor-da-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+}
+.factor-da-card .fda-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+.factor-da-card .fda-bar { height: 6px; background: var(--surface2); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+.factor-da-card .fda-fill { height: 100%; border-radius: 3px; background: var(--blue); }
+.factor-da-card .fda-value { font-size: 20px; font-weight: 700; }
+
+#summary-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  #factor-grid { grid-template-columns: repeat(2, 1fr); }
+  #action-buttons { grid-template-columns: repeat(2, 1fr); }
+  .summary-grid { grid-template-columns: 1fr; }
+  .factor-da-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div style="display:flex;align-items:center;">
+    <h1>CoherenceBench</h1>
+    <span id="scenario-tag" class="scenario-tag" style="display:none;"></span>
+  </div>
+  <div id="header-right" style="font-size:13px;color:var(--text-dim);"></div>
+</div>
+<div id="progress-bar-container"><div id="progress-bar"></div></div>
+
+<div id="stats-bar" style="display:none;">
+  <div class="stat"><span class="stat-label">Tick</span><span id="s-tick" class="stat-value">—</span></div>
+  <div class="stat"><span class="stat-label">DA</span><span id="s-da" class="stat-value">—</span></div>
+  <div class="stat"><span class="stat-label">Correct</span><span id="s-correct" class="stat-value good">0</span></div>
+  <div class="stat"><span class="stat-label">Wrong</span><span id="s-wrong" class="stat-value bad">0</span></div>
+  <div class="stat"><span class="stat-label">Time</span><span id="s-timer" class="stat-value mono">0.0s</span></div>
+  <div class="stat"><span class="stat-label">Avg Time</span><span id="s-avg-time" class="stat-value">—</span></div>
+</div>
+
+<!-- Landing -->
+<div id="landing">
+  <h2>CoherenceBench</h2>
+  <p class="subtitle">Take the benchmark yourself. You'll see the same status updates the AI sees — 6 factors per tick — and pick an action. Can you stay coherent longer than the models?</p>
+  <div class="btn-group">
+    <button class="landing-btn primary" onclick="startEmbedded()">Start (Power Grid, seed 42)</button>
+    <button class="landing-btn" onclick="document.getElementById('file-input').click()">Load JSON file</button>
+  </div>
+  <input type="file" id="file-input" accept=".json" onchange="loadFile(event)">
+  <div id="tick-config">
+    Ticks: <input type="number" id="tick-count" value="50" min="1" max="200">
+  </div>
+</div>
+
+<!-- Game -->
+<div id="game">
+  <div id="main">
+    <div id="factor-grid"></div>
+    <div id="actions-section">
+      <h3>Select Action</h3>
+      <div id="action-buttons"></div>
+    </div>
+    <div id="feedback">
+      <div class="feedback-title"></div>
+      <div class="feedback-detail"></div>
+      <div class="acceptable-list"></div>
+      <button id="next-btn" onclick="nextTick()">Next Tick</button>
+    </div>
+  </div>
+</div>
+
+<!-- Summary -->
+<div id="summary">
+  <h2>Benchmark Complete</h2>
+  <div class="summary-grid" id="summary-cards"></div>
+  <div id="chart-container">
+    <h3>Decision Accuracy Over Time (10-tick windows)</h3>
+    <canvas id="da-chart" height="200"></canvas>
+  </div>
+  <h3 style="font-size:14px;color:var(--text-dim);margin-bottom:12px;">Per-Factor DA (when factor was anomalous)</h3>
+  <div class="factor-da-grid" id="factor-da-cards"></div>
+  <div id="summary-actions">
+    <button class="landing-btn primary" onclick="copyResults()">Copy Results as JSON</button>
+    <button class="landing-btn" onclick="location.reload()">Start Over</button>
+  </div>
+</div>
+
+<script>
+const EMBEDDED_DATA = {"scenario": "power_grid", "seed": 42, "num_ticks": 50, "factors": {"load": {"display_name": "Load (Consumer Demand)", "description": "Consumer electricity demand across 3 zones (A, B, C) in MW"}, "generation": {"display_name": "Generation (Power Output)", "description": "Power output from 4 plants in MW, including trip/fault status"}, "frequency": {"display_name": "Frequency (Grid Stability)", "description": "Grid frequency in Hz (nominal 50.0, safe range 49.5-50.5)"}, "voltage": {"display_name": "Voltage (Transmission Lines)", "description": "Voltage levels across 3 transmission lines in kV"}, "weather": {"display_name": "Weather (Renewable Forecast)", "description": "Wind speed, solar conditions affecting renewable generation"}, "reserve": {"display_name": "Reserve (Backup Capacity)", "description": "Battery storage, gas turbine standby, spinning reserve in MW/MWh"}}, "actions": ["shed_load", "start_gas_turbine", "ramp_plant", "adjust_voltage", "curtail_renewable", "deploy_battery", "charge_battery", "hold_steady", "emergency_disconnect", "request_import"], "system_prompt": "You are an autonomous power grid control room operator. Every tick, you receive updates from 6 subsystems: Load (consumer demand), Generation (power plant output), Frequency (grid stability), Voltage (transmission lines), Weather (renewable forecast), and Reserve (backup capacity).\n\nYour job is to analyze ALL 6 factors every tick and recommend an action.\n\nYou MUST respond in this exact format:\nANALYSIS:\n- Load: [your analysis of current load state]\n- Generation: [your analysis of current generation state]\n- Frequency: [your analysis of current frequency state]\n- Voltage: [your analysis of current voltage state]\n- Weather: [your analysis of current weather state]\n- Reserve: [your analysis of current reserve state]\nACTION: [one of: shed_load, start_gas_turbine, ramp_plant, adjust_voltage, curtail_renewable, deploy_battery, charge_battery, hold_steady, emergency_disconnect, request_import]\nREASON: [1-2 sentences explaining why, referencing the specific factors that informed your decision]\n\nIMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. Each factor line must contain substantive analysis, not just 'stable' or 'unchanged'.", "ticks": [{"tick_number": 1, "prompt": "TICK 1:\n\nF1 (Load):       Zone A: 432MW, Zone B: 255MW, Zone C: 180MW\nF2 (Generation):  Plant 1: 278MW, Plant 2: 198MW, Plant 3: 157MW, Plant 4: 96MW\nF3 (Frequency):   50.91 Hz (rising)\nF4 (Voltage):     Line North: 412kV, Line South: 408kV, Line East: 410kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "frequency"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 2, "prompt": "TICK 2:\n\nF1 (Load):       Zone A: 437MW, Zone B: 252MW, Zone C: 182MW\nF2 (Generation):  Plant 1: 278MW, Plant 2: 197MW, Plant 3: TRIPPED, Plant 4: 94MW\nF3 (Frequency):   50.83 Hz (rising)\nF4 (Voltage):     Line North: 412kV, Line South: 406kV, Line East: 408kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "generation", "frequency"], "correct_action": "shed_load", "acceptable_actions": ["deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 3, "prompt": "TICK 3:\n\nF1 (Load):       Zone A: 290MW, Zone B: 256MW, Zone C: 181MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 192MW, Plant 3: 159MW, Plant 4: 92MW\nF3 (Frequency):   50.1 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 405kV, Line East: 406kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 397MWh (79%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 4, "prompt": "TICK 4:\n\nF1 (Load):       Zone A: 287MW, Zone B: 259MW, Zone C: 323MW\nF2 (Generation):  Plant 1: 271MW, Plant 2: 194MW, Plant 3: 160MW, Plant 4: TRIPPED\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 404kV, Line East: 406kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 392MWh (78%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "generation"], "correct_action": "shed_load", "acceptable_actions": ["deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 5, "prompt": "TICK 5:\n\nF1 (Load):       Zone A: 293MW, Zone B: 256MW, Zone C: 180MW\nF2 (Generation):  Plant 1: 268MW, Plant 2: 192MW, Plant 3: 163MW, Plant 4: TRIPPED\nF3 (Frequency):   50.72 Hz (rising)\nF4 (Voltage):     Line North: 414kV, Line South: 405kV, Line East: 408kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 390MWh (78%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation", "frequency"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 6, "prompt": "TICK 6:\n\nF1 (Load):       Zone A: 299MW, Zone B: 259MW, Zone C: 180MW\nF2 (Generation):  Plant 1: 271MW, Plant 2: 187MW, Plant 3: 168MW, Plant 4: 90MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 405kV, Line East: 408kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 391MWh (78%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 7, "prompt": "TICK 7:\n\nF1 (Load):       Zone A: 294MW, Zone B: 264MW, Zone C: 270MW\nF2 (Generation):  Plant 1: 276MW, Plant 2: 190MW, Plant 3: 172MW, Plant 4: 88MW\nF3 (Frequency):   50.12 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 407kV, Line East: 410kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 391MWh (78%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 8, "prompt": "TICK 8:\n\nF1 (Load):       Zone A: 288MW, Zone B: 266MW, Zone C: 177MW\nF2 (Generation):  Plant 1: 279MW, Plant 2: 187MW, Plant 3: TRIPPED, Plant 4: 93MW\nF3 (Frequency):   50.12 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 406kV, Line East: 410kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["weather", "generation"], "correct_action": "curtail_renewable", "acceptable_actions": ["curtail_renewable", "deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": true}}, {"tick_number": 9, "prompt": "TICK 9:\n\nF1 (Load):       Zone A: 406MW, Zone B: 268MW, Zone C: 181MW\nF2 (Generation):  Plant 1: 281MW, Plant 2: 183MW, Plant 3: 167MW, Plant 4: 91MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 408kV, Line East: 412kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 393MWh (79%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 10, "prompt": "TICK 10:\n\nF1 (Load):       Zone A: 429MW, Zone B: 266MW, Zone C: 185MW\nF2 (Generation):  Plant 1: 278MW, Plant 2: 187MW, Plant 3: 171MW, Plant 4: 93MW\nF3 (Frequency):   50.05 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 409kV, Line East: 373kV (LOW)\nF5 (Weather):     Wind 15km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 398MWh (80%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "voltage"], "correct_action": "shed_load", "acceptable_actions": ["adjust_voltage", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 11, "prompt": "TICK 11:\n\nF1 (Load):       Zone A: 429MW, Zone B: 264MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 281MW, Plant 2: 189MW, Plant 3: 168MW, Plant 4: 94MW\nF3 (Frequency):   50.02 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 408kV, Line East: 409kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 401MWh (80%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 12, "prompt": "TICK 12:\n\nF1 (Load):       Zone A: 304MW, Zone B: 266MW, Zone C: 183MW\nF2 (Generation):  Plant 1: 282MW, Plant 2: 184MW, Plant 3: TRIPPED, Plant 4: 95MW\nF3 (Frequency):   49.97 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 408kV, Line East: 410kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 404MWh (81%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 13, "prompt": "TICK 13:\n\nF1 (Load):       Zone A: 297MW, Zone B: 407MW, Zone C: 186MW\nF2 (Generation):  Plant 1: 285MW, Plant 2: 187MW, Plant 3: TRIPPED, Plant 4: 90MW\nF3 (Frequency):   50.02 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 407kV, Line East: 408kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "generation"], "correct_action": "shed_load", "acceptable_actions": ["deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 14, "prompt": "TICK 14:\n\nF1 (Load):       Zone A: 297MW, Zone B: 259MW, Zone C: 187MW\nF2 (Generation):  Plant 1: 283MW, Plant 2: 186MW, Plant 3: 163MW, Plant 4: 87MW\nF3 (Frequency):   50.95 Hz (rising)\nF4 (Voltage):     Line North: 416kV, Line South: 408kV, Line East: 408kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 411MWh (82%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["frequency"], "correct_action": "ramp_plant", "acceptable_actions": ["ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 15, "prompt": "TICK 15:\n\nF1 (Load):       Zone A: 300MW, Zone B: 258MW, Zone C: 185MW\nF2 (Generation):  Plant 1: 285MW, Plant 2: 189MW, Plant 3: TRIPPED, Plant 4: 91MW\nF3 (Frequency):   49.05 Hz (dropping)\nF4 (Voltage):     Line North: 418kV, Line South: 406kV, Line East: 410kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 407MWh (81%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation", "frequency"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": true}}, {"tick_number": 16, "prompt": "TICK 16:\n\nF1 (Load):       Zone A: 300MW, Zone B: 257MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 285MW, Plant 2: 187MW, Plant 3: 167MW, Plant 4: TRIPPED\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 407kV, Line East: 410kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 412MWh (82%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 17, "prompt": "TICK 17:\n\nF1 (Load):       Zone A: 398MW, Zone B: 260MW, Zone C: 180MW\nF2 (Generation):  Plant 1: 281MW, Plant 2: 183MW, Plant 3: 164MW, Plant 4: 99MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 409kV, Line East: 412kV\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 146MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 18, "prompt": "TICK 18:\n\nF1 (Load):       Zone A: 308MW, Zone B: 263MW, Zone C: 182MW\nF2 (Generation):  Plant 1: 285MW, Plant 2: 180MW, Plant 3: 162MW, Plant 4: 96MW\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 410kV, Line East: 410kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 19, "prompt": "TICK 19:\n\nF1 (Load):       Zone A: 303MW, Zone B: 264MW, Zone C: 178MW\nF2 (Generation):  Plant 1: 287MW, Plant 2: 178MW, Plant 3: 160MW, Plant 4: 98MW\nF3 (Frequency):   50.11 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 409kV, Line East: 408kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 20, "prompt": "TICK 20:\n\nF1 (Load):       Zone A: 305MW, Zone B: 259MW, Zone C: 280MW\nF2 (Generation):  Plant 1: 286MW, Plant 2: 175MW, Plant 3: 164MW, Plant 4: 97MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 391kV (LOW), Line East: 408kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 413MWh (83%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "voltage"], "correct_action": "shed_load", "acceptable_actions": ["adjust_voltage", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 21, "prompt": "TICK 21:\n\nF1 (Load):       Zone A: 307MW, Zone B: 263MW, Zone C: 176MW\nF2 (Generation):  Plant 1: 291MW, Plant 2: 171MW, Plant 3: 163MW, Plant 4: 100MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 410kV, Line East: 409kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 410MWh (82%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 22, "prompt": "TICK 22:\n\nF1 (Load):       Zone A: 299MW, Zone B: 407MW, Zone C: 176MW\nF2 (Generation):  Plant 1: 289MW, Plant 2: 172MW, Plant 3: 167MW, Plant 4: 104MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 411kV, Line East: 410kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 20MWh (4%). Gas turbine: OFFLINE. Spin reserve: 12MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["reserve", "load"], "correct_action": "deploy_battery", "acceptable_actions": ["charge_battery", "deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": true}}, {"tick_number": 23, "prompt": "TICK 23:\n\nF1 (Load):       Zone A: 301MW, Zone B: 258MW, Zone C: 175MW\nF2 (Generation):  Plant 1: 294MW, Plant 2: 171MW, Plant 3: 165MW, Plant 4: 102MW\nF3 (Frequency):   50.02 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 410kV, Line East: 411kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 408MWh (82%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 24, "prompt": "TICK 24:\n\nF1 (Load):       Zone A: 293MW, Zone B: 254MW, Zone C: 177MW\nF2 (Generation):  Plant 1: 292MW, Plant 2: 168MW, Plant 3: 168MW, Plant 4: 104MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 408kV, Line East: 412kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 410MWh (82%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 25, "prompt": "TICK 25:\n\nF1 (Load):       Zone A: 301MW, Zone B: 255MW, Zone C: 181MW\nF2 (Generation):  Plant 1: 294MW, Plant 2: 165MW, Plant 3: 170MW, Plant 4: 106MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 408kV, Line East: 414kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 408MWh (82%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 26, "prompt": "TICK 26:\n\nF1 (Load):       Zone A: 297MW, Zone B: 253MW, Zone C: 183MW\nF2 (Generation):  Plant 1: 291MW, Plant 2: 163MW, Plant 3: 166MW, Plant 4: 107MW\nF3 (Frequency):   49.95 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 409kV, Line East: 415kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 27, "prompt": "TICK 27:\n\nF1 (Load):       Zone A: 289MW, Zone B: 253MW, Zone C: 331MW\nF2 (Generation):  Plant 1: 292MW, Plant 2: 164MW, Plant 3: 169MW, Plant 4: 110MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 410kV, Line East: 414kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 411MWh (82%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 28, "prompt": "TICK 28:\n\nF1 (Load):       Zone A: 421MW, Zone B: 254MW, Zone C: 179MW\nF2 (Generation):  Plant 1: 288MW, Plant 2: 169MW, Plant 3: 170MW, Plant 4: 107MW\nF3 (Frequency):   50.02 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 408kV, Line East: 414kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 29, "prompt": "TICK 29:\n\nF1 (Load):       Zone A: 369MW, Zone B: 257MW, Zone C: 175MW\nF2 (Generation):  Plant 1: 288MW, Plant 2: TRIPPED, Plant 3: 175MW, Plant 4: 103MW\nF3 (Frequency):   50.05 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 406kV, Line East: 413kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 404MWh (81%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation", "load"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": true}}, {"tick_number": 30, "prompt": "TICK 30:\n\nF1 (Load):       Zone A: 268MW, Zone B: 261MW, Zone C: 174MW\nF2 (Generation):  Plant 1: 290MW, Plant 2: 166MW, Plant 3: 175MW, Plant 4: 100MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 405kV, Line East: 413kV\nF5 (Weather):     Wind 8km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 399MWh (80%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 31, "prompt": "TICK 31:\n\nF1 (Load):       Zone A: 267MW, Zone B: 356MW, Zone C: 174MW\nF2 (Generation):  Plant 1: 295MW, Plant 2: 170MW, Plant 3: 171MW, Plant 4: 104MW\nF3 (Frequency):   50.09 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 407kV, Line East: 414kV\nF5 (Weather):     Wind 8km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 402MWh (80%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 32, "prompt": "TICK 32:\n\nF1 (Load):       Zone A: 272MW, Zone B: 254MW, Zone C: 178MW\nF2 (Generation):  Plant 1: 300MW, Plant 2: 169MW, Plant 3: TRIPPED, Plant 4: 107MW\nF3 (Frequency):   50.12 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 408kV, Line East: 416kV\nF5 (Weather):     Wind 8km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 400MWh (80%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 33, "prompt": "TICK 33:\n\nF1 (Load):       Zone A: 264MW, Zone B: 256MW, Zone C: 179MW\nF2 (Generation):  Plant 1: 297MW, Plant 2: 171MW, Plant 3: 173MW, Plant 4: TRIPPED\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 408kV, Line East: 418kV\nF5 (Weather):     Wind 8km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 34, "prompt": "TICK 34:\n\nF1 (Load):       Zone A: 270MW, Zone B: 251MW, Zone C: 176MW\nF2 (Generation):  Plant 1: 296MW, Plant 2: 169MW, Plant 3: 174MW, Plant 4: 105MW\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 408kV, Line East: 419kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 35, "prompt": "TICK 35:\n\nF1 (Load):       Zone A: 418MW, Zone B: 251MW, Zone C: 173MW\nF2 (Generation):  Plant 1: 299MW, Plant 2: 166MW, Plant 3: TRIPPED, Plant 4: 103MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 410kV, Line East: 437kV (HIGH)\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 391MWh (78%). Gas turbine: STANDBY. Spin reserve: 157MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "generation", "voltage"], "correct_action": "shed_load", "acceptable_actions": ["adjust_voltage", "deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 36, "prompt": "TICK 36:\n\nF1 (Load):       Zone A: 263MW, Zone B: 246MW, Zone C: 173MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 168MW, Plant 3: 174MW, Plant 4: 103MW\nF3 (Frequency):   50.12 Hz (stable)\nF4 (Voltage):     Line North: 425kV (HIGH), Line South: 410kV, Line East: 422kV (HIGH)\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 387MWh (77%). Gas turbine: STANDBY. Spin reserve: 157MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["weather", "generation", "voltage"], "correct_action": "curtail_renewable", "acceptable_actions": ["adjust_voltage", "curtail_renewable", "deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": true}}, {"tick_number": 37, "prompt": "TICK 37:\n\nF1 (Load):       Zone A: 268MW, Zone B: 250MW, Zone C: 172MW\nF2 (Generation):  Plant 1: 304MW, Plant 2: TRIPPED, Plant 3: 176MW, Plant 4: 105MW\nF3 (Frequency):   50.1 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 411kV, Line East: 422kV (HIGH)\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 382MWh (76%). Gas turbine: STANDBY. Spin reserve: 158MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 38, "prompt": "TICK 38:\n\nF1 (Load):       Zone A: 265MW, Zone B: 253MW, Zone C: 169MW\nF2 (Generation):  Plant 1: 301MW, Plant 2: TRIPPED, Plant 3: 177MW, Plant 4: 107MW\nF3 (Frequency):   50.12 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 411kV, Line East: 420kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 381MWh (76%). Gas turbine: STANDBY. Spin reserve: 160MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 39, "prompt": "TICK 39:\n\nF1 (Load):       Zone A: 270MW, Zone B: 249MW, Zone C: 173MW\nF2 (Generation):  Plant 1: 299MW, Plant 2: 169MW, Plant 3: 174MW, Plant 4: 106MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 409kV, Line East: 419kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 385MWh (77%). Gas turbine: STANDBY. Spin reserve: 159MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 40, "prompt": "TICK 40:\n\nF1 (Load):       Zone A: 411MW, Zone B: 245MW, Zone C: 169MW\nF2 (Generation):  Plant 1: 300MW, Plant 2: 169MW, Plant 3: 178MW, Plant 4: TRIPPED\nF3 (Frequency):   50.1 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 411kV, Line East: 421kV (HIGH)\nF5 (Weather):     Wind 9km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 390MWh (78%). Gas turbine: STANDBY. Spin reserve: 162MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "generation"], "correct_action": "shed_load", "acceptable_actions": ["deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 41, "prompt": "TICK 41:\n\nF1 (Load):       Zone A: 270MW, Zone B: 247MW, Zone C: 170MW\nF2 (Generation):  Plant 1: 301MW, Plant 2: 169MW, Plant 3: 178MW, Plant 4: 110MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 411kV, Line East: 422kV (HIGH)\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 162MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 42, "prompt": "TICK 42:\n\nF1 (Load):       Zone A: 384MW, Zone B: 250MW, Zone C: 166MW\nF2 (Generation):  Plant 1: 306MW, Plant 2: 172MW, Plant 3: 180MW, Plant 4: 111MW\nF3 (Frequency):   50.69 Hz (rising)\nF4 (Voltage):     Line North: 416kV, Line South: 411kV, Line East: 424kV (HIGH)\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 397MWh (79%). Gas turbine: STANDBY. Spin reserve: 165MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load", "frequency"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 43, "prompt": "TICK 43:\n\nF1 (Load):       Zone A: 404MW, Zone B: 253MW, Zone C: 168MW\nF2 (Generation):  Plant 1: 302MW, Plant 2: 170MW, Plant 3: 176MW, Plant 4: 113MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 412kV, Line East: 424kV (HIGH)\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 40MWh (8%). Gas turbine: OFFLINE. Spin reserve: 25MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["reserve", "load"], "correct_action": "deploy_battery", "acceptable_actions": ["charge_battery", "deploy_battery", "ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": true}}, {"tick_number": 44, "prompt": "TICK 44:\n\nF1 (Load):       Zone A: 270MW, Zone B: 251MW, Zone C: 172MW\nF2 (Generation):  Plant 1: 299MW, Plant 2: 166MW, Plant 3: 175MW, Plant 4: 114MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 412kV, Line East: 434kV (HIGH)\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 395MWh (79%). Gas turbine: STANDBY. Spin reserve: 168MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["voltage"], "correct_action": "adjust_voltage", "acceptable_actions": ["adjust_voltage", "ramp_plant"], "is_multi_factor": false}}, {"tick_number": 45, "prompt": "TICK 45:\n\nF1 (Load):       Zone A: 276MW, Zone B: 251MW, Zone C: 171MW\nF2 (Generation):  Plant 1: 297MW, Plant 2: 170MW, Plant 3: 176MW, Plant 4: 112MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 410kV, Line East: 373kV (LOW)\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 396MWh (79%). Gas turbine: STANDBY. Spin reserve: 168MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["voltage"], "correct_action": "adjust_voltage", "acceptable_actions": ["adjust_voltage", "ramp_plant"], "is_multi_factor": false}}, {"tick_number": 46, "prompt": "TICK 46:\n\nF1 (Load):       Zone A: 282MW, Zone B: 247MW, Zone C: 175MW\nF2 (Generation):  Plant 1: 299MW, Plant 2: 165MW, Plant 3: 173MW, Plant 4: TRIPPED\nF3 (Frequency):   50.12 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 408kV, Line East: 423kV (HIGH)\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 400MWh (80%). Gas turbine: STANDBY. Spin reserve: 170MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation"], "correct_action": "start_gas_turbine", "acceptable_actions": ["deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 47, "prompt": "TICK 47:\n\nF1 (Load):       Zone A: 275MW, Zone B: 251MW, Zone C: 172MW\nF2 (Generation):  Plant 1: 297MW, Plant 2: TRIPPED, Plant 3: 178MW, Plant 4: 112MW\nF3 (Frequency):   50.17 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 409kV, Line East: 391kV (LOW)\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 397MWh (79%). Gas turbine: STANDBY. Spin reserve: 172MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["generation", "voltage"], "correct_action": "start_gas_turbine", "acceptable_actions": ["adjust_voltage", "deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 48, "prompt": "TICK 48:\n\nF1 (Load):       Zone A: 272MW, Zone B: 248MW, Zone C: 170MW\nF2 (Generation):  Plant 1: 293MW, Plant 2: 174MW, Plant 3: 179MW, Plant 4: 116MW\nF3 (Frequency):   50.19 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 411kV, Line East: 420kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 402MWh (80%). Gas turbine: STANDBY. Spin reserve: 171MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": [], "correct_action": "hold_steady", "acceptable_actions": ["hold_steady"], "is_multi_factor": false}}, {"tick_number": 49, "prompt": "TICK 49:\n\nF1 (Load):       Zone A: 266MW, Zone B: 250MW, Zone C: 301MW\nF2 (Generation):  Plant 1: 297MW, Plant 2: 173MW, Plant 3: 184MW, Plant 4: 117MW\nF3 (Frequency):   50.21 Hz (rising)\nF4 (Voltage):     Line North: 417kV, Line South: 411kV, Line East: 419kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 404MWh (81%). Gas turbine: STANDBY. Spin reserve: 168MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["load"], "correct_action": "shed_load", "acceptable_actions": ["ramp_plant", "shed_load", "start_gas_turbine"], "is_multi_factor": false}}, {"tick_number": 50, "prompt": "TICK 50:\n\nF1 (Load):       Zone A: 266MW, Zone B: 245MW, Zone C: 167MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 175MW, Plant 3: 183MW, Plant 4: 115MW\nF3 (Frequency):   50.22 Hz (rising)\nF4 (Voltage):     Line North: 417kV, Line South: 410kV, Line East: 418kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 409MWh (82%). Gas turbine: STANDBY. Spin reserve: 171MW.\n\nBased on ALL six factors, what action do you recommend?", "ground_truth": {"anomalous_factors": ["weather", "generation"], "correct_action": "curtail_renewable", "acceptable_actions": ["curtail_renewable", "deploy_battery", "ramp_plant", "start_gas_turbine"], "is_multi_factor": true}}]};
+
+// State
+let data = null;
+let maxTicks = 50;
+let currentTick = 0;
+let results = []; // {tick, action, correct, acceptable, time_ms, anomalous_factors}
+let tickStartTime = 0;
+let timerInterval = null;
+
+// Scenario display names
+const SCENARIO_NAMES = {
+  power_grid: 'Power Grid',
+  hospital: 'Hospital',
+  network: 'Network Security'
+};
+
+// Action display labels
+const ACTION_LABELS = {
+  shed_load: 'Shed Load',
+  start_gas_turbine: 'Start Gas Turbine',
+  ramp_plant: 'Ramp Plant',
+  adjust_voltage: 'Adjust Voltage',
+  curtail_renewable: 'Curtail Renewable',
+  deploy_battery: 'Deploy Battery',
+  charge_battery: 'Charge Battery',
+  hold_steady: 'Hold Steady',
+  emergency_disconnect: 'Emergency Disconnect',
+  request_import: 'Request Import',
+  admit_icu: 'Admit ICU',
+  admit_ward: 'Admit Ward',
+  discharge: 'Discharge',
+  order_labs: 'Order Labs',
+  order_imaging: 'Order Imaging',
+  start_medication: 'Start Medication',
+  adjust_medication: 'Adjust Medication',
+  call_specialist: 'Call Specialist',
+  monitor_closely: 'Monitor Closely',
+  no_action_needed: 'No Action Needed',
+  block_ip: 'Block IP',
+  isolate_endpoint: 'Isolate Endpoint',
+  escalate_alert: 'Escalate Alert',
+  update_firewall_rule: 'Update Firewall',
+  force_password_reset: 'Force Password Reset',
+  deploy_patch: 'Deploy Patch',
+  increase_monitoring: 'Increase Monitoring',
+  quarantine_file: 'Quarantine File',
+  investigate_further: 'Investigate Further'
+};
+
+function startEmbedded() {
+  data = EMBEDDED_DATA;
+  maxTicks = Math.min(parseInt(document.getElementById('tick-count').value) || 50, data.ticks.length);
+  startGame();
+}
+
+function loadFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      data = JSON.parse(e.target.result);
+      maxTicks = Math.min(parseInt(document.getElementById('tick-count').value) || 50, data.ticks.length);
+      startGame();
+    } catch(err) {
+      alert('Invalid JSON file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function startGame() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  document.getElementById('stats-bar').style.display = 'flex';
+
+  const tag = document.getElementById('scenario-tag');
+  tag.textContent = SCENARIO_NAMES[data.scenario] || data.scenario;
+  tag.style.display = 'inline';
+
+  document.getElementById('header-right').textContent = `seed ${data.seed} | ${maxTicks} ticks`;
+
+  currentTick = 0;
+  results = [];
+  renderTick();
+}
+
+function parsePrompt(prompt) {
+  // Extract factor data from the prompt text
+  const lines = prompt.split('\n');
+  const factors = {};
+  const factorKeys = Object.keys(data.factors);
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    for (let fi = 0; fi < factorKeys.length; fi++) {
+      const prefix = `F${fi + 1} (`;
+      if (line.includes(prefix)) {
+        const colonIdx = line.indexOf(':');
+        if (colonIdx > -1) {
+          factors[factorKeys[fi]] = line.substring(colonIdx + 1).trim();
+        }
+      }
+    }
+  }
+  return factors;
+}
+
+function renderTick() {
+  const tick = data.ticks[currentTick];
+  const gt = tick.ground_truth;
+  const factorKeys = Object.keys(data.factors);
+  const parsed = parsePrompt(tick.prompt);
+
+  // Update stats
+  document.getElementById('s-tick').textContent = `${currentTick + 1} / ${maxTicks}`;
+  const pct = ((currentTick) / maxTicks * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  updateDA();
+
+  // Render factor panels
+  const grid = document.getElementById('factor-grid');
+  grid.innerHTML = '';
+  factorKeys.forEach(key => {
+    const panel = document.createElement('div');
+    panel.className = 'factor-panel';
+    const isAnomalous = gt.anomalous_factors.includes(key);
+    // Don't reveal anomalous during play — only after answer
+
+    const label = document.createElement('div');
+    label.className = 'factor-label';
+    label.innerHTML = `${data.factors[key].display_name} <span class="badge" id="badge-${key}">ANOMALOUS</span>`;
+
+    const dataDiv = document.createElement('div');
+    dataDiv.className = 'factor-data';
+    dataDiv.textContent = parsed[key] || '(no data)';
+
+    panel.appendChild(label);
+    panel.appendChild(dataDiv);
+    panel.id = 'panel-' + key;
+    grid.appendChild(panel);
+  });
+
+  // Render action buttons
+  const btnContainer = document.getElementById('action-buttons');
+  btnContainer.innerHTML = '';
+  data.actions.forEach(action => {
+    const btn = document.createElement('button');
+    btn.className = 'action-btn';
+    btn.textContent = ACTION_LABELS[action] || action.replace(/_/g, ' ');
+    btn.onclick = () => selectAction(action);
+    btn.id = 'btn-' + action;
+    btnContainer.appendChild(btn);
+  });
+
+  // Hide feedback
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // Start timer
+  tickStartTime = performance.now();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const elapsed = (performance.now() - tickStartTime) / 1000;
+    document.getElementById('s-timer').textContent = elapsed.toFixed(1) + 's';
+  }, 100);
+}
+
+function selectAction(action) {
+  if (timerInterval) clearInterval(timerInterval);
+  const elapsed = performance.now() - tickStartTime;
+
+  const tick = data.ticks[currentTick];
+  const gt = tick.ground_truth;
+  const isCorrect = gt.acceptable_actions.includes(action);
+
+  results.push({
+    tick: tick.tick_number,
+    action: action,
+    correct: isCorrect,
+    correct_action: gt.correct_action,
+    acceptable_actions: gt.acceptable_actions,
+    anomalous_factors: gt.anomalous_factors,
+    is_multi_factor: gt.is_multi_factor,
+    time_ms: Math.round(elapsed)
+  });
+
+  // Disable all buttons
+  data.actions.forEach(a => {
+    const btn = document.getElementById('btn-' + a);
+    btn.classList.add('disabled');
+    if (a === action && isCorrect) btn.classList.add('correct');
+    if (a === action && !isCorrect) btn.classList.add('incorrect');
+    if (gt.acceptable_actions.includes(a) && a !== action) btn.classList.add('acceptable');
+  });
+
+  // Highlight anomalous factors
+  gt.anomalous_factors.forEach(key => {
+    const panel = document.getElementById('panel-' + key);
+    if (panel) panel.classList.add('anomalous');
+  });
+
+  // Show feedback
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'block';
+  fb.className = isCorrect ? 'correct' : 'incorrect';
+  fb.querySelector('.feedback-title').textContent = isCorrect ? 'Correct' : 'Incorrect';
+
+  let detailText = '';
+  if (!isCorrect) {
+    detailText = `You selected: ${ACTION_LABELS[action] || action}. Best action: ${ACTION_LABELS[gt.correct_action] || gt.correct_action}.`;
+  } else if (action === gt.correct_action) {
+    detailText = 'You picked the optimal action.';
+  } else {
+    detailText = `Acceptable. Optimal was: ${ACTION_LABELS[gt.correct_action] || gt.correct_action}.`;
+  }
+  if (gt.anomalous_factors.length > 0) {
+    detailText += ` Anomalous: ${gt.anomalous_factors.join(', ')}.`;
+  }
+  fb.querySelector('.feedback-detail').textContent = detailText;
+  fb.querySelector('.acceptable-list').textContent = 'Acceptable: ' + gt.acceptable_actions.map(a => ACTION_LABELS[a] || a).join(', ');
+
+  document.getElementById('next-btn').style.display = 'inline-block';
+  if (currentTick + 1 >= maxTicks) {
+    document.getElementById('next-btn').textContent = 'View Results';
+  } else {
+    document.getElementById('next-btn').textContent = `Next Tick (${currentTick + 2}/${maxTicks})`;
+  }
+
+  updateDA();
+}
+
+function nextTick() {
+  currentTick++;
+  if (currentTick >= maxTicks) {
+    showSummary();
+    return;
+  }
+  renderTick();
+}
+
+function updateDA() {
+  if (results.length === 0) {
+    document.getElementById('s-da').textContent = '—';
+    document.getElementById('s-correct').textContent = '0';
+    document.getElementById('s-wrong').textContent = '0';
+    document.getElementById('s-avg-time').textContent = '—';
+    return;
+  }
+  const correct = results.filter(r => r.correct).length;
+  const wrong = results.length - correct;
+  const da = (correct / results.length * 100).toFixed(1);
+  document.getElementById('s-da').textContent = da + '%';
+  document.getElementById('s-da').className = 'stat-value ' + (correct / results.length >= 0.7 ? 'good' : correct / results.length >= 0.4 ? 'neutral' : 'bad');
+  document.getElementById('s-correct').textContent = correct;
+  document.getElementById('s-wrong').textContent = wrong;
+
+  const avgTime = results.reduce((s, r) => s + r.time_ms, 0) / results.length / 1000;
+  document.getElementById('s-avg-time').textContent = avgTime.toFixed(1) + 's';
+}
+
+function showSummary() {
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('stats-bar').style.display = 'none';
+  document.getElementById('summary').style.display = 'block';
+  document.getElementById('progress-bar').style.width = '100%';
+
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+  const da = (correct / total * 100).toFixed(1);
+  const avgTime = (results.reduce((s, r) => s + r.time_ms, 0) / total / 1000).toFixed(1);
+
+  // First 10 / last 10
+  const first10 = results.slice(0, 10);
+  const last10 = results.slice(-10);
+  const daFirst = (first10.filter(r => r.correct).length / first10.length * 100).toFixed(1);
+  const daLast = (last10.filter(r => r.correct).length / last10.length * 100).toFixed(1);
+
+  // Multi-factor DA
+  const multiResults = results.filter(r => r.is_multi_factor);
+  const multiDA = multiResults.length > 0 ? (multiResults.filter(r => r.correct).length / multiResults.length * 100).toFixed(1) : 'N/A';
+
+  const cards = document.getElementById('summary-cards');
+  cards.innerHTML = '';
+
+  const cardData = [
+    { label: 'Overall DA', value: da + '%', sub: `${correct}/${total} correct` },
+    { label: 'DA @ First 10', value: daFirst + '%', sub: 'Early performance' },
+    { label: 'DA @ Last 10', value: daLast + '%', sub: parseFloat(daLast) < parseFloat(daFirst) ? 'Coherence collapse detected' : 'Sustained coherence' },
+    { label: 'Avg Decision Time', value: avgTime + 's', sub: 'Per tick' },
+    { label: 'Multi-Factor DA', value: multiDA === 'N/A' ? 'N/A' : multiDA + '%', sub: `${multiResults.length} multi-factor ticks` },
+    { label: 'Scenario', value: SCENARIO_NAMES[data.scenario] || data.scenario, sub: `seed ${data.seed}` },
+  ];
+
+  cardData.forEach(cd => {
+    const card = document.createElement('div');
+    card.className = 'summary-card';
+    card.innerHTML = `<div class="card-label">${cd.label}</div><div class="card-value">${cd.value}</div><div class="card-sub">${cd.sub}</div>`;
+    cards.appendChild(card);
+  });
+
+  // Per-factor DA
+  const factorKeys = Object.keys(data.factors);
+  const factorCards = document.getElementById('factor-da-cards');
+  factorCards.innerHTML = '';
+  factorKeys.forEach(key => {
+    const relevant = results.filter(r => r.anomalous_factors.includes(key));
+    let fdaVal = 'N/A';
+    let fdaPct = 0;
+    if (relevant.length > 0) {
+      const c = relevant.filter(r => r.correct).length;
+      fdaPct = c / relevant.length * 100;
+      fdaVal = fdaPct.toFixed(1) + '%';
+    }
+    const card = document.createElement('div');
+    card.className = 'factor-da-card';
+    card.innerHTML = `
+      <div class="fda-label">${data.factors[key].display_name}</div>
+      <div class="fda-value">${fdaVal}</div>
+      <div class="fda-bar"><div class="fda-fill" style="width:${fdaPct}%;background:${fdaPct >= 70 ? 'var(--green)' : fdaPct >= 40 ? 'var(--yellow)' : 'var(--red)'}"></div></div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">${relevant.length} tick${relevant.length !== 1 ? 's' : ''} with anomaly</div>
+    `;
+    factorCards.appendChild(card);
+  });
+
+  // Draw chart
+  drawChart();
+}
+
+function drawChart() {
+  const canvas = document.getElementById('da-chart');
+  const ctx = canvas.getContext('2d');
+
+  // Set actual pixel size
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width - 40;
+  canvas.height = 200;
+
+  const w = canvas.width;
+  const h = canvas.height;
+  const pad = { top: 20, right: 20, bottom: 30, left: 45 };
+  const plotW = w - pad.left - pad.right;
+  const plotH = h - pad.top - pad.bottom;
+
+  // Compute 10-tick window DA
+  const windowSize = 10;
+  const windows = [];
+  for (let i = 0; i < results.length; i += windowSize) {
+    const slice = results.slice(i, i + windowSize);
+    if (slice.length === 0) break;
+    const c = slice.filter(r => r.correct).length;
+    windows.push({ start: i + 1, end: i + slice.length, da: c / slice.length * 100 });
+  }
+
+  if (windows.length === 0) return;
+
+  // Also compute cumulative DA
+  const cumDA = [];
+  let runningCorrect = 0;
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].correct) runningCorrect++;
+    cumDA.push({ tick: i + 1, da: runningCorrect / (i + 1) * 100 });
+  }
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Grid lines
+  ctx.strokeStyle = '#30363d';
+  ctx.lineWidth = 1;
+  for (let y = 0; y <= 100; y += 25) {
+    const py = pad.top + plotH - (y / 100 * plotH);
+    ctx.beginPath();
+    ctx.moveTo(pad.left, py);
+    ctx.lineTo(pad.left + plotW, py);
+    ctx.stroke();
+
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '11px -apple-system, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(y + '%', pad.left - 8, py + 4);
+  }
+
+  // Draw cumulative DA line
+  ctx.strokeStyle = '#30363d';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  cumDA.forEach((pt, i) => {
+    const x = pad.left + (pt.tick - 1) / (results.length - 1 || 1) * plotW;
+    const y = pad.top + plotH - (pt.da / 100 * plotH);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Draw window bars
+  const barWidth = Math.max(plotW / windows.length - 4, 8);
+  windows.forEach((win, i) => {
+    const x = pad.left + (i + 0.5) / windows.length * plotW - barWidth / 2;
+    const barH = win.da / 100 * plotH;
+    const y = pad.top + plotH - barH;
+
+    const color = win.da >= 70 ? '#3fb950' : win.da >= 40 ? '#d29922' : '#f85149';
+    ctx.fillStyle = color + '88';
+    ctx.fillRect(x, y, barWidth, barH);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x, y, barWidth, barH);
+
+    // Label
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '10px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${win.start}-${win.end}`, x + barWidth / 2, pad.top + plotH + 18);
+    ctx.fillStyle = '#e6edf3';
+    ctx.font = '11px -apple-system, sans-serif';
+    ctx.fillText(win.da.toFixed(0) + '%', x + barWidth / 2, y - 5);
+  });
+}
+
+function copyResults() {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+  const first10 = results.slice(0, 10);
+  const last10 = results.slice(-10);
+
+  const output = {
+    benchmark: 'CoherenceBench',
+    participant: 'human',
+    timestamp: new Date().toISOString(),
+    scenario: data.scenario,
+    seed: data.seed,
+    num_ticks: total,
+    overall_da: parseFloat((correct / total * 100).toFixed(1)),
+    da_first_10: parseFloat((first10.filter(r => r.correct).length / first10.length * 100).toFixed(1)),
+    da_last_10: parseFloat((last10.filter(r => r.correct).length / last10.length * 100).toFixed(1)),
+    avg_decision_time_ms: Math.round(results.reduce((s, r) => s + r.time_ms, 0) / total),
+    per_tick: results.map(r => ({
+      tick: r.tick,
+      action: r.action,
+      correct: r.correct,
+      time_ms: r.time_ms
+    }))
+  };
+
+  navigator.clipboard.writeText(JSON.stringify(output, null, 2)).then(() => {
+    const btn = document.querySelector('#summary-actions .landing-btn.primary');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Results as JSON'; }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = JSON.stringify(output, null, 2);
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.querySelector('#summary-actions .landing-btn.primary');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Results as JSON'; }, 2000);
+  });
+}
+
+// Keyboard shortcut: 1-9,0 for actions
+document.addEventListener('keydown', function(e) {
+  if (document.getElementById('game').style.display !== 'block') return;
+  const key = e.key;
+  let idx = -1;
+  if (key >= '1' && key <= '9') idx = parseInt(key) - 1;
+  else if (key === '0') idx = 9;
+  else if (key === 'Enter' || key === ' ') {
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn.style.display !== 'none') {
+      e.preventDefault();
+      nextTick();
+    }
+    return;
+  }
+  if (idx >= 0 && idx < data.actions.length) {
+    const btn = document.getElementById('btn-' + data.actions[idx]);
+    if (btn && !btn.classList.contains('disabled')) {
+      btn.click();
+    }
+  }
+});
+</script>
+</body>
+</html>
