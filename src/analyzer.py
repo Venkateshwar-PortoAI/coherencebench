@@ -55,13 +55,29 @@ class ResponseAnalyzer:
         self.factors = FACTORS
         self._dismissive_re = [re.compile(p, re.IGNORECASE) for p in DISMISSIVE_PATTERNS]
 
+    def _is_refusal(self, response: str) -> bool:
+        """Detect if the model refused to respond or the session broke."""
+        if len(response.strip()) < 50:
+            return True
+        refusal_patterns = [
+            r"(?i)conversation.*(closed|ended|over)",
+            r"(?i)cannot.*(continue|respond|assist)",
+            r"(?i)session.*(expired|ended|closed)",
+            r"(?i)i('m| am) (unable|not able) to",
+        ]
+        for pattern in refusal_patterns:
+            if re.search(pattern, response):
+                return True
+        return False
+
     def parse_response(self, response: str) -> dict:
         """Parse a single response into structured analysis data.
 
         Returns dict with:
             action, factors_mentioned, factors_substantive,
-            token_counts, reason
+            token_counts, reason, refused
         """
+        refused = self._is_refusal(response)
         action = self._extract_action(response)
         factor_sections = self._extract_factor_sections(response)
 
@@ -88,6 +104,7 @@ class ResponseAnalyzer:
             "factors_substantive": factors_substantive,
             "token_counts": token_counts,
             "reason": reason,
+            "refused": refused,
         }
 
     def analyze_tick(

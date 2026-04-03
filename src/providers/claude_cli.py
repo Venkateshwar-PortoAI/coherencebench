@@ -16,7 +16,7 @@ class ClaudeCliProvider(LLMProvider):
     subsequent ticks resume it with -c (continue), maintaining full conversation context.
     """
 
-    def __init__(self, model: str = "haiku"):
+    def __init__(self, model: str = "sonnet"):
         self._model = model
         self._session_id = str(uuid.uuid4())
         self._turn_count = 0
@@ -61,7 +61,7 @@ class ClaudeCliProvider(LLMProvider):
             input=prompt,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=300,  # 5 min — sessions get slow as they grow
         )
 
         if result.returncode != 0:
