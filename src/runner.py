@@ -162,7 +162,9 @@ class BenchmarkRunner:
                     user_msg += CHECKLIST_SUFFIX
 
                 # FIX 3: Truncate if over context budget
+                pre_truncate_len = len(messages)
                 messages = self._truncate_messages(messages, system_prompt, user_msg)
+                context_truncated = len(messages) < pre_truncate_len
 
                 # Send to LLM
                 response = self.provider.send_turn(system_prompt, messages, user_msg)
@@ -177,6 +179,7 @@ class BenchmarkRunner:
                     "tick_number": tick_num,
                     "response": response,
                     "ground_truth": tick["ground_truth"],
+                    "context_truncated": context_truncated,
                 }
                 results.append(result)
 

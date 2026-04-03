@@ -8,6 +8,8 @@ FIX 8: All 5 metrics implemented end-to-end:
   IR  - Intervention Recovery
 """
 
+from __future__ import annotations
+
 
 def factor_coverage(factors_mentioned: list[str], total: int = 6) -> float:
     """FC: fraction of factors substantively analyzed (0.0 to 1.0)."""
@@ -90,6 +92,7 @@ def compute_all_metrics(
     correct_action: str,
     anomalous_factors: list[str],
     total_factors: int = 6,
+    acceptable_actions: list[str] | None = None,
 ) -> dict[str, float]:
     """Compute FC, FI, DA, and ADR for a single tick.
 
@@ -99,7 +102,9 @@ def compute_all_metrics(
     return {
         "factor_coverage": factor_coverage(factors_substantive, total_factors),
         "fixation_index": fixation_index(token_counts),
-        "decision_accuracy": decision_accuracy(predicted_action, correct_action),
+        "decision_accuracy": decision_accuracy(
+            predicted_action, correct_action, acceptable_actions
+        ),
         "anomaly_detection_rate": anomaly_detection_rate(
             factors_substantive, anomalous_factors
         ),

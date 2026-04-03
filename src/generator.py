@@ -187,9 +187,19 @@ class TickGenerator:
         """FIX 2: Multi-factor tick where correct action requires integrating 2+ factors."""
         tick_data = self._deep_copy_state(state)
 
-        # Pick a multi-factor rule, biased by current phase weights
-        rule_idx = tick_num % len(MULTI_FACTOR_RULES)
-        rule_factors, correct_action, relevant = MULTI_FACTOR_RULES[rule_idx]
+        # Pick a multi-factor rule whose factors have combined phase weight > 0.3
+        phase_eligible = [
+            (i, rule)
+            for i, rule in enumerate(MULTI_FACTOR_RULES)
+            if sum(weights.get(f, 0) for f in rule[0]) > 0.3
+        ]
+
+        if phase_eligible:
+            rule_idx = tick_num % len(phase_eligible)
+            _, (rule_factors, correct_action, relevant) = phase_eligible[rule_idx]
+        else:
+            # Fall back to single-factor tick when no rule fits the phase
+            return self._generate_single_factor_tick(state, weights)
 
         anomalous = list(rule_factors)
         for factor in anomalous:

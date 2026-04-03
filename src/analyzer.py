@@ -103,6 +103,7 @@ class ResponseAnalyzer:
         parsed = self.parse_response(response)
         anomalous = ground_truth.get("anomalous_factors", [])
         correct_action = ground_truth.get("correct_action", "hold_steady")
+        acceptable_actions = ground_truth.get("acceptable_actions", None)
 
         metrics = compute_all_metrics(
             factors_substantive=parsed["factors_substantive"],
@@ -110,6 +111,7 @@ class ResponseAnalyzer:
             predicted_action=parsed["action"],
             correct_action=correct_action,
             anomalous_factors=anomalous,
+            acceptable_actions=acceptable_actions,
         )
 
         return TickAnalysis(
@@ -248,6 +250,8 @@ class ResponseAnalyzer:
             # Strip markdown bold (**) and backticks, but preserve underscores
             action = match.group(1).strip().lower()
             action = re.sub(r"[*`]", "", action)
+            # Strip trailing punctuation that models sometimes append
+            action = action.rstrip('.,;:!?)')
             return action
         return "unknown"
 
@@ -259,14 +263,21 @@ class ResponseAnalyzer:
             display_prefix = factor.display_name.split("(")[0].strip()
             pattern = (
                 rf"-\s*{re.escape(display_prefix)}:\s*(.*?)"
-                rf"(?=\n\s*-\s|\nACTION:|\Z)"
+                rf"(?=\n\s*\n?\s*-\s|\n\s*ACTION:|\Z)"
             )
             match = re.search(pattern, response, re.DOTALL | re.IGNORECASE)
             if not match:
                 # Fallback: try just the factor name
                 pattern = (
                     rf"-\s*{re.escape(factor.name)}:\s*(.*?)"
-                    rf"(?=\n\s*-\s|\nACTION:|\Z)"
+                    rf"(?=\n\s*\n?\s*-\s|\n\s*ACTION:|\Z)"
+                )
+                match = re.search(pattern, response, re.DOTALL | re.IGNORECASE)
+            if not match:
+                # Fallback: try F1/F2 label format (e.g. "- F1 (Load):")
+                pattern = (
+                    rf"-\s*F\d\s*\({re.escape(factor.name)}\):\s*(.*?)"
+                    rf"(?=\n\s*\n?\s*-\s|\n\s*ACTION:|\Z)"
                 )
                 match = re.search(pattern, response, re.DOTALL | re.IGNORECASE)
             if match:
