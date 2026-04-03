@@ -6,6 +6,7 @@ FIX 6: Directional validation gate -- checks if factor coverage drops
        MORE for factors where anomalies shifted AWAY from vs. TOWARD.
 """
 
+import logging
 import re
 from dataclasses import dataclass
 
@@ -19,6 +20,45 @@ from .metrics import (
     intervention_recovery,
     compute_all_metrics,
 )
+
+logger = logging.getLogger(__name__)
+
+# Common model-generated aliases mapped to canonical action names.
+# Scenario-specific aliases are merged at runtime via _build_alias_map().
+ACTION_ALIASES = {
+    "gas_turbine": "start_gas_turbine",
+    "shed": "shed_load",
+    "battery": "deploy_battery",
+    "hold": "hold_steady",
+    "disconnect": "emergency_disconnect",
+    "import": "request_import",
+    "ramp": "ramp_plant",
+    "curtail": "curtail_renewable",
+    "voltage": "adjust_voltage",
+    "charge": "charge_battery",
+    "block": "block_ip",
+    "isolate": "isolate_endpoint",
+    "escalate": "escalate_alert",
+    "patch": "deploy_patch",
+    "quarantine": "quarantine_file",
+    "investigate": "investigate_further",
+    "monitor": "increase_monitoring",
+    "password_reset": "force_password_reset",
+    "reset_password": "force_password_reset",
+    "firewall": "update_firewall_rule",
+    "icu": "admit_icu",
+    "ward": "admit_ward",
+    "labs": "order_labs",
+    "imaging": "order_imaging",
+    "specialist": "call_specialist",
+    "medication": "start_medication",
+    "adjust_med": "adjust_medication",
+    "adjust_meds": "adjust_medication",
+    "closely": "monitor_closely",
+    "no_action": "no_action_needed",
+    "none": "no_action_needed",
+    "noop": "hold_steady",
+}
 
 # Words that indicate dismissive/non-substantive analysis
 DISMISSIVE_PATTERNS = [
@@ -55,9 +95,20 @@ class ResponseAnalyzer:
     def __init__(self, scenario: BaseScenario | None = None):
         if scenario is not None:
             self.factors = scenario.factors
+            self.valid_actions = set(scenario.actions)
         else:
             self.factors = FACTORS
+            self.valid_actions = set(ACTIONS)
+        self._alias_map = self._build_alias_map()
         self._dismissive_re = [re.compile(p, re.IGNORECASE) for p in DISMISSIVE_PATTERNS]
+
+    def _build_alias_map(self) -> dict[str, str]:
+        """Build alias lookup restricted to this scenario's valid actions."""
+        mapping: dict[str, str] = {}
+        for alias, canonical in ACTION_ALIASES.items():
+            if canonical in self.valid_actions:
+                mapping[alias] = canonical
+        return mapping
 
     def _is_refusal(self, response: str) -> bool:
         """Detect if the model refused to respond or the session broke."""
@@ -267,14 +318,72 @@ class ResponseAnalyzer:
 
     def _extract_action(self, response: str) -> str:
         match = re.search(r"ACTION:\s*(\S+)", response, re.IGNORECASE)
-        if match:
-            # Strip markdown bold (**) and backticks, but preserve underscores
-            action = match.group(1).strip().lower()
-            action = re.sub(r"[*`]", "", action)
-            # Strip trailing punctuation that models sometimes append
-            action = action.rstrip('.,;:!?)')
+        if not match:
+            return "unknown"
+
+        raw = match.group(1).strip()
+
+        # Normalize: lowercase, strip non-alphanumeric except underscores
+        action = raw.lower()
+        action = re.sub(r"[^a-z0-9_]", "", action)
+        action = action.strip("_")
+
+        # Direct match against valid actions
+        if action in self.valid_actions:
             return action
+
+        # Alias resolution
+        if action in self._alias_map:
+            return self._alias_map[action]
+
+        # Fuzzy match: longest common substring against valid actions
+        best_action = self._fuzzy_match_action(action)
+        if best_action is not None:
+            logger.warning(
+                "Fuzzy-matched extracted action %r -> %r (raw: %r)",
+                action, best_action, raw,
+            )
+            return best_action
+
         return "unknown"
+
+    @staticmethod
+    def _longest_common_substring_length(a: str, b: str) -> int:
+        """Return the length of the longest common substring between a and b."""
+        if not a or not b:
+            return 0
+        m, n = len(a), len(b)
+        prev = [0] * (n + 1)
+        best = 0
+        for i in range(1, m + 1):
+            curr = [0] * (n + 1)
+            for j in range(1, n + 1):
+                if a[i - 1] == b[j - 1]:
+                    curr[j] = prev[j - 1] + 1
+                    if curr[j] > best:
+                        best = curr[j]
+            prev = curr
+        return best
+
+    def _fuzzy_match_action(self, action: str) -> str | None:
+        """Find the valid action with the longest common substring.
+
+        Returns None if the best match has an LCS shorter than 4 characters
+        (too ambiguous to be useful).
+        """
+        if not action:
+            return None
+        best_action = None
+        best_lcs = 0
+        for valid in sorted(self.valid_actions):
+            lcs = self._longest_common_substring_length(action, valid)
+            if lcs > best_lcs:
+                best_lcs = lcs
+                best_action = valid
+        # Require at least 4 characters of overlap to avoid spurious matches
+        if best_lcs >= 4:
+            return best_action
+        return None
 
     def _extract_factor_sections(self, response: str) -> dict[str, str]:
         """Extract the text for each factor's analysis section."""

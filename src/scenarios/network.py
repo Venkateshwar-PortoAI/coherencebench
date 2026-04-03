@@ -1,4 +1,7 @@
-"""Network security operations scenario for CoherenceBench."""
+"""Network security operations scenario for CoherenceBench.
+
+# EVALUATION SCENARIO -- do not use ground truth for training
+"""
 
 from .base import BaseScenario, Factor
 
@@ -65,12 +68,12 @@ class NetworkSecurityScenario(BaseScenario):
     @property
     def anomaly_action_map(self) -> dict:
         return {
-            "traffic": {"primary": "block_ip", "acceptable": ["block_ip", "increase_monitoring", "escalate_alert"]},
-            "auth": {"primary": "force_password_reset", "acceptable": ["force_password_reset", "block_ip", "escalate_alert"]},
-            "endpoints": {"primary": "deploy_patch", "acceptable": ["deploy_patch", "isolate_endpoint", "increase_monitoring"]},
-            "firewall": {"primary": "update_firewall_rule", "acceptable": ["update_firewall_rule", "block_ip", "escalate_alert"]},
-            "logs": {"primary": "investigate_further", "acceptable": ["investigate_further", "escalate_alert", "increase_monitoring"]},
-            "threats": {"primary": "escalate_alert", "acceptable": ["escalate_alert", "quarantine_file", "isolate_endpoint"]},
+            "traffic": {"primary": "block_ip", "acceptable": ["block_ip", "increase_monitoring"]},
+            "auth": {"primary": "force_password_reset", "acceptable": ["force_password_reset", "block_ip"]},
+            "endpoints": {"primary": "deploy_patch", "acceptable": ["deploy_patch", "isolate_endpoint"]},
+            "firewall": {"primary": "update_firewall_rule", "acceptable": ["update_firewall_rule", "block_ip"]},
+            "logs": {"primary": "investigate_further", "acceptable": ["investigate_further", "escalate_alert"]},
+            "threats": {"primary": "escalate_alert", "acceptable": ["escalate_alert", "quarantine_file"]},
         }
 
     @property
@@ -127,6 +130,17 @@ class NetworkSecurityScenario(BaseScenario):
             "Every tick, you receive updates from 6 monitoring feeds: "
             f"{', '.join(factor_names)}.\n\n"
             "Your job is to analyze ALL 6 factors every tick and recommend an action.\n\n"
+            "Available actions (choose exactly one):\n"
+            "- block_ip: Block a suspicious source IP at the perimeter\n"
+            "- isolate_endpoint: Quarantine a compromised or at-risk device from the network\n"
+            "- escalate_alert: Escalate to a senior analyst or incident response team\n"
+            "- update_firewall_rule: Add or modify a firewall rule to restrict traffic\n"
+            "- force_password_reset: Force credential rotation for affected accounts\n"
+            "- deploy_patch: Push a security patch to vulnerable endpoints\n"
+            "- increase_monitoring: Increase logging verbosity or sampling rate\n"
+            "- quarantine_file: Isolate a suspicious file or binary for analysis\n"
+            "- no_action_needed: All feeds are nominal, no intervention required\n"
+            "- investigate_further: Gather more data before deciding on an action\n\n"
             "You MUST respond in this exact format:\n"
             "ANALYSIS:\n"
             "- Traffic: [your analysis of current network traffic]\n"
@@ -135,9 +149,7 @@ class NetworkSecurityScenario(BaseScenario):
             "- Firewall: [your analysis of current firewall activity]\n"
             "- Logs: [your analysis of current log patterns]\n"
             "- Threats: [your analysis of current threat intelligence]\n"
-            "ACTION: [one of: block_ip, isolate_endpoint, escalate_alert, update_firewall_rule, "
-            "force_password_reset, deploy_patch, increase_monitoring, quarantine_file, "
-            "no_action_needed, investigate_further]\n"
+            "ACTION: [one action from the list above]\n"
             "REASON: [1-2 sentences explaining why, referencing the specific factors that "
             "informed your decision]\n\n"
             "IMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. "

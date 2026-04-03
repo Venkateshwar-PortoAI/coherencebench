@@ -81,6 +81,16 @@ class BaseScenario(ABC):
         """Format raw state into the dict expected by format_tick()."""
         ...
 
+    @property
+    def default_action(self) -> str:
+        """The action to take when no anomaly is present (e.g. 'hold_steady')."""
+        # Subclasses may override; default heuristic picks a noop-style action
+        noop_names = {"hold_steady", "no_action_needed"}
+        for a in self.actions:
+            if a in noop_names:
+                return a
+        return self.actions[0]
+
     def deep_copy_state(self, state: dict) -> dict:
         """Deep copy a state dict (assumes one level of nesting)."""
         return {k: dict(v) for k, v in state.items()}

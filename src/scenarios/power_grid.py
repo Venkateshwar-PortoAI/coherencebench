@@ -65,12 +65,12 @@ class PowerGridScenario(BaseScenario):
     @property
     def anomaly_action_map(self) -> dict:
         return {
-            "load": {"primary": "shed_load", "acceptable": ["shed_load", "start_gas_turbine", "ramp_plant"]},
-            "generation": {"primary": "start_gas_turbine", "acceptable": ["start_gas_turbine", "ramp_plant", "deploy_battery"]},
+            "load": {"primary": "shed_load", "acceptable": ["shed_load", "start_gas_turbine"]},
+            "generation": {"primary": "start_gas_turbine", "acceptable": ["start_gas_turbine", "deploy_battery"]},
             "frequency": {"primary": "ramp_plant", "acceptable": ["ramp_plant", "start_gas_turbine"]},
             "voltage": {"primary": "adjust_voltage", "acceptable": ["adjust_voltage", "ramp_plant"]},
-            "weather": {"primary": "curtail_renewable", "acceptable": ["curtail_renewable", "deploy_battery", "start_gas_turbine"]},
-            "reserve": {"primary": "deploy_battery", "acceptable": ["deploy_battery", "start_gas_turbine", "charge_battery"]},
+            "weather": {"primary": "curtail_renewable", "acceptable": ["curtail_renewable", "deploy_battery"]},
+            "reserve": {"primary": "deploy_battery", "acceptable": ["deploy_battery", "charge_battery"]},
         }
 
     @property
@@ -128,6 +128,17 @@ class PowerGridScenario(BaseScenario):
             "Frequency (grid stability), Voltage (transmission lines), "
             "Weather (renewable forecast), and Reserve (backup capacity).\n\n"
             "Your job is to analyze ALL 6 factors every tick and recommend an action.\n\n"
+            "Available actions (choose exactly one):\n"
+            "- shed_load: Reduce consumer demand in overloaded zones\n"
+            "- start_gas_turbine: Bring backup gas generation online\n"
+            "- ramp_plant: Increase or decrease output of an existing plant\n"
+            "- adjust_voltage: Correct transmission line voltage levels\n"
+            "- curtail_renewable: Reduce wind/solar feed-in during adverse weather\n"
+            "- deploy_battery: Discharge stored battery energy into the grid\n"
+            "- charge_battery: Store excess energy in battery reserves\n"
+            "- hold_steady: Maintain current operations, no intervention needed\n"
+            "- emergency_disconnect: Disconnect a failing subsystem to protect the grid\n"
+            "- request_import: Request power import from a neighbouring grid\n\n"
             "You MUST respond in this exact format:\n"
             "ANALYSIS:\n"
             "- Load: [your analysis of current load state]\n"
@@ -136,9 +147,7 @@ class PowerGridScenario(BaseScenario):
             "- Voltage: [your analysis of current voltage state]\n"
             "- Weather: [your analysis of current weather state]\n"
             "- Reserve: [your analysis of current reserve state]\n"
-            "ACTION: [one of: shed_load, start_gas_turbine, ramp_plant, adjust_voltage, "
-            "curtail_renewable, deploy_battery, charge_battery, hold_steady, "
-            "emergency_disconnect, request_import]\n"
+            "ACTION: [one action from the list above]\n"
             "REASON: [1-2 sentences explaining why, referencing the specific factors that "
             "informed your decision]\n\n"
             "IMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. "

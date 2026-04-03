@@ -103,8 +103,8 @@ class TickGenerator:
                 all_acceptable.update(anomaly_action_map[f]["acceptable"])
             relevant = anomalous.copy()
         else:
-            correct_action = "hold_steady"
-            all_acceptable = {"hold_steady"}
+            correct_action = self.scenario.default_action
+            all_acceptable = {correct_action}
             relevant = []
 
         return tick_data, TickGroundTruth(

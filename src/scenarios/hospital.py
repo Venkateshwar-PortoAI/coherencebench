@@ -65,12 +65,12 @@ class HospitalTriageScenario(BaseScenario):
     @property
     def anomaly_action_map(self) -> dict:
         return {
-            "vitals": {"primary": "admit_icu", "acceptable": ["admit_icu", "monitor_closely", "call_specialist"]},
-            "labs": {"primary": "order_labs", "acceptable": ["order_labs", "start_medication", "call_specialist"]},
-            "imaging": {"primary": "order_imaging", "acceptable": ["order_imaging", "call_specialist", "admit_ward"]},
-            "medications": {"primary": "adjust_medication", "acceptable": ["adjust_medication", "start_medication", "call_specialist"]},
-            "history": {"primary": "call_specialist", "acceptable": ["call_specialist", "order_labs", "monitor_closely"]},
-            "capacity": {"primary": "admit_ward", "acceptable": ["admit_ward", "monitor_closely", "discharge"]},
+            "vitals": {"primary": "admit_icu", "acceptable": ["admit_icu", "monitor_closely"]},
+            "labs": {"primary": "order_labs", "acceptable": ["order_labs", "start_medication"]},
+            "imaging": {"primary": "order_imaging", "acceptable": ["order_imaging", "call_specialist"]},
+            "medications": {"primary": "adjust_medication", "acceptable": ["adjust_medication", "start_medication"]},
+            "history": {"primary": "call_specialist", "acceptable": ["call_specialist", "order_labs"]},
+            "capacity": {"primary": "admit_ward", "acceptable": ["admit_ward", "monitor_closely"]},
         }
 
     @property
@@ -127,6 +127,17 @@ class HospitalTriageScenario(BaseScenario):
             "Every tick, you receive updates from 6 patient data streams: "
             f"{', '.join(factor_names)}.\n\n"
             "Your job is to analyze ALL 6 factors every tick and recommend an action.\n\n"
+            "Available actions (choose exactly one):\n"
+            "- admit_icu: Admit the patient to the intensive care unit\n"
+            "- admit_ward: Admit the patient to a general ward bed\n"
+            "- discharge: Discharge the patient from the hospital\n"
+            "- order_labs: Order additional blood work or laboratory tests\n"
+            "- order_imaging: Order X-ray, CT, or other imaging studies\n"
+            "- start_medication: Begin a new medication regimen\n"
+            "- adjust_medication: Change dose or swap an existing medication\n"
+            "- call_specialist: Page an on-call specialist for consultation\n"
+            "- monitor_closely: Increase monitoring frequency, no other intervention\n"
+            "- no_action_needed: Patient is stable, continue routine care\n\n"
             "You MUST respond in this exact format:\n"
             "ANALYSIS:\n"
             "- Vitals: [your analysis of current vital signs]\n"
@@ -135,8 +146,7 @@ class HospitalTriageScenario(BaseScenario):
             "- Medications: [your analysis of current medication status]\n"
             "- History: [your analysis of relevant patient history]\n"
             "- Capacity: [your analysis of current hospital capacity]\n"
-            "ACTION: [one of: admit_icu, admit_ward, discharge, order_labs, order_imaging, "
-            "start_medication, adjust_medication, call_specialist, monitor_closely, no_action_needed]\n"
+            "ACTION: [one action from the list above]\n"
             "REASON: [1-2 sentences explaining why, referencing the specific factors that "
             "informed your decision]\n\n"
             "IMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. "

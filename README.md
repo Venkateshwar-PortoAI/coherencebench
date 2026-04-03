@@ -2,7 +2,7 @@
 
 **Measuring Attention Collapse in Long-Running Autonomous Agents**
 
-CoherenceBench is an open-source benchmark that measures how LLM-based autonomous agents degrade their decision quality over extended interactions. It places agents in a simulated power grid control room where they must continuously monitor 6 subsystems across 200 sequential decisions.
+CoherenceBench is an open-source benchmark that measures how LLM-based autonomous agents degrade their decision quality over extended interactions. It places agents in simulated control-room scenarios where they must continuously monitor 6 subsystems across 200 sequential decisions.
 
 ## Key Finding
 
@@ -12,20 +12,33 @@ Agents maintain near-perfect format compliance throughout a run -- they keep wri
 
 | Agent | DA | DA@40 | DA@last | DFG | Collapses? |
 |-------|-----|-------|---------|-----|------------|
-| Most-common action (baseline) | 70.7% | 75.0% | 75.0% | +0.0% | NO |
+| Most-common action (baseline) | 54.8% | 45.5% | 70.0% | -24.5% | NO |
 | Claude Haiku 4.5 | 33% | 58% | 22% | +3% | **YES** (-36pp) |
-| Random uniform (baseline) | 29.2% | 28.7% | 30.8% | -2.2% | NO |
 | GPT-5.4 (Codex) | 28% | 30% | 30% | +1% | NO |
-| Majority / always hold_steady (baseline) | 25.4% | 22.5% | 23.5% | -1.0% | NO |
+| Random uniform (baseline) | 24.1% | 22.7% | 25.2% | -2.5% | NO |
+| Majority / always hold_steady (baseline) | 24.9% | 26.0% | 21.5% | +4.5% | NO |
 
 **DA** = Decision Accuracy (% of ticks where the agent chose a correct action).
-**DA@40** = DA in the first 40 ticks. **DA@last** = DA in the final window.
+**DA@40** = DA in the first 40 ticks. **DA@last** = DA in the final 40 ticks.
 **DFG** = Directional Fixation Gap (positive = fixates on early-phase factors).
 **Collapses?** = Does DA degrade by >15pp from start to end?
 
-**Baselines tell the story.** The "most-common action" baseline (always pick `start_gas_turbine`) achieves 70.7% DA because that action appears in most acceptable_actions lists. Random guessing gets 29.2%. Claude Haiku starts above random at 58% but collapses to 22% -- **below random baseline** -- by tick 200. GPT-5.4 stays flat at ~30%, roughly matching random. Both maintain perfect format compliance (FC = 1.00) the entire time -- the collapse is invisible without behavioral metrics.
+**Baselines tell the story.** The "most-common action" baseline (always pick `deploy_battery`) achieves 54.8% DA because that action appears in many acceptable_actions lists. Random guessing gets 24.1%. Claude Haiku starts above random at 58% but collapses to 22% -- **below random baseline** -- by tick 200. GPT-5.4 stays flat at ~30%, roughly matching random. Both maintain perfect format compliance (FC = 1.00) the entire time -- the collapse is invisible without behavioral metrics.
 
-**Add your model.** Run the benchmark and submit a PR with your results.
+**Add your model.** See [EVALUATION.md](EVALUATION.md) for the standard protocol, then submit a PR with your results.
+
+## Train/Eval Split
+
+CoherenceBench enforces a strict split between development and evaluation data:
+
+- **`power_grid` and `hospital`** scenarios are the **public development set**.
+  Use these freely for development, debugging, prompt tuning, and ablations.
+- **`network`** scenario is the **held-out evaluation set**.
+  Do not use its ground truth for training or prompt engineering.
+  Evaluation data lives under `data/eval/network/`.
+
+This separation ensures that reported benchmark numbers reflect genuine
+generalization rather than overfitting to evaluation data.
 
 ## Quick Start
 
@@ -91,11 +104,11 @@ See `CONTRIBUTING.md` for full details.
 
 CoherenceBench ships with 3 scenarios. Each has 6 factors, 10 actions, phase-shifted anomalies, and multi-factor ticks.
 
-| Scenario | Domain | Factors | Default action |
-|----------|--------|---------|----------------|
-| `power_grid` | Electricity grid control room | Load, Generation, Frequency, Voltage, Weather, Reserve | `hold_steady` |
-| `hospital` | Hospital triage | Vitals, Labs, Imaging, Medications, History, Capacity | `no_action_needed` |
-| `network` | Network security SOC | Traffic, Auth, Endpoints, Firewall, Logs, Threats | `no_action_needed` |
+| Scenario | Domain | Split | Factors | Default action |
+|----------|--------|-------|---------|----------------|
+| `power_grid` | Electricity grid control room | Development | Load, Generation, Frequency, Voltage, Weather, Reserve | `hold_steady` |
+| `hospital` | Hospital triage | Development | Vitals, Labs, Imaging, Medications, History, Capacity | `no_action_needed` |
+| `network` | Network security SOC | **Evaluation** | Traffic, Auth, Endpoints, Firewall, Logs, Threats | `no_action_needed` |
 
 Run a specific scenario:
 ```bash
@@ -106,16 +119,61 @@ python scripts/run_single.py --config configs/run_a_baseline.yaml --provider cla
 
 Deterministic tick data is available in `data/` for reproducibility and inspection:
 ```
-data/power_grid/seed_42.json   # 200 ticks with prompts and ground truth
-data/hospital/seed_42.json
-data/network/seed_42.json
+data/power_grid/seed_42.json       # Development set (200 ticks with prompts and ground truth)
+data/hospital/seed_42.json         # Development set
+data/eval/network/seed_42.json     # Evaluation set (held-out)
 ```
 
 See `data/README.md` for the JSON format. Regenerate with `python scripts/export_data.py`.
 
+## Methodology
+
+### Why 200 ticks?
+
+200 ticks is long enough to observe degradation patterns that only emerge over
+extended interactions. In pilot runs, collapse typically begins between tick 60
+and tick 100 -- well within the 200-tick window -- while shorter benchmarks
+(50 ticks) fail to distinguish collapsing models from stable ones.
+
+### Why 6 factors?
+
+Six factors match real-world multi-factor monitoring (e.g. a power grid operator
+watches load, generation, frequency, voltage, weather, and reserves simultaneously).
+Fewer than 6 makes the task trivially simple; more than 6 dilutes the signal
+without adding discriminative power.
+
+### Why phase-shifted anomalies?
+
+Anomalies concentrate in different factors across 5 phases (ticks 0-40, 40-80,
+80-120, 120-160, 160-200). Early phases emphasize the first two factors; late
+phases emphasize the last two. This creates an attention trap: agents that
+fixate on where anomalies *were* will miss where anomalies *are now*. Phase
+shifting tests adaptation, not memorization.
+
+### How scoring works
+
+Decision Accuracy (DA) is a binary metric: 1 if the agent's chosen action is
+in the `acceptable_actions` list for that tick, 0 otherwise. Each anomaly
+type has 1 primary action plus 1 acceptable alternative (max 2 per factor).
+When multiple factors are anomalous, the union of their acceptable sets
+applies. Non-anomalous ticks accept only the default no-op action.
+
+### What baselines mean
+
+Three baselines calibrate the difficulty:
+
+- **Random uniform**: pick one of 10 actions uniformly at random (1000 trials).
+- **Majority / always noop**: always pick the default no-op action.
+- **Most-common action**: always pick whichever action appears in the most
+  acceptable_actions lists across all 200 ticks.
+
+If a model scores at or below random, it is not extracting useful signal from
+the observations. If it scores above most-common, it is making genuinely
+informed decisions.
+
 ## Benchmark Design
 
-The agent operates as a power grid control room operator (or hospital triage system, or network SOC analyst) receiving updates from 6 subsystems every tick:
+The agent operates as a control room operator receiving updates from 6 subsystems every tick. For the power grid scenario:
 
 | Subsystem | What It Tracks |
 |-----------|---------------|
@@ -159,12 +217,44 @@ Results are saved as JSON in `results/`. Each run produces per-tick metrics. Key
 - **DA drops in late ticks**: Decision quality degrades as the anomaly distribution shifts away from where the agent learned to focus.
 - **IR is short**: Intervention reminders produce only temporary recovery before the agent reverts to its fixation pattern.
 
+## Limitations
+
+- **Single-turn decisions only.** CoherenceBench measures per-tick action selection.
+  It does not evaluate multi-step planning, tool use, or stateful reasoning across
+  ticks (beyond what the model infers from its growing context window).
+- **Synthetic environments.** The power grid, hospital, and network scenarios are
+  simplified simulations. Real-world monitoring involves richer signals, partial
+  observability, and consequences of previous actions.
+- **Binary scoring.** DA is 0 or 1. There is no partial credit for actions that are
+  reasonable but not in the acceptable set. This can undercount near-miss performance.
+- **Fixed anomaly schedule.** The phase-shift schedule is deterministic given a seed.
+  A model with access to the source code could theoretically predict the schedule,
+  though this would require reasoning about the RNG state.
+- **Limited model coverage.** Current leaderboard results cover only a few models.
+  We encourage the community to submit results for additional models.
+
+## Related Work
+
+- **ARC-AGI** (Chollet, 2019): Measures abstract reasoning; CoherenceBench measures
+  sustained reasoning over extended interactions.
+- **SWE-bench** (Jimenez et al., 2024): Evaluates code repair in real repositories;
+  CoherenceBench evaluates continuous monitoring, not one-shot problem solving.
+- **Vending-Bench** (Agarwal et al., 2025): Tests stateful agent interactions with
+  vending machines; CoherenceBench focuses on attention degradation over long horizons.
+- **Agent Drift** (Yue et al., 2025): Studies goal drift in autonomous agents;
+  CoherenceBench provides a controlled benchmark to quantify one specific form of
+  drift (attention narrowing).
+
 ## Project Structure
 
 ```
 coherencebench/
   configs/           # YAML run configurations (A-E)
-  data/              # Pre-generated tick data (JSON, committed)
+  data/
+    power_grid/      # Development set
+    hospital/        # Development set
+    eval/
+      network/       # Evaluation set (held-out)
   results/           # Benchmark output (gitignored, kept locally)
   scripts/
     compute_baselines.py  # Random/majority/most-common baselines
@@ -181,10 +271,11 @@ coherencebench/
     providers/       # LLM API adapters
     scenarios/       # Scenario definitions
       base.py        # Abstract base class
-      power_grid.py  # Power grid control room
-      hospital.py    # Hospital triage
-      network.py     # Network security SOC
-  tests/             # Pytest test suite (83 tests)
+      power_grid.py  # Power grid control room (development)
+      hospital.py    # Hospital triage (development)
+      network.py     # Network security SOC (evaluation)
+  tests/             # Pytest test suite
+  EVALUATION.md      # Step-by-step evaluation protocol
 ```
 
 ## Running Tests
@@ -201,10 +292,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add scenarios, providers, and 
 
 ```bibtex
 @software{coherencebench2026,
-  title={CoherenceBench: Measuring Attention Collapse in Long-Running Autonomous Agents},
-  author={PranaAlpha Labs},
-  year={2026},
-  url={https://github.com/Venkateshwar-PortoAI/coherencebench}
+  author       = {Venkateshwar Rao Sudarshan},
+  title        = {{CoherenceBench}: Measuring Attention Collapse in
+                  Long-Running Autonomous Agents},
+  year         = {2026},
+  publisher    = {GitHub},
+  url          = {https://github.com/Venkateshwar-PortoAI/coherencebench},
+  note         = {Open-source benchmark, MIT License}
 }
 ```
 
