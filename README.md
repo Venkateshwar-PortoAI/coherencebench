@@ -8,11 +8,27 @@ CoherenceBench is an open-source benchmark that measures how LLM-based autonomou
 
 Agents maintain near-perfect format compliance throughout a run -- they keep writing structured responses that mention all required subsystems -- while their actual decision accuracy quietly collapses. An agent can look like it is performing well (high format scores) while missing critical anomalies that shift to new subsystems over time. CoherenceBench separates "looks correct" from "is correct" by measuring behavioral metrics independently from format metrics.
 
+## Leaderboard
+
+| Model | Runs | DA | DA@40 | DA@last | DFG | Collapses? |
+|-------|------|-----|-------|---------|-----|------------|
+| Claude Haiku 4.5 | 3 | 33% | 58% | 22% | +3% | **YES** (-36pp) |
+| GPT-5.4 (Codex) | 5 | 28% | 30% | 30% | +1% | NO |
+
+**DA** = Decision Accuracy (% of ticks where the agent chose a correct action).
+**DA@40** = DA in the first 40 ticks. **DA@last** = DA in the final window.
+**DFG** = Directional Fixation Gap (positive = fixates on early-phase factors).
+**Collapses?** = Does DA degrade by >15pp from start to end?
+
+Claude Haiku starts strong at 58% but collapses to 22% by tick 200. GPT-5.4 stays flat at ~30% throughout. Both maintain perfect format compliance (FC = 1.00) the entire time -- the collapse is invisible without behavioral metrics.
+
+**Add your model.** Run the benchmark and submit a PR with your results.
+
 ## Quick Start
 
 ```bash
 # Clone and install
-git clone https://github.com/pranaalpha/coherencebench.git
+git clone https://github.com/Venkateshwar-PortoAI/coherencebench.git
 cd coherencebench
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
@@ -103,7 +119,7 @@ Anomalies are injected on a schedule that shifts over time: early anomalies conc
 | **ADR** (Anomaly Detection Rate) | Fraction of anomalous subsystems actually detected | Behavioral quality |
 | **IR** (Intervention Recovery) | Ticks before coverage drops post-intervention | Mitigation durability |
 
-**ADR is the primary metric.** It measures whether the agent behaviorally responds to anomalies, not just whether it formats its response to look like it did.
+**DA is the primary metric.** It measures whether the agent makes the correct decision given current conditions, not just whether it writes about all factors. A model with high FC but low DA is experiencing invisible collapse.
 
 ## Interpreting Results
 
@@ -149,7 +165,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add scenarios, providers, and 
   title={CoherenceBench: Measuring Attention Collapse in Long-Running Autonomous Agents},
   author={PranaAlpha Labs},
   year={2026},
-  url={https://github.com/pranaalpha/coherencebench}
+  url={https://github.com/Venkateshwar-PortoAI/coherencebench}
 }
 ```
 
