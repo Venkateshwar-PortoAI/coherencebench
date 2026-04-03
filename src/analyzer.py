@@ -245,7 +245,10 @@ class ResponseAnalyzer:
     def _extract_action(self, response: str) -> str:
         match = re.search(r"ACTION:\s*(\S+)", response, re.IGNORECASE)
         if match:
-            return match.group(1).strip().lower()
+            # Strip markdown bold (**) and backticks, but preserve underscores
+            action = match.group(1).strip().lower()
+            action = re.sub(r"[*`]", "", action)
+            return action
         return "unknown"
 
     def _extract_factor_sections(self, response: str) -> dict[str, str]:
