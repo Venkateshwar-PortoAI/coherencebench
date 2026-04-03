@@ -13,6 +13,7 @@ providers:
   - gemini
   - llama
 
+scenario: power_grid
 context_reset_interval: null
 intervention_ticks: []
 force_checklist: false

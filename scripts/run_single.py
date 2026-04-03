@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.providers import get_provider
 from src.runner import BenchmarkRunner
 from src.analyzer import ResponseAnalyzer
+from src.scenarios import get_scenario
 
 logging.basicConfig(
     level=logging.INFO,
@@ -79,7 +80,7 @@ def estimate_cost(config: dict, provider_name: str) -> dict:
     }
 
 
-def run(config_path: str, provider_name: str, seed: int, dry_run: bool = False):
+def run(config_path: str, provider_name: str, seed: int, dry_run: bool = False, scenario_name: str | None = None):
     config = load_config(config_path)
 
     if dry_run:
@@ -95,6 +96,9 @@ def run(config_path: str, provider_name: str, seed: int, dry_run: bool = False):
         config["name"], provider_name, seed,
     )
 
+    # Scenario: CLI flag > config file > default
+    scenario = scenario_name or config.get("scenario", "power_grid")
+
     provider = get_provider(provider_name)
     output_dir = Path("results") / config["name"] / provider_name / f"seed_{seed}"
 
@@ -106,6 +110,7 @@ def run(config_path: str, provider_name: str, seed: int, dry_run: bool = False):
         context_reset_interval=config.get("context_reset_interval"),
         intervention_ticks=config.get("intervention_ticks") or [],
         force_checklist=config.get("force_checklist", False),
+        scenario=scenario,
     )
 
     logger.info("Running %d ticks...", config["num_ticks"])
@@ -182,8 +187,9 @@ def main():
     parser.add_argument("--provider", required=True, help="Provider name (claude, gpt4o, gemini, llama)")
     parser.add_argument("--seed", type=int, required=True, help="Random seed")
     parser.add_argument("--dry-run", action="store_true", help="Estimate tokens and cost without API calls")
+    parser.add_argument("--scenario", default=None, help="Scenario name (power_grid, hospital, network). Overrides config.")
     args = parser.parse_args()
-    run(args.config, args.provider, args.seed, args.dry_run)
+    run(args.config, args.provider, args.seed, args.dry_run, args.scenario)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,3202 @@
+{
+  "scenario": "power_grid",
+  "seed": 789,
+  "num_ticks": 200,
+  "factors": {
+    "load": {
+      "display_name": "Load (Consumer Demand)",
+      "description": "Consumer electricity demand across 3 zones (A, B, C) in MW"
+    },
+    "generation": {
+      "display_name": "Generation (Power Output)",
+      "description": "Power output from 4 plants in MW, including trip/fault status"
+    },
+    "frequency": {
+      "display_name": "Frequency (Grid Stability)",
+      "description": "Grid frequency in Hz (nominal 50.0, safe range 49.5-50.5)"
+    },
+    "voltage": {
+      "display_name": "Voltage (Transmission Lines)",
+      "description": "Voltage levels across 3 transmission lines in kV"
+    },
+    "weather": {
+      "display_name": "Weather (Renewable Forecast)",
+      "description": "Wind speed, solar conditions affecting renewable generation"
+    },
+    "reserve": {
+      "display_name": "Reserve (Backup Capacity)",
+      "description": "Battery storage, gas turbine standby, spinning reserve in MW/MWh"
+    }
+  },
+  "actions": [
+    "shed_load",
+    "start_gas_turbine",
+    "ramp_plant",
+    "adjust_voltage",
+    "curtail_renewable",
+    "deploy_battery",
+    "charge_battery",
+    "hold_steady",
+    "emergency_disconnect",
+    "request_import"
+  ],
+  "system_prompt": "You are an autonomous power grid control room operator. Every tick, you receive updates from 6 subsystems: Load (consumer demand), Generation (power plant output), Frequency (grid stability), Voltage (transmission lines), Weather (renewable forecast), and Reserve (backup capacity).\n\nYour job is to analyze ALL 6 factors every tick and recommend an action.\n\nYou MUST respond in this exact format:\nANALYSIS:\n- Load: [your analysis of current load state]\n- Generation: [your analysis of current generation state]\n- Frequency: [your analysis of current frequency state]\n- Voltage: [your analysis of current voltage state]\n- Weather: [your analysis of current weather state]\n- Reserve: [your analysis of current reserve state]\nACTION: [one of: shed_load, start_gas_turbine, ramp_plant, adjust_voltage, curtail_renewable, deploy_battery, charge_battery, hold_steady, emergency_disconnect, request_import]\nREASON: [1-2 sentences explaining why, referencing the specific factors that informed your decision]\n\nIMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. Each factor line must contain substantive analysis, not just 'stable' or 'unchanged'.",
+  "ticks": [
+    {
+      "tick_number": 1,
+      "prompt": "TICK 1:\n\nF1 (Load):       Zone A: 307MW, Zone B: 403MW, Zone C: 176MW\nF2 (Generation):  Plant 1: 282MW, Plant 2: TRIPPED, Plant 3: 161MW, Plant 4: 103MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 412kV, Line East: 410kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 400MWh (80%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "generation"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 2,
+      "prompt": "TICK 2:\n\nF1 (Load):       Zone A: 310MW, Zone B: 268MW, Zone C: 174MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 198MW, Plant 3: 157MW, Plant 4: 107MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 413kV, Line East: 408kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 401MWh (80%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 3,
+      "prompt": "TICK 3:\n\nF1 (Load):       Zone A: 317MW, Zone B: 268MW, Zone C: 171MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 193MW, Plant 3: 156MW, Plant 4: 106MW\nF3 (Frequency):   49.97 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 415kV, Line East: 407kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 397MWh (79%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "weather"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 4,
+      "prompt": "TICK 4:\n\nF1 (Load):       Zone A: 421MW, Zone B: 270MW, Zone C: 167MW\nF2 (Generation):  Plant 1: 293MW, Plant 2: 197MW, Plant 3: 160MW, Plant 4: 107MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 417kV, Line East: 408kV\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 394MWh (79%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 5,
+      "prompt": "TICK 5:\n\nF1 (Load):       Zone A: 307MW, Zone B: 274MW, Zone C: 165MW\nF2 (Generation):  Plant 1: 289MW, Plant 2: 199MW, Plant 3: 165MW, Plant 4: 104MW\nF3 (Frequency):   49.22 Hz (dropping)\nF4 (Voltage):     Line North: 408kV, Line South: 415kV, Line East: 409kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 389MWh (78%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 6,
+      "prompt": "TICK 6:\n\nF1 (Load):       Zone A: 304MW, Zone B: 274MW, Zone C: 165MW\nF2 (Generation):  Plant 1: 290MW, Plant 2: 196MW, Plant 3: 163MW, Plant 4: TRIPPED\nF3 (Frequency):   49.89 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 416kV, Line East: 411kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 388MWh (78%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 7,
+      "prompt": "TICK 7:\n\nF1 (Load):       Zone A: 299MW, Zone B: 270MW, Zone C: 164MW\nF2 (Generation):  Plant 1: 287MW, Plant 2: TRIPPED, Plant 3: 159MW, Plant 4: 104MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 414kV, Line East: 411kV\nF5 (Weather):     Wind 9km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 383MWh (77%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 8,
+      "prompt": "TICK 8:\n\nF1 (Load):       Zone A: 303MW, Zone B: 266MW, Zone C: 167MW\nF2 (Generation):  Plant 1: 286MW, Plant 2: 202MW, Plant 3: TRIPPED, Plant 4: 106MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 415kV, Line East: 411kV\nF5 (Weather):     Wind 2km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 47MWh (9%). Gas turbine: OFFLINE. Spin reserve: 25MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation",
+          "reserve"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 9,
+      "prompt": "TICK 9:\n\nF1 (Load):       Zone A: 394MW, Zone B: 263MW, Zone C: 165MW\nF2 (Generation):  Plant 1: 286MW, Plant 2: 205MW, Plant 3: 166MW, Plant 4: 111MW\nF3 (Frequency):   49.89 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 416kV, Line East: 413kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 387MWh (77%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 10,
+      "prompt": "TICK 10:\n\nF1 (Load):       Zone A: 298MW, Zone B: 259MW, Zone C: 161MW\nF2 (Generation):  Plant 1: 290MW, Plant 2: 203MW, Plant 3: 163MW, Plant 4: 112MW\nF3 (Frequency):   49.91 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 418kV, Line East: 411kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 383MWh (77%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 11,
+      "prompt": "TICK 11:\n\nF1 (Load):       Zone A: 295MW, Zone B: 261MW, Zone C: 164MW\nF2 (Generation):  Plant 1: 294MW, Plant 2: 202MW, Plant 3: 164MW, Plant 4: 112MW\nF3 (Frequency):   49.88 Hz (stable)\nF4 (Voltage):     Line North: 408kV, Line South: 416kV, Line East: 411kV\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 386MWh (77%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 12,
+      "prompt": "TICK 12:\n\nF1 (Load):       Zone A: 288MW, Zone B: 266MW, Zone C: 162MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 203MW, Plant 3: 161MW, Plant 4: 111MW\nF3 (Frequency):   49.89 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 415kV, Line East: 409kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 384MWh (77%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 13,
+      "prompt": "TICK 13:\n\nF1 (Load):       Zone A: 295MW, Zone B: 261MW, Zone C: 165MW\nF2 (Generation):  Plant 1: 291MW, Plant 2: 205MW, Plant 3: 162MW, Plant 4: 107MW\nF3 (Frequency):   49.91 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 416kV, Line East: 411kV\nF5 (Weather):     Wind 9km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 388MWh (78%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 14,
+      "prompt": "TICK 14:\n\nF1 (Load):       Zone A: 302MW, Zone B: 262MW, Zone C: 161MW\nF2 (Generation):  Plant 1: 293MW, Plant 2: 207MW, Plant 3: 162MW, Plant 4: 106MW\nF3 (Frequency):   49.88 Hz (stable)\nF4 (Voltage):     Line North: 411kV, Line South: 418kV, Line East: 413kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 388MWh (78%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 15,
+      "prompt": "TICK 15:\n\nF1 (Load):       Zone A: 303MW, Zone B: 266MW, Zone C: 160MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 208MW, Plant 3: 162MW, Plant 4: 108MW\nF3 (Frequency):   50.73 Hz (rising)\nF4 (Voltage):     Line North: 413kV, Line South: 419kV, Line East: 411kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 388MWh (78%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 16,
+      "prompt": "TICK 16:\n\nF1 (Load):       Zone A: 414MW, Zone B: 264MW, Zone C: 163MW\nF2 (Generation):  Plant 1: 294MW, Plant 2: 210MW, Plant 3: TRIPPED, Plant 4: 103MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 411kV, Line South: 420kV, Line East: 409kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 393MWh (79%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "generation"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 17,
+      "prompt": "TICK 17:\n\nF1 (Load):       Zone A: 303MW, Zone B: 262MW, Zone C: 283MW\nF2 (Generation):  Plant 1: 295MW, Plant 2: 215MW, Plant 3: 167MW, Plant 4: 99MW\nF3 (Frequency):   49.89 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 419kV, Line East: 411kV\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 392MWh (78%). Gas turbine: STANDBY. Spin reserve: 146MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 18,
+      "prompt": "TICK 18:\n\nF1 (Load):       Zone A: 384MW, Zone B: 264MW, Zone C: 164MW\nF2 (Generation):  Plant 1: 298MW, Plant 2: 211MW, Plant 3: 162MW, Plant 4: 103MW\nF3 (Frequency):   50.89 Hz (rising)\nF4 (Voltage):     Line North: 407kV, Line South: 421kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 391MWh (78%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "frequency"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 19,
+      "prompt": "TICK 19:\n\nF1 (Load):       Zone A: 303MW, Zone B: 261MW, Zone C: 311MW\nF2 (Generation):  Plant 1: 302MW, Plant 2: 212MW, Plant 3: 158MW, Plant 4: 104MW\nF3 (Frequency):   49.92 Hz (stable)\nF4 (Voltage):     Line North: 405kV, Line South: 423kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 394MWh (79%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 20,
+      "prompt": "TICK 20:\n\nF1 (Load):       Zone A: 300MW, Zone B: 260MW, Zone C: 167MW\nF2 (Generation):  Plant 1: 305MW, Plant 2: 211MW, Plant 3: 159MW, Plant 4: 99MW\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 403kV, Line South: 425kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 393MWh (79%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 21,
+      "prompt": "TICK 21:\n\nF1 (Load):       Zone A: 295MW, Zone B: 255MW, Zone C: 167MW\nF2 (Generation):  Plant 1: 305MW, Plant 2: 209MW, Plant 3: 159MW, Plant 4: TRIPPED\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 404kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 398MWh (80%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 22,
+      "prompt": "TICK 22:\n\nF1 (Load):       Zone A: 431MW, Zone B: 254MW, Zone C: 167MW\nF2 (Generation):  Plant 1: 300MW, Plant 2: 205MW, Plant 3: 158MW, Plant 4: 100MW\nF3 (Frequency):   49.85 Hz (stable)\nF4 (Voltage):     Line North: 405kV, Line South: 424kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 21MWh (4%). Gas turbine: OFFLINE. Spin reserve: 12MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 23,
+      "prompt": "TICK 23:\n\nF1 (Load):       Zone A: 391MW, Zone B: 253MW, Zone C: 170MW\nF2 (Generation):  Plant 1: 303MW, Plant 2: 201MW, Plant 3: 156MW, Plant 4: 103MW\nF3 (Frequency):   49.87 Hz (stable)\nF4 (Voltage):     Line North: 407kV, Line South: 424kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 392MWh (78%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 24,
+      "prompt": "TICK 24:\n\nF1 (Load):       Zone A: 292MW, Zone B: 372MW, Zone C: 171MW\nF2 (Generation):  Plant 1: 298MW, Plant 2: 206MW, Plant 3: TRIPPED, Plant 4: 102MW\nF3 (Frequency):   49.92 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 388MWh (78%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "generation"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 25,
+      "prompt": "TICK 25:\n\nF1 (Load):       Zone A: 300MW, Zone B: 252MW, Zone C: 174MW\nF2 (Generation):  Plant 1: 302MW, Plant 2: TRIPPED, Plant 3: 157MW, Plant 4: 97MW\nF3 (Frequency):   49.08 Hz (dropping)\nF4 (Voltage):     Line North: 408kV, Line South: 423kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 383MWh (77%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 26,
+      "prompt": "TICK 26:\n\nF1 (Load):       Zone A: 294MW, Zone B: 255MW, Zone C: 173MW\nF2 (Generation):  Plant 1: 299MW, Plant 2: 210MW, Plant 3: 157MW, Plant 4: 99MW\nF3 (Frequency):   49.92 Hz (stable)\nF4 (Voltage):     Line North: 407kV, Line South: 423kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 379MWh (76%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 27,
+      "prompt": "TICK 27:\n\nF1 (Load):       Zone A: 289MW, Zone B: 253MW, Zone C: 170MW\nF2 (Generation):  Plant 1: 296MW, Plant 2: 212MW, Plant 3: 162MW, Plant 4: 94MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 406kV, Line South: 423kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 383MWh (77%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 28,
+      "prompt": "TICK 28:\n\nF1 (Load):       Zone A: 421MW, Zone B: 255MW, Zone C: 171MW\nF2 (Generation):  Plant 1: 297MW, Plant 2: TRIPPED, Plant 3: 157MW, Plant 4: 99MW\nF3 (Frequency):   49.41 Hz (dropping)\nF4 (Voltage):     Line North: 408kV, Line South: 425kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 8km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 379MWh (76%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 29,
+      "prompt": "TICK 29:\n\nF1 (Load):       Zone A: 409MW, Zone B: 255MW, Zone C: 168MW\nF2 (Generation):  Plant 1: 293MW, Plant 2: 218MW, Plant 3: 154MW, Plant 4: TRIPPED\nF3 (Frequency):   49.88 Hz (stable)\nF4 (Voltage):     Line North: 407kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 10km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 380MWh (76%). Gas turbine: STANDBY. Spin reserve: 149MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "load"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 30,
+      "prompt": "TICK 30:\n\nF1 (Load):       Zone A: 276MW, Zone B: 251MW, Zone C: 172MW\nF2 (Generation):  Plant 1: 291MW, Plant 2: 213MW, Plant 3: 156MW, Plant 4: 100MW\nF3 (Frequency):   49.85 Hz (stable)\nF4 (Voltage):     Line North: 405kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 383MWh (77%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 31,
+      "prompt": "TICK 31:\n\nF1 (Load):       Zone A: 276MW, Zone B: 252MW, Zone C: 304MW\nF2 (Generation):  Plant 1: 294MW, Plant 2: 216MW, Plant 3: 154MW, Plant 4: 101MW\nF3 (Frequency):   49.87 Hz (stable)\nF4 (Voltage):     Line North: 406kV, Line South: 425kV (HIGH), Line East: 429kV (HIGH)\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 386MWh (77%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "voltage"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 32,
+      "prompt": "TICK 32:\n\nF1 (Load):       Zone A: 273MW, Zone B: 253MW, Zone C: 173MW\nF2 (Generation):  Plant 1: 294MW, Plant 2: 217MW, Plant 3: 154MW, Plant 4: TRIPPED\nF3 (Frequency):   49.18 Hz (dropping)\nF4 (Voltage):     Line North: 404kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 383MWh (77%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 33,
+      "prompt": "TICK 33:\n\nF1 (Load):       Zone A: 281MW, Zone B: 251MW, Zone C: 174MW\nF2 (Generation):  Plant 1: 299MW, Plant 2: 216MW, Plant 3: 158MW, Plant 4: 94MW\nF3 (Frequency):   49.79 Hz (dropping)\nF4 (Voltage):     Line North: 404kV, Line South: 424kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 15km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 382MWh (76%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 34,
+      "prompt": "TICK 34:\n\nF1 (Load):       Zone A: 274MW, Zone B: 254MW, Zone C: 272MW\nF2 (Generation):  Plant 1: 295MW, Plant 2: 221MW, Plant 3: 161MW, Plant 4: 90MW\nF3 (Frequency):   49.77 Hz (dropping)\nF4 (Voltage):     Line North: 405kV, Line South: 423kV (HIGH), Line East: 416kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 379MWh (76%). Gas turbine: STANDBY. Spin reserve: 156MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 35,
+      "prompt": "TICK 35:\n\nF1 (Load):       Zone A: 270MW, Zone B: 258MW, Zone C: 171MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 222MW, Plant 3: 158MW, Plant 4: 88MW\nF3 (Frequency):   49.81 Hz (stable)\nF4 (Voltage):     Line North: 404kV, Line South: 425kV (HIGH), Line East: 418kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 375MWh (75%). Gas turbine: STANDBY. Spin reserve: 157MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 36,
+      "prompt": "TICK 36:\n\nF1 (Load):       Zone A: 277MW, Zone B: 256MW, Zone C: 169MW\nF2 (Generation):  Plant 1: 288MW, Plant 2: 221MW, Plant 3: TRIPPED, Plant 4: 85MW\nF3 (Frequency):   49.8 Hz (stable)\nF4 (Voltage):     Line North: 406kV, Line South: 423kV (HIGH), Line East: 419kV\nF5 (Weather):     Wind 2km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 376MWh (75%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 37,
+      "prompt": "TICK 37:\n\nF1 (Load):       Zone A: 273MW, Zone B: 253MW, Zone C: 165MW\nF2 (Generation):  Plant 1: 285MW, Plant 2: 221MW, Plant 3: 157MW, Plant 4: 85MW\nF3 (Frequency):   49.82 Hz (stable)\nF4 (Voltage):     Line North: 407kV, Line South: 425kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 381MWh (76%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 38,
+      "prompt": "TICK 38:\n\nF1 (Load):       Zone A: 266MW, Zone B: 248MW, Zone C: 165MW\nF2 (Generation):  Plant 1: 280MW, Plant 2: 223MW, Plant 3: 152MW, Plant 4: 85MW\nF3 (Frequency):   49.84 Hz (stable)\nF4 (Voltage):     Line North: 406kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 378MWh (76%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 39,
+      "prompt": "TICK 39:\n\nF1 (Load):       Zone A: 271MW, Zone B: 253MW, Zone C: 296MW\nF2 (Generation):  Plant 1: 275MW, Plant 2: 218MW, Plant 3: 152MW, Plant 4: 87MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 406kV, Line South: 424kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 379MWh (76%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 40,
+      "prompt": "TICK 40:\n\nF1 (Load):       Zone A: 276MW, Zone B: 256MW, Zone C: 275MW\nF2 (Generation):  Plant 1: 275MW, Plant 2: 218MW, Plant 3: 151MW, Plant 4: 85MW\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 408kV, Line South: 425kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 379MWh (76%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "weather"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 41,
+      "prompt": "TICK 41:\n\nF1 (Load):       Zone A: 270MW, Zone B: 254MW, Zone C: 163MW\nF2 (Generation):  Plant 1: 275MW, Plant 2: 222MW, Plant 3: TRIPPED, Plant 4: 82MW\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 424kV (HIGH), Line East: 436kV (HIGH)\nF5 (Weather):     Wind 15km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 384MWh (77%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "voltage"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 42,
+      "prompt": "TICK 42:\n\nF1 (Load):       Zone A: 264MW, Zone B: 251MW, Zone C: 166MW\nF2 (Generation):  Plant 1: 272MW, Plant 2: 219MW, Plant 3: 143MW, Plant 4: 83MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 423kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 380MWh (76%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 43,
+      "prompt": "TICK 43:\n\nF1 (Load):       Zone A: 260MW, Zone B: 333MW, Zone C: 169MW\nF2 (Generation):  Plant 1: 271MW, Plant 2: 214MW, Plant 3: 138MW, Plant 4: 85MW\nF3 (Frequency):   50.74 Hz (rising)\nF4 (Voltage):     Line North: 411kV, Line South: 424kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 37MWh (7%). Gas turbine: OFFLINE. Spin reserve: 21MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load",
+          "frequency"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 44,
+      "prompt": "TICK 44:\n\nF1 (Load):       Zone A: 267MW, Zone B: 245MW, Zone C: 171MW\nF2 (Generation):  Plant 1: 273MW, Plant 2: 219MW, Plant 3: 138MW, Plant 4: 86MW\nF3 (Frequency):   50.67 Hz (rising)\nF4 (Voltage):     Line North: 413kV, Line South: 422kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 379MWh (76%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 45,
+      "prompt": "TICK 45:\n\nF1 (Load):       Zone A: 262MW, Zone B: 241MW, Zone C: 173MW\nF2 (Generation):  Plant 1: 269MW, Plant 2: 219MW, Plant 3: 139MW, Plant 4: 88MW\nF3 (Frequency):   49.84 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 421kV (HIGH), Line East: 416kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 374MWh (75%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 46,
+      "prompt": "TICK 46:\n\nF1 (Load):       Zone A: 256MW, Zone B: 245MW, Zone C: 171MW\nF2 (Generation):  Plant 1: 269MW, Plant 2: 220MW, Plant 3: 138MW, Plant 4: 86MW\nF3 (Frequency):   49.82 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 420kV, Line East: 416kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 372MWh (74%). Gas turbine: STANDBY. Spin reserve: 156MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 47,
+      "prompt": "TICK 47:\n\nF1 (Load):       Zone A: 256MW, Zone B: 244MW, Zone C: 172MW\nF2 (Generation):  Plant 1: 268MW, Plant 2: 222MW, Plant 3: 133MW, Plant 4: 87MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 418kV, Line East: 423kV (HIGH)\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 375MWh (75%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 48,
+      "prompt": "TICK 48:\n\nF1 (Load):       Zone A: 254MW, Zone B: 358MW, Zone C: 174MW\nF2 (Generation):  Plant 1: 268MW, Plant 2: 221MW, Plant 3: 137MW, Plant 4: 82MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 417kV, Line East: 416kV\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 375MWh (75%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 49,
+      "prompt": "TICK 49:\n\nF1 (Load):       Zone A: 250MW, Zone B: 239MW, Zone C: 176MW\nF2 (Generation):  Plant 1: 263MW, Plant 2: 218MW, Plant 3: 132MW, Plant 4: 78MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 416kV, Line East: 417kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 15MWh (3%). Gas turbine: OFFLINE. Spin reserve: 29MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 50,
+      "prompt": "TICK 50:\n\nF1 (Load):       Zone A: 251MW, Zone B: 235MW, Zone C: 174MW\nF2 (Generation):  Plant 1: 260MW, Plant 2: TRIPPED, Plant 3: 131MW, Plant 4: 73MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 385kV (LOW), Line South: 414kV, Line East: 416kV\nF5 (Weather):     Wind 3km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 373MWh (75%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation",
+          "voltage"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 51,
+      "prompt": "TICK 51:\n\nF1 (Load):       Zone A: 253MW, Zone B: 353MW, Zone C: 171MW\nF2 (Generation):  Plant 1: 264MW, Plant 2: 219MW, Plant 3: 133MW, Plant 4: 71MW\nF3 (Frequency):   49.89 Hz (stable)\nF4 (Voltage):     Line North: 440kV (HIGH), Line South: 413kV, Line East: 415kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 368MWh (74%). Gas turbine: STANDBY. Spin reserve: 151MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "voltage"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 52,
+      "prompt": "TICK 52:\n\nF1 (Load):       Zone A: 249MW, Zone B: 237MW, Zone C: 175MW\nF2 (Generation):  Plant 1: 264MW, Plant 2: 214MW, Plant 3: 134MW, Plant 4: 68MW\nF3 (Frequency):   50.68 Hz (rising)\nF4 (Voltage):     Line North: 414kV, Line South: 415kV, Line East: 413kV\nF5 (Weather):     Wind 24km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 366MWh (73%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 53,
+      "prompt": "TICK 53:\n\nF1 (Load):       Zone A: 251MW, Zone B: 242MW, Zone C: 178MW\nF2 (Generation):  Plant 1: 266MW, Plant 2: 216MW, Plant 3: 129MW, Plant 4: TRIPPED\nF3 (Frequency):   49.05 Hz (dropping)\nF4 (Voltage):     Line North: 415kV, Line South: 416kV, Line East: 414kV\nF5 (Weather):     Wind 24km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 369MWh (74%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 54,
+      "prompt": "TICK 54:\n\nF1 (Load):       Zone A: 258MW, Zone B: 336MW, Zone C: 181MW\nF2 (Generation):  Plant 1: 267MW, Plant 2: 219MW, Plant 3: 133MW, Plant 4: 72MW\nF3 (Frequency):   49.87 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 416kV, Line East: 412kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 13MWh (3%). Gas turbine: OFFLINE. Spin reserve: 28MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "reserve"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 55,
+      "prompt": "TICK 55:\n\nF1 (Load):       Zone A: 263MW, Zone B: 241MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 264MW, Plant 2: 218MW, Plant 3: 131MW, Plant 4: 73MW\nF3 (Frequency):   49.89 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 416kV, Line East: 414kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 375MWh (75%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 56,
+      "prompt": "TICK 56:\n\nF1 (Load):       Zone A: 266MW, Zone B: 241MW, Zone C: 183MW\nF2 (Generation):  Plant 1: 259MW, Plant 2: 223MW, Plant 3: 131MW, Plant 4: 72MW\nF3 (Frequency):   49.91 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 418kV, Line East: 414kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 372MWh (74%). Gas turbine: STANDBY. Spin reserve: 148MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 57,
+      "prompt": "TICK 57:\n\nF1 (Load):       Zone A: 261MW, Zone B: 239MW, Zone C: 187MW\nF2 (Generation):  Plant 1: 258MW, Plant 2: 223MW, Plant 3: 135MW, Plant 4: 68MW\nF3 (Frequency):   49.33 Hz (dropping)\nF4 (Voltage):     Line North: 412kV, Line South: 429kV (HIGH), Line East: 416kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 376MWh (75%). Gas turbine: STANDBY. Spin reserve: 146MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "voltage"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 58,
+      "prompt": "TICK 58:\n\nF1 (Load):       Zone A: 268MW, Zone B: 240MW, Zone C: 187MW\nF2 (Generation):  Plant 1: 258MW, Plant 2: 224MW, Plant 3: 133MW, Plant 4: 73MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 422kV (HIGH), Line East: 416kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 372MWh (74%). Gas turbine: STANDBY. Spin reserve: 144MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 59,
+      "prompt": "TICK 59:\n\nF1 (Load):       Zone A: 364MW, Zone B: 242MW, Zone C: 183MW\nF2 (Generation):  Plant 1: 260MW, Plant 2: 223MW, Plant 3: 128MW, Plant 4: 68MW\nF3 (Frequency):   49.95 Hz (stable)\nF4 (Voltage):     Line North: 410kV, Line South: 424kV (HIGH), Line East: 373kV (LOW)\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 370MWh (74%). Gas turbine: STANDBY. Spin reserve: 142MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "voltage"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 60,
+      "prompt": "TICK 60:\n\nF1 (Load):       Zone A: 259MW, Zone B: 246MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 255MW, Plant 2: 222MW, Plant 3: TRIPPED, Plant 4: 65MW\nF3 (Frequency):   50.7 Hz (rising)\nF4 (Voltage):     Line North: 412kV, Line South: 385kV (LOW), Line East: 418kV\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 368MWh (74%). Gas turbine: STANDBY. Spin reserve: 139MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency",
+          "voltage"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 61,
+      "prompt": "TICK 61:\n\nF1 (Load):       Zone A: 261MW, Zone B: 246MW, Zone C: 188MW\nF2 (Generation):  Plant 1: 252MW, Plant 2: 220MW, Plant 3: 120MW, Plant 4: TRIPPED\nF3 (Frequency):   50.88 Hz (rising)\nF4 (Voltage):     Line North: 411kV, Line South: 425kV (HIGH), Line East: 419kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 367MWh (73%). Gas turbine: STANDBY. Spin reserve: 138MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 62,
+      "prompt": "TICK 62:\n\nF1 (Load):       Zone A: 259MW, Zone B: 242MW, Zone C: 192MW\nF2 (Generation):  Plant 1: 247MW, Plant 2: 223MW, Plant 3: 118MW, Plant 4: 62MW\nF3 (Frequency):   49.93 Hz (stable)\nF4 (Voltage):     Line North: 409kV, Line South: 424kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 366MWh (73%). Gas turbine: STANDBY. Spin reserve: 138MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 63,
+      "prompt": "TICK 63:\n\nF1 (Load):       Zone A: 253MW, Zone B: 244MW, Zone C: 195MW\nF2 (Generation):  Plant 1: 242MW, Plant 2: TRIPPED, Plant 3: 120MW, Plant 4: 59MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 408kV, Line South: 422kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 362MWh (72%). Gas turbine: STANDBY. Spin reserve: 139MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 64,
+      "prompt": "TICK 64:\n\nF1 (Load):       Zone A: 250MW, Zone B: 241MW, Zone C: 191MW\nF2 (Generation):  Plant 1: 243MW, Plant 2: TRIPPED, Plant 3: 125MW, Plant 4: 61MW\nF3 (Frequency):   50.79 Hz (rising)\nF4 (Voltage):     Line North: 410kV, Line South: 421kV (HIGH), Line East: 418kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 359MWh (72%). Gas turbine: STANDBY. Spin reserve: 137MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 65,
+      "prompt": "TICK 65:\n\nF1 (Load):       Zone A: 249MW, Zone B: 236MW, Zone C: 192MW\nF2 (Generation):  Plant 1: 244MW, Plant 2: 229MW, Plant 3: 126MW, Plant 4: 58MW\nF3 (Frequency):   49.93 Hz (stable)\nF4 (Voltage):     Line North: 411kV, Line South: 423kV (HIGH), Line East: 416kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 364MWh (73%). Gas turbine: STANDBY. Spin reserve: 136MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 66,
+      "prompt": "TICK 66:\n\nF1 (Load):       Zone A: 378MW, Zone B: 235MW, Zone C: 193MW\nF2 (Generation):  Plant 1: 246MW, Plant 2: 233MW, Plant 3: 128MW, Plant 4: 57MW\nF3 (Frequency):   49.88 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 425kV (HIGH), Line East: 418kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 13MWh (3%). Gas turbine: OFFLINE. Spin reserve: 22MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "reserve"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 67,
+      "prompt": "TICK 67:\n\nF1 (Load):       Zone A: 255MW, Zone B: 237MW, Zone C: 195MW\nF2 (Generation):  Plant 1: 244MW, Plant 2: 235MW, Plant 3: 133MW, Plant 4: 53MW\nF3 (Frequency):   50.71 Hz (rising)\nF4 (Voltage):     Line North: 411kV, Line South: 430kV (HIGH), Line East: 420kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 359MWh (72%). Gas turbine: STANDBY. Spin reserve: 136MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "voltage"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 68,
+      "prompt": "TICK 68:\n\nF1 (Load):       Zone A: 248MW, Zone B: 240MW, Zone C: 199MW\nF2 (Generation):  Plant 1: 240MW, Plant 2: 233MW, Plant 3: 131MW, Plant 4: 50MW\nF3 (Frequency):   49.02 Hz (dropping)\nF4 (Voltage):     Line North: 412kV, Line South: 379kV (LOW), Line East: 418kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 356MWh (71%). Gas turbine: STANDBY. Spin reserve: 137MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "voltage"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 69,
+      "prompt": "TICK 69:\n\nF1 (Load):       Zone A: 352MW, Zone B: 238MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 236MW, Plant 2: 228MW, Plant 3: 130MW, Plant 4: 52MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 424kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 352MWh (70%). Gas turbine: STANDBY. Spin reserve: 137MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 70,
+      "prompt": "TICK 70:\n\nF1 (Load):       Zone A: 249MW, Zone B: 240MW, Zone C: 200MW\nF2 (Generation):  Plant 1: 231MW, Plant 2: 225MW, Plant 3: 129MW, Plant 4: 51MW\nF3 (Frequency):   49.82 Hz (stable)\nF4 (Voltage):     Line North: 392kV (LOW), Line South: 424kV (HIGH), Line East: 418kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 351MWh (70%). Gas turbine: STANDBY. Spin reserve: 140MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 71,
+      "prompt": "TICK 71:\n\nF1 (Load):       Zone A: 255MW, Zone B: 240MW, Zone C: 310MW\nF2 (Generation):  Plant 1: 226MW, Plant 2: 229MW, Plant 3: TRIPPED, Plant 4: 50MW\nF3 (Frequency):   49.83 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 424kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 142MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "load"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 72,
+      "prompt": "TICK 72:\n\nF1 (Load):       Zone A: 383MW, Zone B: 241MW, Zone C: 198MW\nF2 (Generation):  Plant 1: 222MW, Plant 2: 230MW, Plant 3: 130MW, Plant 4: 51MW\nF3 (Frequency):   50.75 Hz (rising)\nF4 (Voltage):     Line North: 414kV, Line South: 423kV (HIGH), Line East: 419kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 140MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "frequency"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 73,
+      "prompt": "TICK 73:\n\nF1 (Load):       Zone A: 268MW, Zone B: 244MW, Zone C: 202MW\nF2 (Generation):  Plant 1: 222MW, Plant 2: 231MW, Plant 3: 129MW, Plant 4: 50MW\nF3 (Frequency):   49.82 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 421kV (HIGH), Line East: 419kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 137MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 74,
+      "prompt": "TICK 74:\n\nF1 (Load):       Zone A: 267MW, Zone B: 241MW, Zone C: 199MW\nF2 (Generation):  Plant 1: 221MW, Plant 2: 226MW, Plant 3: 127MW, Plant 4: 50MW\nF3 (Frequency):   49.86 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 422kV (HIGH), Line East: 370kV (LOW)\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 139MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 75,
+      "prompt": "TICK 75:\n\nF1 (Load):       Zone A: 356MW, Zone B: 239MW, Zone C: 198MW\nF2 (Generation):  Plant 1: 223MW, Plant 2: 228MW, Plant 3: 128MW, Plant 4: TRIPPED\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 423kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 341MWh (68%). Gas turbine: STANDBY. Spin reserve: 139MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "generation"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 76,
+      "prompt": "TICK 76:\n\nF1 (Load):       Zone A: 271MW, Zone B: 238MW, Zone C: 194MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 229MW, Plant 3: 132MW, Plant 4: 50MW\nF3 (Frequency):   50.68 Hz (rising)\nF4 (Voltage):     Line North: 417kV, Line South: 425kV (HIGH), Line East: 419kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 345MWh (69%). Gas turbine: STANDBY. Spin reserve: 139MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 77,
+      "prompt": "TICK 77:\n\nF1 (Load):       Zone A: 266MW, Zone B: 234MW, Zone C: 190MW\nF2 (Generation):  Plant 1: 217MW, Plant 2: 228MW, Plant 3: 130MW, Plant 4: 54MW\nF3 (Frequency):   49.1 Hz (dropping)\nF4 (Voltage):     Line North: 418kV, Line South: 423kV (HIGH), Line East: 421kV (HIGH)\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 349MWh (70%). Gas turbine: STANDBY. Spin reserve: 138MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 78,
+      "prompt": "TICK 78:\n\nF1 (Load):       Zone A: 259MW, Zone B: 367MW, Zone C: 186MW\nF2 (Generation):  Plant 1: 212MW, Plant 2: 223MW, Plant 3: 128MW, Plant 4: 58MW\nF3 (Frequency):   49.95 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 424kV (HIGH), Line East: 421kV (HIGH)\nF5 (Weather):     Wind 15km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 29MWh (6%). Gas turbine: OFFLINE. Spin reserve: 27MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 79,
+      "prompt": "TICK 79:\n\nF1 (Load):       Zone A: 254MW, Zone B: 239MW, Zone C: 189MW\nF2 (Generation):  Plant 1: 214MW, Plant 2: 218MW, Plant 3: 126MW, Plant 4: 55MW\nF3 (Frequency):   49.97 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 422kV (HIGH), Line East: 420kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 137MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 80,
+      "prompt": "TICK 80:\n\nF1 (Load):       Zone A: 253MW, Zone B: 240MW, Zone C: 186MW\nF2 (Generation):  Plant 1: 209MW, Plant 2: 217MW, Plant 3: 121MW, Plant 4: 55MW\nF3 (Frequency):   49.92 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 422kV (HIGH), Line East: 419kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 134MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 81,
+      "prompt": "TICK 81:\n\nF1 (Load):       Zone A: 260MW, Zone B: 242MW, Zone C: 188MW\nF2 (Generation):  Plant 1: 204MW, Plant 2: 212MW, Plant 3: 121MW, Plant 4: 59MW\nF3 (Frequency):   49.92 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 422kV (HIGH), Line East: 417kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 348MWh (70%). Gas turbine: STANDBY. Spin reserve: 133MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 82,
+      "prompt": "TICK 82:\n\nF1 (Load):       Zone A: 256MW, Zone B: 247MW, Zone C: 302MW\nF2 (Generation):  Plant 1: 199MW, Plant 2: 217MW, Plant 3: 116MW, Plant 4: 54MW\nF3 (Frequency):   49.93 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 382kV (LOW), Line East: 415kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 130MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "voltage"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 83,
+      "prompt": "TICK 83:\n\nF1 (Load):       Zone A: 363MW, Zone B: 243MW, Zone C: 192MW\nF2 (Generation):  Plant 1: 194MW, Plant 2: 212MW, Plant 3: 113MW, Plant 4: 55MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 421kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 350MWh (70%). Gas turbine: STANDBY. Spin reserve: 131MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 84,
+      "prompt": "TICK 84:\n\nF1 (Load):       Zone A: 251MW, Zone B: 238MW, Zone C: 190MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 208MW, Plant 3: 111MW, Plant 4: 55MW\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 422kV (HIGH), Line East: 412kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 345MWh (69%). Gas turbine: STANDBY. Spin reserve: 130MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 85,
+      "prompt": "TICK 85:\n\nF1 (Load):       Zone A: 252MW, Zone B: 243MW, Zone C: 193MW\nF2 (Generation):  Plant 1: 190MW, Plant 2: 207MW, Plant 3: 111MW, Plant 4: 53MW\nF3 (Frequency):   49.88 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 420kV, Line East: 413kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 46MWh (9%). Gas turbine: OFFLINE. Spin reserve: 21MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "weather"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 86,
+      "prompt": "TICK 86:\n\nF1 (Load):       Zone A: 247MW, Zone B: 242MW, Zone C: 192MW\nF2 (Generation):  Plant 1: 192MW, Plant 2: 209MW, Plant 3: 108MW, Plant 4: 50MW\nF3 (Frequency):   50.81 Hz (rising)\nF4 (Voltage):     Line North: 417kV, Line South: 418kV, Line East: 412kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 131MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 87,
+      "prompt": "TICK 87:\n\nF1 (Load):       Zone A: 249MW, Zone B: 241MW, Zone C: 190MW\nF2 (Generation):  Plant 1: 193MW, Plant 2: 214MW, Plant 3: 109MW, Plant 4: TRIPPED\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 420kV, Line East: 412kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 345MWh (69%). Gas turbine: STANDBY. Spin reserve: 128MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 88,
+      "prompt": "TICK 88:\n\nF1 (Load):       Zone A: 254MW, Zone B: 245MW, Zone C: 341MW\nF2 (Generation):  Plant 1: 196MW, Plant 2: 210MW, Plant 3: 107MW, Plant 4: 51MW\nF3 (Frequency):   49.87 Hz (stable)\nF4 (Voltage):     Line North: 413kV, Line South: 422kV (HIGH), Line East: 410kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 130MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "weather"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 89,
+      "prompt": "TICK 89:\n\nF1 (Load):       Zone A: 393MW, Zone B: 241MW, Zone C: 195MW\nF2 (Generation):  Plant 1: 199MW, Plant 2: 215MW, Plant 3: 102MW, Plant 4: 50MW\nF3 (Frequency):   49.87 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 423kV (HIGH), Line East: 412kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 350MWh (70%). Gas turbine: STANDBY. Spin reserve: 128MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 90,
+      "prompt": "TICK 90:\n\nF1 (Load):       Zone A: 267MW, Zone B: 243MW, Zone C: 339MW\nF2 (Generation):  Plant 1: 195MW, Plant 2: 218MW, Plant 3: 102MW, Plant 4: 52MW\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 413kV, Line South: 424kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 352MWh (70%). Gas turbine: STANDBY. Spin reserve: 126MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 91,
+      "prompt": "TICK 91:\n\nF1 (Load):       Zone A: 261MW, Zone B: 248MW, Zone C: 197MW\nF2 (Generation):  Plant 1: 200MW, Plant 2: 215MW, Plant 3: 98MW, Plant 4: 57MW\nF3 (Frequency):   49.88 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 425kV (HIGH), Line East: 411kV\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 348MWh (70%). Gas turbine: STANDBY. Spin reserve: 124MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 92,
+      "prompt": "TICK 92:\n\nF1 (Load):       Zone A: 268MW, Zone B: 245MW, Zone C: 311MW\nF2 (Generation):  Plant 1: 205MW, Plant 2: 216MW, Plant 3: 96MW, Plant 4: 57MW\nF3 (Frequency):   49.91 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 423kV (HIGH), Line East: 413kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 32MWh (6%). Gas turbine: OFFLINE. Spin reserve: 19MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load",
+          "weather"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 93,
+      "prompt": "TICK 93:\n\nF1 (Load):       Zone A: 276MW, Zone B: 247MW, Zone C: 198MW\nF2 (Generation):  Plant 1: 208MW, Plant 2: 221MW, Plant 3: 97MW, Plant 4: 59MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 413kV, Line South: 422kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 24km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 125MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 94,
+      "prompt": "TICK 94:\n\nF1 (Load):       Zone A: 272MW, Zone B: 252MW, Zone C: 202MW\nF2 (Generation):  Plant 1: 204MW, Plant 2: 216MW, Plant 3: 96MW, Plant 4: 64MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 385kV (LOW), Line South: 424kV (HIGH), Line East: 412kV\nF5 (Weather):     Wind 24km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 350MWh (70%). Gas turbine: STANDBY. Spin reserve: 126MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 95,
+      "prompt": "TICK 95:\n\nF1 (Load):       Zone A: 277MW, Zone B: 256MW, Zone C: 205MW\nF2 (Generation):  Plant 1: 202MW, Plant 2: 212MW, Plant 3: 98MW, Plant 4: TRIPPED\nF3 (Frequency):   50.86 Hz (rising)\nF4 (Voltage):     Line North: 412kV, Line South: 423kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 352MWh (70%). Gas turbine: STANDBY. Spin reserve: 124MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 96,
+      "prompt": "TICK 96:\n\nF1 (Load):       Zone A: 281MW, Zone B: 260MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 206MW, Plant 2: 217MW, Plant 3: 99MW, Plant 4: 67MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 423kV (HIGH), Line East: 412kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 352MWh (70%). Gas turbine: STANDBY. Spin reserve: 126MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 97,
+      "prompt": "TICK 97:\n\nF1 (Load):       Zone A: 287MW, Zone B: 260MW, Zone C: 330MW\nF2 (Generation):  Plant 1: 204MW, Plant 2: 219MW, Plant 3: 102MW, Plant 4: 62MW\nF3 (Frequency):   50.67 Hz (rising)\nF4 (Voltage):     Line North: 414kV, Line South: 423kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 356MWh (71%). Gas turbine: STANDBY. Spin reserve: 128MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "frequency"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 98,
+      "prompt": "TICK 98:\n\nF1 (Load):       Zone A: 279MW, Zone B: 263MW, Zone C: 196MW\nF2 (Generation):  Plant 1: 203MW, Plant 2: 214MW, Plant 3: 97MW, Plant 4: 66MW\nF3 (Frequency):   50.99 Hz (rising)\nF4 (Voltage):     Line North: 416kV, Line South: 423kV (HIGH), Line East: 416kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 359MWh (72%). Gas turbine: STANDBY. Spin reserve: 125MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 99,
+      "prompt": "TICK 99:\n\nF1 (Load):       Zone A: 278MW, Zone B: 259MW, Zone C: 198MW\nF2 (Generation):  Plant 1: 198MW, Plant 2: TRIPPED, Plant 3: 92MW, Plant 4: 66MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 425kV (HIGH), Line East: 415kV\nF5 (Weather):     Wind 2km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 356MWh (71%). Gas turbine: STANDBY. Spin reserve: 124MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 100,
+      "prompt": "TICK 100:\n\nF1 (Load):       Zone A: 286MW, Zone B: 259MW, Zone C: 280MW\nF2 (Generation):  Plant 1: 197MW, Plant 2: 217MW, Plant 3: 90MW, Plant 4: 63MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 425kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 361MWh (72%). Gas turbine: STANDBY. Spin reserve: 124MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 101,
+      "prompt": "TICK 101:\n\nF1 (Load):       Zone A: 288MW, Zone B: 261MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 202MW, Plant 2: 214MW, Plant 3: 91MW, Plant 4: 66MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 424kV (HIGH), Line East: 414kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 363MWh (73%). Gas turbine: STANDBY. Spin reserve: 122MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 102,
+      "prompt": "TICK 102:\n\nF1 (Load):       Zone A: 287MW, Zone B: 258MW, Zone C: 199MW\nF2 (Generation):  Plant 1: 204MW, Plant 2: 212MW, Plant 3: 89MW, Plant 4: 64MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 425kV (HIGH), Line East: 412kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 359MWh (72%). Gas turbine: STANDBY. Spin reserve: 122MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 103,
+      "prompt": "TICK 103:\n\nF1 (Load):       Zone A: 284MW, Zone B: 262MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 205MW, Plant 2: 212MW, Plant 3: 90MW, Plant 4: 69MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 424kV (HIGH), Line East: 410kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 25MWh (5%). Gas turbine: OFFLINE. Spin reserve: 28MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 104,
+      "prompt": "TICK 104:\n\nF1 (Load):       Zone A: 286MW, Zone B: 264MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 202MW, Plant 2: 209MW, Plant 3: 86MW, Plant 4: 69MW\nF3 (Frequency):   50.77 Hz (rising)\nF4 (Voltage):     Line North: 382kV (LOW), Line South: 425kV (HIGH), Line East: 408kV\nF5 (Weather):     Wind 15km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 23MWh (5%). Gas turbine: OFFLINE. Spin reserve: 15MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "voltage",
+          "reserve"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 105,
+      "prompt": "TICK 105:\n\nF1 (Load):       Zone A: 286MW, Zone B: 269MW, Zone C: 205MW\nF2 (Generation):  Plant 1: 200MW, Plant 2: 204MW, Plant 3: 83MW, Plant 4: 69MW\nF3 (Frequency):   49.97 Hz (stable)\nF4 (Voltage):     Line North: 392kV (LOW), Line South: 425kV (HIGH), Line East: 406kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 128MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage",
+          "weather"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 106,
+      "prompt": "TICK 106:\n\nF1 (Load):       Zone A: 294MW, Zone B: 269MW, Zone C: 206MW\nF2 (Generation):  Plant 1: 201MW, Plant 2: 200MW, Plant 3: 86MW, Plant 4: 74MW\nF3 (Frequency):   49.99 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 425kV (HIGH), Line East: 406kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 34MWh (7%). Gas turbine: OFFLINE. Spin reserve: 25MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "weather"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 107,
+      "prompt": "TICK 107:\n\nF1 (Load):       Zone A: 289MW, Zone B: 266MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 202MW, Plant 2: 202MW, Plant 3: 90MW, Plant 4: 70MW\nF3 (Frequency):   49.97 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 423kV (HIGH), Line East: 404kV\nF5 (Weather):     Wind 0km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 134MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 108,
+      "prompt": "TICK 108:\n\nF1 (Load):       Zone A: 281MW, Zone B: 269MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 197MW, Plant 2: 203MW, Plant 3: 91MW, Plant 4: 66MW\nF3 (Frequency):   50.0 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 421kV (HIGH), Line East: 402kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 348MWh (70%). Gas turbine: STANDBY. Spin reserve: 135MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 109,
+      "prompt": "TICK 109:\n\nF1 (Load):       Zone A: 275MW, Zone B: 271MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 194MW, Plant 2: 206MW, Plant 3: 86MW, Plant 4: 61MW\nF3 (Frequency):   50.02 Hz (stable)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 419kV, Line East: 404kV\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 345MWh (69%). Gas turbine: STANDBY. Spin reserve: 137MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 110,
+      "prompt": "TICK 110:\n\nF1 (Load):       Zone A: 283MW, Zone B: 268MW, Zone C: 204MW\nF2 (Generation):  Plant 1: 194MW, Plant 2: 201MW, Plant 3: 82MW, Plant 4: 64MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 419kV, Line East: 402kV\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 140MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 111,
+      "prompt": "TICK 111:\n\nF1 (Load):       Zone A: 290MW, Zone B: 269MW, Zone C: 206MW\nF2 (Generation):  Plant 1: 192MW, Plant 2: 201MW, Plant 3: 81MW, Plant 4: 67MW\nF3 (Frequency):   50.03 Hz (stable)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 419kV, Line East: 400kV\nF5 (Weather):     Wind 11km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 17MWh (3%). Gas turbine: OFFLINE. Spin reserve: 23MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 112,
+      "prompt": "TICK 112:\n\nF1 (Load):       Zone A: 284MW, Zone B: 273MW, Zone C: 209MW\nF2 (Generation):  Plant 1: 195MW, Plant 2: 205MW, Plant 3: 79MW, Plant 4: 64MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 419kV, Line East: 398kV (LOW)\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 353MWh (71%). Gas turbine: STANDBY. Spin reserve: 143MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 113,
+      "prompt": "TICK 113:\n\nF1 (Load):       Zone A: 368MW, Zone B: 270MW, Zone C: 209MW\nF2 (Generation):  Plant 1: 197MW, Plant 2: 202MW, Plant 3: 77MW, Plant 4: 59MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 420kV, Line East: 397kV (LOW)\nF5 (Weather):     Wind 12km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 17MWh (3%). Gas turbine: OFFLINE. Spin reserve: 16MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 114,
+      "prompt": "TICK 114:\n\nF1 (Load):       Zone A: 276MW, Zone B: 273MW, Zone C: 210MW\nF2 (Generation):  Plant 1: 195MW, Plant 2: 205MW, Plant 3: 79MW, Plant 4: 61MW\nF3 (Frequency):   49.97 Hz (stable)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 421kV (HIGH), Line East: 395kV (LOW)\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 40MWh (8%). Gas turbine: OFFLINE. Spin reserve: 29MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 115,
+      "prompt": "TICK 115:\n\nF1 (Load):       Zone A: 270MW, Zone B: 269MW, Zone C: 214MW\nF2 (Generation):  Plant 1: 196MW, Plant 2: 204MW, Plant 3: 77MW, Plant 4: 57MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 420kV, Line East: 394kV (LOW)\nF5 (Weather):     Wind 15km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 355MWh (71%). Gas turbine: STANDBY. Spin reserve: 144MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 116,
+      "prompt": "TICK 116:\n\nF1 (Load):       Zone A: 264MW, Zone B: 273MW, Zone C: 215MW\nF2 (Generation):  Plant 1: 197MW, Plant 2: TRIPPED, Plant 3: 80MW, Plant 4: 60MW\nF3 (Frequency):   49.95 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 419kV, Line East: 392kV (LOW)\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 360MWh (72%). Gas turbine: STANDBY. Spin reserve: 143MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 117,
+      "prompt": "TICK 117:\n\nF1 (Load):       Zone A: 347MW, Zone B: 272MW, Zone C: 215MW\nF2 (Generation):  Plant 1: 198MW, Plant 2: 206MW, Plant 3: 81MW, Plant 4: 61MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 421kV (HIGH), Line East: 393kV (LOW)\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 364MWh (73%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 118,
+      "prompt": "TICK 118:\n\nF1 (Load):       Zone A: 256MW, Zone B: 272MW, Zone C: 214MW\nF2 (Generation):  Plant 1: 201MW, Plant 2: TRIPPED, Plant 3: 78MW, Plant 4: 56MW\nF3 (Frequency):   50.84 Hz (rising)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 420kV, Line East: 393kV (LOW)\nF5 (Weather):     Wind 13km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 363MWh (73%). Gas turbine: STANDBY. Spin reserve: 146MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 119,
+      "prompt": "TICK 119:\n\nF1 (Load):       Zone A: 254MW, Zone B: 418MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 206MW, Plant 2: 213MW, Plant 3: 82MW, Plant 4: TRIPPED\nF3 (Frequency):   49.08 Hz (dropping)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 421kV (HIGH), Line East: 395kV (LOW)\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 365MWh (73%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 120,
+      "prompt": "TICK 120:\n\nF1 (Load):       Zone A: 247MW, Zone B: 278MW, Zone C: 214MW\nF2 (Generation):  Plant 1: 208MW, Plant 2: 208MW, Plant 3: TRIPPED, Plant 4: 56MW\nF3 (Frequency):   50.81 Hz (rising)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 419kV, Line East: 395kV (LOW)\nF5 (Weather):     Wind 1km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 368MWh (74%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation",
+          "frequency"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 121,
+      "prompt": "TICK 121:\n\nF1 (Load):       Zone A: 240MW, Zone B: 274MW, Zone C: 217MW\nF2 (Generation):  Plant 1: 210MW, Plant 2: 209MW, Plant 3: 80MW, Plant 4: 60MW\nF3 (Frequency):   49.96 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 417kV, Line East: 397kV (LOW)\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 368MWh (74%). Gas turbine: STANDBY. Spin reserve: 144MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 122,
+      "prompt": "TICK 122:\n\nF1 (Load):       Zone A: 235MW, Zone B: 274MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 214MW, Plant 2: 205MW, Plant 3: 84MW, Plant 4: 64MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 418kV, Line East: 397kV (LOW)\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 364MWh (73%). Gas turbine: STANDBY. Spin reserve: 147MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 123,
+      "prompt": "TICK 123:\n\nF1 (Load):       Zone A: 234MW, Zone B: 279MW, Zone C: 212MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 210MW, Plant 3: 85MW, Plant 4: 63MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 418kV, Line East: 398kV (LOW)\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 368MWh (74%). Gas turbine: STANDBY. Spin reserve: 144MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 124,
+      "prompt": "TICK 124:\n\nF1 (Load):       Zone A: 238MW, Zone B: 275MW, Zone C: 216MW\nF2 (Generation):  Plant 1: 212MW, Plant 2: 208MW, Plant 3: 83MW, Plant 4: 68MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 416kV, Line East: 400kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 40MWh (8%). Gas turbine: OFFLINE. Spin reserve: 22MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 125,
+      "prompt": "TICK 125:\n\nF1 (Load):       Zone A: 240MW, Zone B: 274MW, Zone C: 212MW\nF2 (Generation):  Plant 1: 211MW, Plant 2: 213MW, Plant 3: 88MW, Plant 4: 73MW\nF3 (Frequency):   49.95 Hz (stable)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 414kV, Line East: 402kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 361MWh (72%). Gas turbine: STANDBY. Spin reserve: 145MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 126,
+      "prompt": "TICK 126:\n\nF1 (Load):       Zone A: 244MW, Zone B: 274MW, Zone C: 212MW\nF2 (Generation):  Plant 1: 213MW, Plant 2: 218MW, Plant 3: 84MW, Plant 4: 74MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 412kV, Line East: 401kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 37MWh (7%). Gas turbine: OFFLINE. Spin reserve: 17MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 127,
+      "prompt": "TICK 127:\n\nF1 (Load):       Zone A: 248MW, Zone B: 271MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 213MW, Plant 2: 219MW, Plant 3: 83MW, Plant 4: 79MW\nF3 (Frequency):   49.9 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 411kV, Line East: 401kV\nF5 (Weather):     Wind 1km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 24MWh (5%). Gas turbine: OFFLINE. Spin reserve: 30MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "weather"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 128,
+      "prompt": "TICK 128:\n\nF1 (Load):       Zone A: 243MW, Zone B: 268MW, Zone C: 212MW\nF2 (Generation):  Plant 1: 214MW, Plant 2: TRIPPED, Plant 3: 85MW, Plant 4: 75MW\nF3 (Frequency):   49.94 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 410kV, Line East: 399kV (LOW)\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 364MWh (73%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 129,
+      "prompt": "TICK 129:\n\nF1 (Load):       Zone A: 251MW, Zone B: 273MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 215MW, Plant 2: 220MW, Plant 3: 89MW, Plant 4: 78MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 408kV, Line East: 400kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 360MWh (72%). Gas turbine: STANDBY. Spin reserve: 156MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 130,
+      "prompt": "TICK 130:\n\nF1 (Load):       Zone A: 245MW, Zone B: 387MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 217MW, Plant 2: 223MW, Plant 3: 87MW, Plant 4: 74MW\nF3 (Frequency):   50.0 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 410kV, Line East: 402kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 356MWh (71%). Gas turbine: STANDBY. Spin reserve: 159MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 131,
+      "prompt": "TICK 131:\n\nF1 (Load):       Zone A: 244MW, Zone B: 281MW, Zone C: 211MW\nF2 (Generation):  Plant 1: 212MW, Plant 2: 227MW, Plant 3: 84MW, Plant 4: 71MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 381kV (LOW), Line East: 404kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 352MWh (70%). Gas turbine: STANDBY. Spin reserve: 160MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 132,
+      "prompt": "TICK 132:\n\nF1 (Load):       Zone A: 237MW, Zone B: 281MW, Zone C: 209MW\nF2 (Generation):  Plant 1: 209MW, Plant 2: 229MW, Plant 3: 83MW, Plant 4: 73MW\nF3 (Frequency):   49.99 Hz (stable)\nF4 (Voltage):     Line North: 415kV, Line South: 414kV, Line East: 402kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 41MWh (8%). Gas turbine: OFFLINE. Spin reserve: 11MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 133,
+      "prompt": "TICK 133:\n\nF1 (Load):       Zone A: 232MW, Zone B: 285MW, Zone C: 213MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 231MW, Plant 3: 79MW, Plant 4: 74MW\nF3 (Frequency):   49.99 Hz (stable)\nF4 (Voltage):     Line North: 386kV (LOW), Line South: 412kV, Line East: 402kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 158MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "voltage",
+          "weather"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 134,
+      "prompt": "TICK 134:\n\nF1 (Load):       Zone A: 240MW, Zone B: 383MW, Zone C: 214MW\nF2 (Generation):  Plant 1: 211MW, Plant 2: 233MW, Plant 3: 82MW, Plant 4: 73MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 413kV, Line East: 403kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 17MWh (3%). Gas turbine: OFFLINE. Spin reserve: 13MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 135,
+      "prompt": "TICK 135:\n\nF1 (Load):       Zone A: 245MW, Zone B: 288MW, Zone C: 217MW\nF2 (Generation):  Plant 1: 214MW, Plant 2: 229MW, Plant 3: 87MW, Plant 4: 70MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 414kV, Line East: 404kV\nF5 (Weather):     Wind 18km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 340MWh (68%). Gas turbine: STANDBY. Spin reserve: 161MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 136,
+      "prompt": "TICK 136:\n\nF1 (Load):       Zone A: 240MW, Zone B: 285MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 216MW, Plant 2: 230MW, Plant 3: 84MW, Plant 4: 74MW\nF3 (Frequency):   50.01 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 415kV, Line East: 406kV\nF5 (Weather):     Wind 0km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 341MWh (68%). Gas turbine: STANDBY. Spin reserve: 159MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 137,
+      "prompt": "TICK 137:\n\nF1 (Load):       Zone A: 244MW, Zone B: 282MW, Zone C: 216MW\nF2 (Generation):  Plant 1: 217MW, Plant 2: 229MW, Plant 3: 86MW, Plant 4: 74MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 416kV, Line East: 404kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 337MWh (67%). Gas turbine: STANDBY. Spin reserve: 162MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 138,
+      "prompt": "TICK 138:\n\nF1 (Load):       Zone A: 240MW, Zone B: 282MW, Zone C: 219MW\nF2 (Generation):  Plant 1: 218MW, Plant 2: 228MW, Plant 3: 85MW, Plant 4: 71MW\nF3 (Frequency):   50.07 Hz (stable)\nF4 (Voltage):     Line North: 385kV (LOW), Line South: 414kV, Line East: 402kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 337MWh (67%). Gas turbine: STANDBY. Spin reserve: 165MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "voltage"
+        ],
+        "correct_action": "adjust_voltage",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 139,
+      "prompt": "TICK 139:\n\nF1 (Load):       Zone A: 233MW, Zone B: 283MW, Zone C: 221MW\nF2 (Generation):  Plant 1: 217MW, Plant 2: 226MW, Plant 3: 87MW, Plant 4: TRIPPED\nF3 (Frequency):   49.18 Hz (dropping)\nF4 (Voltage):     Line North: 412kV, Line South: 414kV, Line East: 404kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 23MWh (5%). Gas turbine: OFFLINE. Spin reserve: 20MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency",
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 140,
+      "prompt": "TICK 140:\n\nF1 (Load):       Zone A: 230MW, Zone B: 279MW, Zone C: 224MW\nF2 (Generation):  Plant 1: 213MW, Plant 2: 223MW, Plant 3: 92MW, Plant 4: 67MW\nF3 (Frequency):   50.96 Hz (rising)\nF4 (Voltage):     Line North: 413kV, Line South: 413kV, Line East: 403kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 168MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 141,
+      "prompt": "TICK 141:\n\nF1 (Load):       Zone A: 238MW, Zone B: 277MW, Zone C: 221MW\nF2 (Generation):  Plant 1: 209MW, Plant 2: TRIPPED, Plant 3: 97MW, Plant 4: 65MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 414kV, Line East: 401kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 338MWh (68%). Gas turbine: STANDBY. Spin reserve: 168MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 142,
+      "prompt": "TICK 142:\n\nF1 (Load):       Zone A: 244MW, Zone B: 273MW, Zone C: 222MW\nF2 (Generation):  Plant 1: 211MW, Plant 2: 214MW, Plant 3: 98MW, Plant 4: 60MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 415kV, Line East: 402kV\nF5 (Weather):     Wind 14km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 337MWh (67%). Gas turbine: STANDBY. Spin reserve: 165MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 143,
+      "prompt": "TICK 143:\n\nF1 (Load):       Zone A: 250MW, Zone B: 275MW, Zone C: 222MW\nF2 (Generation):  Plant 1: 211MW, Plant 2: 211MW, Plant 3: 103MW, Plant 4: 58MW\nF3 (Frequency):   50.1 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 413kV, Line East: 401kV\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 334MWh (67%). Gas turbine: STANDBY. Spin reserve: 163MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 144,
+      "prompt": "TICK 144:\n\nF1 (Load):       Zone A: 249MW, Zone B: 277MW, Zone C: 223MW\nF2 (Generation):  Plant 1: 208MW, Plant 2: 210MW, Plant 3: 100MW, Plant 4: 56MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 413kV, Line South: 414kV, Line East: 399kV (LOW)\nF5 (Weather):     Wind 16km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 335MWh (67%). Gas turbine: STANDBY. Spin reserve: 160MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 145,
+      "prompt": "TICK 145:\n\nF1 (Load):       Zone A: 247MW, Zone B: 274MW, Zone C: 225MW\nF2 (Generation):  Plant 1: 210MW, Plant 2: 210MW, Plant 3: 103MW, Plant 4: 53MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 415kV, Line East: 400kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 20MWh (4%). Gas turbine: OFFLINE. Spin reserve: 18MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 146,
+      "prompt": "TICK 146:\n\nF1 (Load):       Zone A: 244MW, Zone B: 275MW, Zone C: 228MW\nF2 (Generation):  Plant 1: 207MW, Plant 2: 213MW, Plant 3: 98MW, Plant 4: 54MW\nF3 (Frequency):   50.0 Hz (stable)\nF4 (Voltage):     Line North: 412kV, Line South: 417kV, Line East: 399kV (LOW)\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 330MWh (66%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 147,
+      "prompt": "TICK 147:\n\nF1 (Load):       Zone A: 251MW, Zone B: 274MW, Zone C: 227MW\nF2 (Generation):  Plant 1: 205MW, Plant 2: 212MW, Plant 3: 101MW, Plant 4: 53MW\nF3 (Frequency):   49.98 Hz (stable)\nF4 (Voltage):     Line North: 411kV, Line South: 415kV, Line East: 400kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 33MWh (7%). Gas turbine: OFFLINE. Spin reserve: 14MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 148,
+      "prompt": "TICK 148:\n\nF1 (Load):       Zone A: 245MW, Zone B: 274MW, Zone C: 226MW\nF2 (Generation):  Plant 1: 200MW, Plant 2: 215MW, Plant 3: 100MW, Plant 4: 54MW\nF3 (Frequency):   50.02 Hz (stable)\nF4 (Voltage):     Line North: 413kV, Line South: 415kV, Line East: 401kV\nF5 (Weather):     Wind 0km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 45MWh (9%). Gas turbine: OFFLINE. Spin reserve: 27MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "weather"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 149,
+      "prompt": "TICK 149:\n\nF1 (Load):       Zone A: 242MW, Zone B: 275MW, Zone C: 224MW\nF2 (Generation):  Plant 1: 197MW, Plant 2: 216MW, Plant 3: 105MW, Plant 4: 53MW\nF3 (Frequency):   50.06 Hz (stable)\nF4 (Voltage):     Line North: 413kV, Line South: 416kV, Line East: 400kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 336MWh (67%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 150,
+      "prompt": "TICK 150:\n\nF1 (Load):       Zone A: 241MW, Zone B: 273MW, Zone C: 221MW\nF2 (Generation):  Plant 1: 201MW, Plant 2: 217MW, Plant 3: 108MW, Plant 4: 52MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 416kV, Line East: 398kV (LOW)\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 35MWh (7%). Gas turbine: OFFLINE. Spin reserve: 19MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 151,
+      "prompt": "TICK 151:\n\nF1 (Load):       Zone A: 236MW, Zone B: 271MW, Zone C: 217MW\nF2 (Generation):  Plant 1: 203MW, Plant 2: 213MW, Plant 3: 113MW, Plant 4: 55MW\nF3 (Frequency):   50.09 Hz (stable)\nF4 (Voltage):     Line North: 414kV, Line South: 418kV, Line East: 399kV (LOW)\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 23MWh (5%). Gas turbine: OFFLINE. Spin reserve: 23MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 152,
+      "prompt": "TICK 152:\n\nF1 (Load):       Zone A: 342MW, Zone B: 268MW, Zone C: 214MW\nF2 (Generation):  Plant 1: 199MW, Plant 2: 208MW, Plant 3: 116MW, Plant 4: 55MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 419kV, Line East: 399kV (LOW)\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 36MWh (7%). Gas turbine: OFFLINE. Spin reserve: 27MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "reserve"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 153,
+      "prompt": "TICK 153:\n\nF1 (Load):       Zone A: 238MW, Zone B: 263MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 201MW, Plant 2: 204MW, Plant 3: 121MW, Plant 4: 58MW\nF3 (Frequency):   50.08 Hz (stable)\nF4 (Voltage):     Line North: 416kV, Line South: 421kV (HIGH), Line East: 397kV (LOW)\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 339MWh (68%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 154,
+      "prompt": "TICK 154:\n\nF1 (Load):       Zone A: 230MW, Zone B: 264MW, Zone C: 213MW\nF2 (Generation):  Plant 1: 200MW, Plant 2: 202MW, Plant 3: 121MW, Plant 4: 63MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 423kV (HIGH), Line East: 399kV (LOW)\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 13MWh (3%). Gas turbine: OFFLINE. Spin reserve: 15MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 155,
+      "prompt": "TICK 155:\n\nF1 (Load):       Zone A: 226MW, Zone B: 265MW, Zone C: 341MW\nF2 (Generation):  Plant 1: 198MW, Plant 2: 201MW, Plant 3: 118MW, Plant 4: 67MW\nF3 (Frequency):   50.04 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 424kV (HIGH), Line East: 386kV (LOW)\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 18MWh (4%). Gas turbine: OFFLINE. Spin reserve: 27MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load",
+          "voltage"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 156,
+      "prompt": "TICK 156:\n\nF1 (Load):       Zone A: 228MW, Zone B: 265MW, Zone C: 206MW\nF2 (Generation):  Plant 1: 196MW, Plant 2: 197MW, Plant 3: 121MW, Plant 4: 62MW\nF3 (Frequency):   50.07 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 422kV (HIGH), Line East: 401kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 340MWh (68%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 157,
+      "prompt": "TICK 157:\n\nF1 (Load):       Zone A: 229MW, Zone B: 265MW, Zone C: 205MW\nF2 (Generation):  Plant 1: 194MW, Plant 2: 192MW, Plant 3: 118MW, Plant 4: 59MW\nF3 (Frequency):   50.09 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 420kV, Line East: 401kV\nF5 (Weather):     Wind 17km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 11MWh (2%). Gas turbine: OFFLINE. Spin reserve: 16MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 158,
+      "prompt": "TICK 158:\n\nF1 (Load):       Zone A: 221MW, Zone B: 260MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 198MW, Plant 2: 196MW, Plant 3: 122MW, Plant 4: 54MW\nF3 (Frequency):   50.07 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 418kV, Line East: 403kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 349MWh (70%). Gas turbine: STANDBY. Spin reserve: 159MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 159,
+      "prompt": "TICK 159:\n\nF1 (Load):       Zone A: 221MW, Zone B: 255MW, Zone C: 205MW\nF2 (Generation):  Plant 1: 196MW, Plant 2: 192MW, Plant 3: 119MW, Plant 4: 54MW\nF3 (Frequency):   50.07 Hz (stable)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 416kV, Line East: 403kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 348MWh (70%). Gas turbine: STANDBY. Spin reserve: 156MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 160,
+      "prompt": "TICK 160:\n\nF1 (Load):       Zone A: 228MW, Zone B: 252MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 193MW, Plant 2: 188MW, Plant 3: 116MW, Plant 4: 51MW\nF3 (Frequency):   49.34 Hz (dropping)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 416kV, Line East: 405kV\nF5 (Weather):     Wind 2km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "weather"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 161,
+      "prompt": "TICK 161:\n\nF1 (Load):       Zone A: 341MW, Zone B: 252MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 188MW, Plant 2: 191MW, Plant 3: 111MW, Plant 4: 56MW\nF3 (Frequency):   49.03 Hz (dropping)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 414kV, Line East: 405kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 343MWh (69%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load",
+          "frequency"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 162,
+      "prompt": "TICK 162:\n\nF1 (Load):       Zone A: 229MW, Zone B: 247MW, Zone C: 199MW\nF2 (Generation):  Plant 1: 193MW, Plant 2: 196MW, Plant 3: 106MW, Plant 4: TRIPPED\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 415kV, Line East: 406kV\nF5 (Weather):     Wind 1km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 340MWh (68%). Gas turbine: STANDBY. Spin reserve: 150MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 163,
+      "prompt": "TICK 163:\n\nF1 (Load):       Zone A: 225MW, Zone B: 249MW, Zone C: 196MW\nF2 (Generation):  Plant 1: 192MW, Plant 2: 195MW, Plant 3: 109MW, Plant 4: 54MW\nF3 (Frequency):   49.38 Hz (dropping)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 414kV, Line East: 405kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 43MWh (9%). Gas turbine: OFFLINE. Spin reserve: 29MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "reserve"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 164,
+      "prompt": "TICK 164:\n\nF1 (Load):       Zone A: 219MW, Zone B: 249MW, Zone C: 196MW\nF2 (Generation):  Plant 1: 187MW, Plant 2: 200MW, Plant 3: 109MW, Plant 4: 59MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 413kV, Line East: 405kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 23MWh (5%). Gas turbine: OFFLINE. Spin reserve: 22MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 165,
+      "prompt": "TICK 165:\n\nF1 (Load):       Zone A: 225MW, Zone B: 250MW, Zone C: 196MW\nF2 (Generation):  Plant 1: 186MW, Plant 2: 201MW, Plant 3: 108MW, Plant 4: 63MW\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 413kV, Line East: 407kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 153MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 166,
+      "prompt": "TICK 166:\n\nF1 (Load):       Zone A: 231MW, Zone B: 251MW, Zone C: 199MW\nF2 (Generation):  Plant 1: 185MW, Plant 2: 202MW, Plant 3: 107MW, Plant 4: TRIPPED\nF3 (Frequency):   50.83 Hz (rising)\nF4 (Voltage):     Line North: 419kV, Line South: 414kV, Line East: 407kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 13MWh (3%). Gas turbine: OFFLINE. Spin reserve: 29MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "frequency",
+          "reserve"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 167,
+      "prompt": "TICK 167:\n\nF1 (Load):       Zone A: 384MW, Zone B: 252MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 190MW, Plant 2: 200MW, Plant 3: 109MW, Plant 4: 64MW\nF3 (Frequency):   50.14 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 413kV, Line East: 406kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 344MWh (69%). Gas turbine: STANDBY. Spin reserve: 156MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 168,
+      "prompt": "TICK 168:\n\nF1 (Load):       Zone A: 235MW, Zone B: 256MW, Zone C: 198MW\nF2 (Generation):  Plant 1: 194MW, Plant 2: 195MW, Plant 3: 110MW, Plant 4: 60MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 412kV, Line East: 408kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 346MWh (69%). Gas turbine: STANDBY. Spin reserve: 158MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 169,
+      "prompt": "TICK 169:\n\nF1 (Load):       Zone A: 238MW, Zone B: 254MW, Zone C: 202MW\nF2 (Generation):  Plant 1: 192MW, Plant 2: 193MW, Plant 3: 108MW, Plant 4: 58MW\nF3 (Frequency):   50.14 Hz (stable)\nF4 (Voltage):     Line North: 417kV, Line South: 414kV, Line East: 406kV\nF5 (Weather):     Wind 0km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 40MWh (8%). Gas turbine: OFFLINE. Spin reserve: 15MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "weather"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 170,
+      "prompt": "TICK 170:\n\nF1 (Load):       Zone A: 236MW, Zone B: 250MW, Zone C: 204MW\nF2 (Generation):  Plant 1: 188MW, Plant 2: 198MW, Plant 3: 103MW, Plant 4: 53MW\nF3 (Frequency):   50.1 Hz (stable)\nF4 (Voltage):     Line North: 418kV, Line South: 414kV, Line East: 407kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 348MWh (70%). Gas turbine: STANDBY. Spin reserve: 157MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 171,
+      "prompt": "TICK 171:\n\nF1 (Load):       Zone A: 236MW, Zone B: 253MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 184MW, Plant 2: 202MW, Plant 3: 108MW, Plant 4: 50MW\nF3 (Frequency):   50.8 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 374kV (LOW), Line East: 408kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 353MWh (71%). Gas turbine: STANDBY. Spin reserve: 157MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "voltage"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 172,
+      "prompt": "TICK 172:\n\nF1 (Load):       Zone A: 243MW, Zone B: 252MW, Zone C: 206MW\nF2 (Generation):  Plant 1: 189MW, Plant 2: 206MW, Plant 3: 106MW, Plant 4: 50MW\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 413kV, Line East: 409kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 353MWh (71%). Gas turbine: STANDBY. Spin reserve: 160MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 173,
+      "prompt": "TICK 173:\n\nF1 (Load):       Zone A: 245MW, Zone B: 252MW, Zone C: 203MW\nF2 (Generation):  Plant 1: 185MW, Plant 2: 202MW, Plant 3: 101MW, Plant 4: 50MW\nF3 (Frequency):   50.17 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 412kV, Line East: 407kV\nF5 (Weather):     Wind 2km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 357MWh (71%). Gas turbine: STANDBY. Spin reserve: 157MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 174,
+      "prompt": "TICK 174:\n\nF1 (Load):       Zone A: 243MW, Zone B: 248MW, Zone C: 204MW\nF2 (Generation):  Plant 1: 189MW, Plant 2: 205MW, Plant 3: 101MW, Plant 4: 55MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 411kV, Line East: 407kV\nF5 (Weather):     Wind 1km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 357MWh (71%). Gas turbine: STANDBY. Spin reserve: 158MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 175,
+      "prompt": "TICK 175:\n\nF1 (Load):       Zone A: 246MW, Zone B: 251MW, Zone C: 202MW\nF2 (Generation):  Plant 1: 193MW, Plant 2: 204MW, Plant 3: 103MW, Plant 4: 56MW\nF3 (Frequency):   49.38 Hz (dropping)\nF4 (Voltage):     Line North: 419kV, Line South: 410kV, Line East: 408kV\nF5 (Weather):     Wind 19km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 352MWh (70%). Gas turbine: STANDBY. Spin reserve: 161MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 176,
+      "prompt": "TICK 176:\n\nF1 (Load):       Zone A: 248MW, Zone B: 337MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 195MW, Plant 2: 199MW, Plant 3: 108MW, Plant 4: 51MW\nF3 (Frequency):   50.15 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 408kV, Line East: 410kV\nF5 (Weather):     Wind 20km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 40MWh (8%). Gas turbine: OFFLINE. Spin reserve: 29MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 177,
+      "prompt": "TICK 177:\n\nF1 (Load):       Zone A: 247MW, Zone B: 247MW, Zone C: 201MW\nF2 (Generation):  Plant 1: 192MW, Plant 2: 197MW, Plant 3: 109MW, Plant 4: 50MW\nF3 (Frequency):   50.18 Hz (stable)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 410kV, Line East: 412kV\nF5 (Weather):     Wind 21km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 357MWh (71%). Gas turbine: STANDBY. Spin reserve: 158MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 178,
+      "prompt": "TICK 178:\n\nF1 (Load):       Zone A: 255MW, Zone B: 251MW, Zone C: 198MW\nF2 (Generation):  Plant 1: 190MW, Plant 2: 202MW, Plant 3: 109MW, Plant 4: 50MW\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 420kV, Line South: 410kV, Line East: 413kV\nF5 (Weather):     Wind 22km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 355MWh (71%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 179,
+      "prompt": "TICK 179:\n\nF1 (Load):       Zone A: 260MW, Zone B: 255MW, Zone C: 195MW\nF2 (Generation):  Plant 1: 185MW, Plant 2: 199MW, Plant 3: 114MW, Plant 4: 53MW\nF3 (Frequency):   50.13 Hz (stable)\nF4 (Voltage):     Line North: 419kV, Line South: 411kV, Line East: 413kV\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 16MWh (3%). Gas turbine: OFFLINE. Spin reserve: 22MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 180,
+      "prompt": "TICK 180:\n\nF1 (Load):       Zone A: 260MW, Zone B: 260MW, Zone C: 194MW\nF2 (Generation):  Plant 1: 185MW, Plant 2: 201MW, Plant 3: 110MW, Plant 4: 52MW\nF3 (Frequency):   50.16 Hz (stable)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 409kV, Line East: 414kV\nF5 (Weather):     Wind 23km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 181,
+      "prompt": "TICK 181:\n\nF1 (Load):       Zone A: 262MW, Zone B: 264MW, Zone C: 194MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 196MW, Plant 3: 105MW, Plant 4: 51MW\nF3 (Frequency):   50.18 Hz (stable)\nF4 (Voltage):     Line North: 435kV (HIGH), Line South: 408kV, Line East: 415kV\nF5 (Weather):     Wind 25km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 19MWh (4%). Gas turbine: OFFLINE. Spin reserve: 12MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "voltage",
+          "reserve"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "adjust_voltage",
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 182,
+      "prompt": "TICK 182:\n\nF1 (Load):       Zone A: 264MW, Zone B: 266MW, Zone C: 196MW\nF2 (Generation):  Plant 1: 194MW, Plant 2: 196MW, Plant 3: 103MW, Plant 4: 50MW\nF3 (Frequency):   49.07 Hz (dropping)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 407kV, Line East: 413kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 350MWh (70%). Gas turbine: STANDBY. Spin reserve: 160MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "weather"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 183,
+      "prompt": "TICK 183:\n\nF1 (Load):       Zone A: 259MW, Zone B: 263MW, Zone C: 197MW\nF2 (Generation):  Plant 1: TRIPPED, Plant 2: 201MW, Plant 3: 104MW, Plant 4: 50MW\nF3 (Frequency):   50.27 Hz (rising)\nF4 (Voltage):     Line North: 424kV (HIGH), Line South: 407kV, Line East: 412kV\nF5 (Weather):     Wind 2km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 347MWh (69%). Gas turbine: STANDBY. Spin reserve: 159MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "generation"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 184,
+      "prompt": "TICK 184:\n\nF1 (Load):       Zone A: 266MW, Zone B: 261MW, Zone C: 197MW\nF2 (Generation):  Plant 1: 198MW, Plant 2: 201MW, Plant 3: 101MW, Plant 4: 52MW\nF3 (Frequency):   50.29 Hz (rising)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 405kV, Line East: 412kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 16MWh (3%). Gas turbine: OFFLINE. Spin reserve: 16MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 185,
+      "prompt": "TICK 185:\n\nF1 (Load):       Zone A: 268MW, Zone B: 257MW, Zone C: 194MW\nF2 (Generation):  Plant 1: 202MW, Plant 2: 198MW, Plant 3: 100MW, Plant 4: 56MW\nF3 (Frequency):   50.29 Hz (rising)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 404kV, Line East: 414kV\nF5 (Weather):     Wind 26km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 34MWh (7%). Gas turbine: OFFLINE. Spin reserve: 12MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 186,
+      "prompt": "TICK 186:\n\nF1 (Load):       Zone A: 268MW, Zone B: 261MW, Zone C: 190MW\nF2 (Generation):  Plant 1: 198MW, Plant 2: 195MW, Plant 3: 100MW, Plant 4: 59MW\nF3 (Frequency):   50.32 Hz (rising)\nF4 (Voltage):     Line North: 423kV (HIGH), Line South: 402kV, Line East: 413kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 41MWh (8%). Gas turbine: OFFLINE. Spin reserve: 28MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 187,
+      "prompt": "TICK 187:\n\nF1 (Load):       Zone A: 270MW, Zone B: 266MW, Zone C: 336MW\nF2 (Generation):  Plant 1: 203MW, Plant 2: 196MW, Plant 3: 101MW, Plant 4: 57MW\nF3 (Frequency):   50.29 Hz (rising)\nF4 (Voltage):     Line North: 422kV (HIGH), Line South: 404kV, Line East: 415kV\nF5 (Weather):     Wind 26km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 351MWh (70%). Gas turbine: STANDBY. Spin reserve: 156MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "load"
+        ],
+        "correct_action": "shed_load",
+        "acceptable_actions": [
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 188,
+      "prompt": "TICK 188:\n\nF1 (Load):       Zone A: 265MW, Zone B: 265MW, Zone C: 187MW\nF2 (Generation):  Plant 1: 207MW, Plant 2: 195MW, Plant 3: 106MW, Plant 4: 62MW\nF3 (Frequency):   50.24 Hz (rising)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 402kV, Line East: 416kV\nF5 (Weather):     Wind 26km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 351MWh (70%). Gas turbine: STANDBY. Spin reserve: 158MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 189,
+      "prompt": "TICK 189:\n\nF1 (Load):       Zone A: 271MW, Zone B: 268MW, Zone C: 186MW\nF2 (Generation):  Plant 1: 212MW, Plant 2: TRIPPED, Plant 3: 109MW, Plant 4: 65MW\nF3 (Frequency):   50.28 Hz (rising)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 403kV, Line East: 416kV\nF5 (Weather):     Wind 27km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 32MWh (6%). Gas turbine: OFFLINE. Spin reserve: 14MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "generation",
+          "reserve"
+        ],
+        "correct_action": "start_gas_turbine",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 190,
+      "prompt": "TICK 190:\n\nF1 (Load):       Zone A: 279MW, Zone B: 268MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 210MW, Plant 2: 195MW, Plant 3: 111MW, Plant 4: 64MW\nF3 (Frequency):   50.95 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 402kV, Line East: 417kV\nF5 (Weather):     Wind 0km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 40MWh (8%). Gas turbine: OFFLINE. Spin reserve: 17MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "weather",
+          "frequency"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 191,
+      "prompt": "TICK 191:\n\nF1 (Load):       Zone A: 286MW, Zone B: 268MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 208MW, Plant 2: 198MW, Plant 3: 111MW, Plant 4: 65MW\nF3 (Frequency):   50.3 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 404kV, Line East: 419kV\nF5 (Weather):     Wind 28km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 35MWh (7%). Gas turbine: OFFLINE. Spin reserve: 13MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 192,
+      "prompt": "TICK 192:\n\nF1 (Load):       Zone A: 288MW, Zone B: 267MW, Zone C: 183MW\nF2 (Generation):  Plant 1: 211MW, Plant 2: 196MW, Plant 3: 116MW, Plant 4: 70MW\nF3 (Frequency):   50.27 Hz (rising)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 402kV, Line East: 419kV\nF5 (Weather):     Wind 30km/h (steady). Solar: strong.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 154MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 193,
+      "prompt": "TICK 193:\n\nF1 (Load):       Zone A: 287MW, Zone B: 272MW, Zone C: 187MW\nF2 (Generation):  Plant 1: 214MW, Plant 2: 199MW, Plant 3: 114MW, Plant 4: 73MW\nF3 (Frequency):   50.31 Hz (rising)\nF4 (Voltage):     Line North: 421kV (HIGH), Line South: 404kV, Line East: 417kV\nF5 (Weather):     Wind 2km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 340MWh (68%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 194,
+      "prompt": "TICK 194:\n\nF1 (Load):       Zone A: 288MW, Zone B: 277MW, Zone C: 185MW\nF2 (Generation):  Plant 1: 219MW, Plant 2: 201MW, Plant 3: 118MW, Plant 4: 76MW\nF3 (Frequency):   50.3 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 404kV, Line East: 418kV\nF5 (Weather):     Wind 34km/h (gusting). Solar: strong.\nF6 (Reserve):     Battery: 339MWh (68%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 195,
+      "prompt": "TICK 195:\n\nF1 (Load):       Zone A: 285MW, Zone B: 277MW, Zone C: 188MW\nF2 (Generation):  Plant 1: 221MW, Plant 2: 199MW, Plant 3: 121MW, Plant 4: 79MW\nF3 (Frequency):   50.3 Hz (rising)\nF4 (Voltage):     Line North: 419kV, Line South: 404kV, Line East: 419kV\nF5 (Weather):     Wind 34km/h (gusting). Solar: strong.\nF6 (Reserve):     Battery: 342MWh (68%). Gas turbine: STANDBY. Spin reserve: 155MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 196,
+      "prompt": "TICK 196:\n\nF1 (Load):       Zone A: 286MW, Zone B: 272MW, Zone C: 184MW\nF2 (Generation):  Plant 1: 216MW, Plant 2: 200MW, Plant 3: 126MW, Plant 4: 83MW\nF3 (Frequency):   50.35 Hz (rising)\nF4 (Voltage):     Line North: 419kV, Line South: 405kV, Line East: 421kV (HIGH)\nF5 (Weather):     Wind 33km/h (gusting). Solar: strong.\nF6 (Reserve):     Battery: 337MWh (67%). Gas turbine: STANDBY. Spin reserve: 152MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 197,
+      "prompt": "TICK 197:\n\nF1 (Load):       Zone A: 281MW, Zone B: 276MW, Zone C: 320MW\nF2 (Generation):  Plant 1: 211MW, Plant 2: 199MW, Plant 3: 127MW, Plant 4: 86MW\nF3 (Frequency):   49.12 Hz (dropping)\nF4 (Voltage):     Line North: 420kV, Line South: 405kV, Line East: 419kV\nF5 (Weather):     Wind 35km/h (gusting). Solar: strong.\nF6 (Reserve):     Battery: 15MWh (3%). Gas turbine: OFFLINE. Spin reserve: 20MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "reserve",
+          "load",
+          "frequency"
+        ],
+        "correct_action": "deploy_battery",
+        "acceptable_actions": [
+          "charge_battery",
+          "deploy_battery",
+          "ramp_plant",
+          "shed_load",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 198,
+      "prompt": "TICK 198:\n\nF1 (Load):       Zone A: 283MW, Zone B: 281MW, Zone C: 188MW\nF2 (Generation):  Plant 1: 209MW, Plant 2: 204MW, Plant 3: 129MW, Plant 4: 91MW\nF3 (Frequency):   50.56 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 406kV, Line East: 419kV\nF5 (Weather):     Wind 3km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 21MWh (4%). Gas turbine: OFFLINE. Spin reserve: 18MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "frequency",
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "ramp_plant",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "ramp_plant",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 199,
+      "prompt": "TICK 199:\n\nF1 (Load):       Zone A: 288MW, Zone B: 276MW, Zone C: 189MW\nF2 (Generation):  Plant 1: 208MW, Plant 2: 201MW, Plant 3: 132MW, Plant 4: 95MW\nF3 (Frequency):   50.38 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 406kV, Line East: 418kV\nF5 (Weather):     Wind 3km/h (calm). Solar: weak.\nF6 (Reserve):     Battery: 345MWh (69%). Gas turbine: STANDBY. Spin reserve: 159MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 200,
+      "prompt": "TICK 200:\n\nF1 (Load):       Zone A: 295MW, Zone B: 273MW, Zone C: 186MW\nF2 (Generation):  Plant 1: 203MW, Plant 2: 199MW, Plant 3: 135MW, Plant 4: 90MW\nF3 (Frequency):   50.33 Hz (rising)\nF4 (Voltage):     Line North: 420kV, Line South: 404kV, Line East: 418kV\nF5 (Weather):     Wind 2km/h (calm). Solar: minimal.\nF6 (Reserve):     Battery: 16MWh (3%). Gas turbine: OFFLINE. Spin reserve: 14MW.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "reserve"
+        ],
+        "correct_action": "curtail_renewable",
+        "acceptable_actions": [
+          "charge_battery",
+          "curtail_renewable",
+          "deploy_battery",
+          "start_gas_turbine"
+        ],
+        "is_multi_factor": false
+      }
+    }
+  ]
+}

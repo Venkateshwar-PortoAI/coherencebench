@@ -10,6 +10,7 @@ import re
 from dataclasses import dataclass
 
 from .scenario import FACTORS, ACTIONS
+from .scenarios.base import BaseScenario
 from .metrics import (
     factor_coverage,
     fixation_index,
@@ -51,8 +52,11 @@ class TickAnalysis:
 class ResponseAnalyzer:
     """Parses structured agent responses into metrics-ready data."""
 
-    def __init__(self):
-        self.factors = FACTORS
+    def __init__(self, scenario: BaseScenario | None = None):
+        if scenario is not None:
+            self.factors = scenario.factors
+        else:
+            self.factors = FACTORS
         self._dismissive_re = [re.compile(p, re.IGNORECASE) for p in DISMISSIVE_PATTERNS]
 
     def _is_refusal(self, response: str) -> bool:

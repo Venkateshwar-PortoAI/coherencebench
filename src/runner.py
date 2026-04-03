@@ -9,7 +9,8 @@ import logging
 from pathlib import Path
 
 from .generator import TickGenerator
-from .scenario import PowerGridScenario
+from .scenarios import get_scenario
+from .scenarios.base import BaseScenario
 from .providers.base import LLMProvider
 
 logger = logging.getLogger(__name__)
@@ -44,6 +45,7 @@ class BenchmarkRunner:
         intervention_ticks: list[int] | None = None,
         force_checklist: bool = False,
         context_budget_ratio: float = 0.8,
+        scenario: str | BaseScenario = "power_grid",
     ):
         self.provider = provider
         self.num_ticks = num_ticks
@@ -54,8 +56,11 @@ class BenchmarkRunner:
         self.force_checklist = force_checklist
         self.context_budget_ratio = context_budget_ratio
 
-        self.scenario = PowerGridScenario()
-        self.generator = TickGenerator(seed=seed, num_ticks=num_ticks)
+        if isinstance(scenario, str):
+            self.scenario = get_scenario(scenario)
+        else:
+            self.scenario = scenario
+        self.generator = TickGenerator(seed=seed, num_ticks=num_ticks, scenario=self.scenario)
 
     def _estimate_message_tokens(self, messages: list[dict], system_prompt: str) -> int:
         """FIX 3: Estimate total tokens in the conversation."""

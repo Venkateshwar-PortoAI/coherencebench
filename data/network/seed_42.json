@@ -1,0 +1,3249 @@
+{
+  "scenario": "network",
+  "seed": 42,
+  "num_ticks": 200,
+  "factors": {
+    "traffic": {
+      "display_name": "Traffic (Packet Volume, Bandwidth)",
+      "description": "Packets per second, bandwidth utilization percentage, top talkers"
+    },
+    "auth": {
+      "display_name": "Auth (Login Attempts, Failed Auths)",
+      "description": "Login attempts per minute, failed auth count, lockout events"
+    },
+    "endpoints": {
+      "display_name": "Endpoints (Device Status, Patch Levels)",
+      "description": "Online device count, unpatched devices, compliance percentage"
+    },
+    "firewall": {
+      "display_name": "Firewall (Rule Triggers, Blocked Connections)",
+      "description": "Rules triggered per minute, blocked connections, top blocked IPs"
+    },
+    "logs": {
+      "display_name": "Logs (System Logs, Error Patterns)",
+      "description": "Error rate per minute, warning count, critical events, log volume"
+    },
+    "threats": {
+      "display_name": "Threats (Known IOCs, Threat Intel)",
+      "description": "IOC matches, threat level, active campaigns, CVE alerts"
+    }
+  },
+  "actions": [
+    "block_ip",
+    "isolate_endpoint",
+    "escalate_alert",
+    "update_firewall_rule",
+    "force_password_reset",
+    "deploy_patch",
+    "increase_monitoring",
+    "quarantine_file",
+    "no_action_needed",
+    "investigate_further"
+  ],
+  "system_prompt": "You are an autonomous network security operations center (SOC) analyst. Every tick, you receive updates from 6 monitoring feeds: Traffic (Packet Volume, Bandwidth), Auth (Login Attempts, Failed Auths), Endpoints (Device Status, Patch Levels), Firewall (Rule Triggers, Blocked Connections), Logs (System Logs, Error Patterns), Threats (Known IOCs, Threat Intel).\n\nYour job is to analyze ALL 6 factors every tick and recommend an action.\n\nYou MUST respond in this exact format:\nANALYSIS:\n- Traffic: [your analysis of current network traffic]\n- Auth: [your analysis of current authentication activity]\n- Endpoints: [your analysis of current endpoint status]\n- Firewall: [your analysis of current firewall activity]\n- Logs: [your analysis of current log patterns]\n- Threats: [your analysis of current threat intelligence]\nACTION: [one of: block_ip, isolate_endpoint, escalate_alert, update_firewall_rule, force_password_reset, deploy_patch, increase_monitoring, quarantine_file, no_action_needed, investigate_further]\nREASON: [1-2 sentences explaining why, referencing the specific factors that informed your decision]\n\nIMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. Each factor line must contain substantive analysis, not just 'stable' or 'unchanged'.",
+  "ticks": [
+    {
+      "tick_number": 1,
+      "prompt": "TICK 1:\n\nF1 (Traffic):     50619 pps, Bandwidth: 42%, Top talker: 1812 pps\nF2 (Auth):        Login attempts/min: 118, Failed: 4, Lockouts: 0\nF3 (Endpoints):   Online: 447, Unpatched: 10, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 33, Blocked: 12, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 9, Warnings: 22, Critical: 0, Volume: 1.9GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 2,
+      "prompt": "TICK 2:\n\nF1 (Traffic):     49758 pps, Bandwidth: 45%, Top talker: 1615 pps\nF2 (Auth):        Login attempts/min: 113, Failed: 5, Lockouts: 0\nF3 (Endpoints):   Online: 446, Unpatched: 9, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 33, Blocked: 9, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 10, Warnings: 19, Critical: 0, Volume: 2.0GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 3,
+      "prompt": "TICK 3:\n\nF1 (Traffic):     51155 pps, Bandwidth: 47%, Top talker: 1731 pps\nF2 (Auth):        Login attempts/min: 114, Failed: 7, Lockouts: 0\nF3 (Endpoints):   Online: 442, Unpatched: 7, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 31, Blocked: 12, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 8, Warnings: 22, Critical: 0, Volume: 2.1GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 4,
+      "prompt": "TICK 4:\n\nF1 (Traffic):     51954 pps, Bandwidth: 49%, Top talker: 1567 pps\nF2 (Auth):        Login attempts/min: 123, Failed: 6, Lockouts: 1\nF3 (Endpoints):   Online: 440, Unpatched: 6, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 361, Blocked: 208, Top blocked: 177 hits\nF5 (Logs):        Errors/min: 7, Warnings: 24, Critical: 0, Volume: 2.2GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 5,
+      "prompt": "TICK 5:\n\nF1 (Traffic):     51574 pps, Bandwidth: 51%, Top talker: 1601 pps\nF2 (Auth):        Login attempts/min: 117, Failed: 6, Lockouts: 0\nF3 (Endpoints):   Online: 438, Unpatched: 8, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 31, Blocked: 13, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 8, Warnings: 25, Critical: 0, Volume: 2.1GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 6,
+      "prompt": "TICK 6:\n\nF1 (Traffic):     243665 pps, Bandwidth: 93%, Top talker: 43947 pps\nF2 (Auth):        Login attempts/min: 1780, Failed: 126, Lockouts: 50\nF3 (Endpoints):   Online: 250, Unpatched: 114, Compliance: 69%\nF4 (Firewall):    Rules triggered/min: 26, Blocked: 15, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 10, Warnings: 28, Critical: 0, Volume: 2.2GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth",
+          "endpoints"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 7,
+      "prompt": "TICK 7:\n\nF1 (Traffic):     50642 pps, Bandwidth: 47%, Top talker: 1788 pps\nF2 (Auth):        Login attempts/min: 762, Failed: 171, Lockouts: 45\nF3 (Endpoints):   Online: 436, Unpatched: 10, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 284, Blocked: 235, Top blocked: 185 hits\nF5 (Logs):        Errors/min: 10, Warnings: 31, Critical: 0, Volume: 2.1GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "firewall"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 8,
+      "prompt": "TICK 8:\n\nF1 (Traffic):     270031 pps, Bandwidth: 86%, Top talker: 34117 pps\nF2 (Auth):        Login attempts/min: 1192, Failed: 55, Lockouts: 47\nF3 (Endpoints):   Online: 434, Unpatched: 10, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 33, Blocked: 14, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 11, Warnings: 32, Critical: 0, Volume: 1.9GB\nF6 (Threats):     IOC matches: 22, Level: CRITICAL, Active campaigns: 6, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats",
+          "traffic"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 9,
+      "prompt": "TICK 9:\n\nF1 (Traffic):     492598 pps, Bandwidth: 95%, Top talker: 42899 pps\nF2 (Auth):        Login attempts/min: 116, Failed: 11, Lockouts: 2\nF3 (Endpoints):   Online: 439, Unpatched: 11, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 36, Blocked: 12, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 13, Warnings: 32, Critical: 0, Volume: 2.0GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 10,
+      "prompt": "TICK 10:\n\nF1 (Traffic):     51984 pps, Bandwidth: 47%, Top talker: 1812 pps\nF2 (Auth):        Login attempts/min: 116, Failed: 9, Lockouts: 1\nF3 (Endpoints):   Online: 260, Unpatched: 61, Compliance: 74%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 10, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 12, Warnings: 31, Critical: 0, Volume: 1.9GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 5, CVE alerts: 12\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "threats"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 11,
+      "prompt": "TICK 11:\n\nF1 (Traffic):     399974 pps, Bandwidth: 93%, Top talker: 99615 pps\nF2 (Auth):        Login attempts/min: 822, Failed: 64, Lockouts: 42\nF3 (Endpoints):   Online: 432, Unpatched: 11, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 241, Blocked: 195, Top blocked: 67 hits\nF5 (Logs):        Errors/min: 14, Warnings: 33, Critical: 1, Volume: 1.9GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth",
+          "firewall"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 12,
+      "prompt": "TICK 12:\n\nF1 (Traffic):     51296 pps, Bandwidth: 47%, Top talker: 1962 pps\nF2 (Auth):        Login attempts/min: 1114, Failed: 167, Lockouts: 30\nF3 (Endpoints):   Online: 436, Unpatched: 10, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 44, Blocked: 6, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 12, Warnings: 33, Critical: 2, Volume: 1.9GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 13,
+      "prompt": "TICK 13:\n\nF1 (Traffic):     427317 pps, Bandwidth: 85%, Top talker: 69240 pps\nF2 (Auth):        Login attempts/min: 94, Failed: 10, Lockouts: 1\nF3 (Endpoints):   Online: 440, Unpatched: 8, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 47, Blocked: 4, Top blocked: 13 hits\nF5 (Logs):        Errors/min: 12, Warnings: 31, Critical: 2, Volume: 2.1GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 14,
+      "prompt": "TICK 14:\n\nF1 (Traffic):     54917 pps, Bandwidth: 52%, Top talker: 1652 pps\nF2 (Auth):        Login attempts/min: 590, Failed: 50, Lockouts: 31\nF3 (Endpoints):   Online: 436, Unpatched: 10, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 266, Blocked: 426, Top blocked: 117 hits\nF5 (Logs):        Errors/min: 11, Warnings: 33, Critical: 2, Volume: 2.0GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "firewall"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 15,
+      "prompt": "TICK 15:\n\nF1 (Traffic):     337595 pps, Bandwidth: 88%, Top talker: 62706 pps\nF2 (Auth):        Login attempts/min: 95, Failed: 11, Lockouts: 1\nF3 (Endpoints):   Online: 431, Unpatched: 8, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 357, Blocked: 286, Top blocked: 60 hits\nF5 (Logs):        Errors/min: 11, Warnings: 34, Critical: 3, Volume: 1.9GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 16,
+      "prompt": "TICK 16:\n\nF1 (Traffic):     53026 pps, Bandwidth: 57%, Top talker: 1764 pps\nF2 (Auth):        Login attempts/min: 98, Failed: 13, Lockouts: 2\nF3 (Endpoints):   Online: 428, Unpatched: 7, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 40, Blocked: 4, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 10, Warnings: 36, Critical: 3, Volume: 2.0GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 17,
+      "prompt": "TICK 17:\n\nF1 (Traffic):     54542 pps, Bandwidth: 57%, Top talker: 1677 pps\nF2 (Auth):        Login attempts/min: 94, Failed: 14, Lockouts: 2\nF3 (Endpoints):   Online: 427, Unpatched: 6, Compliance: 95%\nF4 (Firewall):    Rules triggered/min: 35, Blocked: 6, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 11, Warnings: 35, Critical: 3, Volume: 2.1GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 18,
+      "prompt": "TICK 18:\n\nF1 (Traffic):     253303 pps, Bandwidth: 90%, Top talker: 86531 pps\nF2 (Auth):        Login attempts/min: 102, Failed: 14, Lockouts: 1\nF3 (Endpoints):   Online: 284, Unpatched: 58, Compliance: 71%\nF4 (Firewall):    Rules triggered/min: 35, Blocked: 8, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 12, Warnings: 36, Critical: 4, Volume: 1.9GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "endpoints"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 19,
+      "prompt": "TICK 19:\n\nF1 (Traffic):     57068 pps, Bandwidth: 55%, Top talker: 1707 pps\nF2 (Auth):        Login attempts/min: 930, Failed: 160, Lockouts: 47\nF3 (Endpoints):   Online: 422, Unpatched: 9, Compliance: 95%\nF4 (Firewall):    Rules triggered/min: 36, Blocked: 10, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 14, Warnings: 34, Critical: 3, Volume: 1.9GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 20,
+      "prompt": "TICK 20:\n\nF1 (Traffic):     174229 pps, Bandwidth: 88%, Top talker: 92277 pps\nF2 (Auth):        Login attempts/min: 99, Failed: 15, Lockouts: 2\nF3 (Endpoints):   Online: 427, Unpatched: 8, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 13, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 12, Warnings: 33, Critical: 4, Volume: 2.0GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 21,
+      "prompt": "TICK 21:\n\nF1 (Traffic):     213626 pps, Bandwidth: 92%, Top talker: 47477 pps\nF2 (Auth):        Login attempts/min: 91, Failed: 16, Lockouts: 2\nF3 (Endpoints):   Online: 432, Unpatched: 10, Compliance: 95%\nF4 (Firewall):    Rules triggered/min: 39, Blocked: 13, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 11, Warnings: 31, Critical: 5, Volume: 2.1GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 22,
+      "prompt": "TICK 22:\n\nF1 (Traffic):     279624 pps, Bandwidth: 98%, Top talker: 66347 pps\nF2 (Auth):        Login attempts/min: 1567, Failed: 174, Lockouts: 50\nF3 (Endpoints):   Online: 432, Unpatched: 11, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 42, Blocked: 13, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 12, Warnings: 29, Critical: 6, Volume: 2.2GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 3, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth",
+          "threats"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 23,
+      "prompt": "TICK 23:\n\nF1 (Traffic):     451827 pps, Bandwidth: 91%, Top talker: 92518 pps\nF2 (Auth):        Login attempts/min: 89, Failed: 17, Lockouts: 2\nF3 (Endpoints):   Online: 430, Unpatched: 12, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 39, Blocked: 15, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 10, Warnings: 29, Critical: 6, Volume: 2.1GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 4, CVE alerts: 11\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "threats"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 24,
+      "prompt": "TICK 24:\n\nF1 (Traffic):     445903 pps, Bandwidth: 95%, Top talker: 33552 pps\nF2 (Auth):        Login attempts/min: 96, Failed: 19, Lockouts: 3\nF3 (Endpoints):   Online: 309, Unpatched: 60, Compliance: 70%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 15, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 84, Warnings: 146, Critical: 19, Volume: 8.6GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "endpoints",
+          "logs"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 25,
+      "prompt": "TICK 25:\n\nF1 (Traffic):     59759 pps, Bandwidth: 61%, Top talker: 2003 pps\nF2 (Auth):        Login attempts/min: 100, Failed: 19, Lockouts: 3\nF3 (Endpoints):   Online: 429, Unpatched: 13, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 37, Blocked: 18, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 9, Warnings: 26, Critical: 7, Volume: 2.2GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 26,
+      "prompt": "TICK 26:\n\nF1 (Traffic):     346768 pps, Bandwidth: 91%, Top talker: 55995 pps\nF2 (Auth):        Login attempts/min: 97, Failed: 18, Lockouts: 3\nF3 (Endpoints):   Online: 434, Unpatched: 11, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 35, Blocked: 18, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 69, Warnings: 126, Critical: 12, Volume: 16.4GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "logs"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 27,
+      "prompt": "TICK 27:\n\nF1 (Traffic):     423545 pps, Bandwidth: 95%, Top talker: 65400 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 16, Lockouts: 4\nF3 (Endpoints):   Online: 429, Unpatched: 11, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 36, Blocked: 20, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 7, Warnings: 25, Critical: 9, Volume: 2.1GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 28,
+      "prompt": "TICK 28:\n\nF1 (Traffic):     57599 pps, Bandwidth: 68%, Top talker: 2106 pps\nF2 (Auth):        Login attempts/min: 1029, Failed: 137, Lockouts: 27\nF3 (Endpoints):   Online: 433, Unpatched: 11, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 34, Blocked: 23, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 7, Warnings: 25, Critical: 8, Volume: 2.2GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 29,
+      "prompt": "TICK 29:\n\nF1 (Traffic):     59204 pps, Bandwidth: 69%, Top talker: 2265 pps\nF2 (Auth):        Login attempts/min: 1505, Failed: 164, Lockouts: 11\nF3 (Endpoints):   Online: 436, Unpatched: 10, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 32, Blocked: 25, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 8, Warnings: 26, Critical: 7, Volume: 2.3GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 3, CVE alerts: 11\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 30,
+      "prompt": "TICK 30:\n\nF1 (Traffic):     403859 pps, Bandwidth: 89%, Top talker: 98765 pps\nF2 (Auth):        Login attempts/min: 1722, Failed: 122, Lockouts: 16\nF3 (Endpoints):   Online: 439, Unpatched: 10, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 35, Blocked: 24, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 9, Warnings: 25, Critical: 7, Volume: 2.2GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 31,
+      "prompt": "TICK 31:\n\nF1 (Traffic):     59868 pps, Bandwidth: 69%, Top talker: 2313 pps\nF2 (Auth):        Login attempts/min: 107, Failed: 20, Lockouts: 3\nF3 (Endpoints):   Online: 438, Unpatched: 8, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 22, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 7, Warnings: 22, Critical: 8, Volume: 2.1GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 32,
+      "prompt": "TICK 32:\n\nF1 (Traffic):     386199 pps, Bandwidth: 99%, Top talker: 88028 pps\nF2 (Auth):        Login attempts/min: 112, Failed: 18, Lockouts: 2\nF3 (Endpoints):   Online: 439, Unpatched: 9, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 42, Blocked: 24, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 6, Warnings: 20, Critical: 9, Volume: 2.3GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 33,
+      "prompt": "TICK 33:\n\nF1 (Traffic):     57840 pps, Bandwidth: 69%, Top talker: 2343 pps\nF2 (Auth):        Login attempts/min: 1090, Failed: 122, Lockouts: 39\nF3 (Endpoints):   Online: 443, Unpatched: 7, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 27, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 5, Warnings: 19, Critical: 10, Volume: 2.1GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 4, CVE alerts: 15\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 34,
+      "prompt": "TICK 34:\n\nF1 (Traffic):     58255 pps, Bandwidth: 71%, Top talker: 2244 pps\nF2 (Auth):        Login attempts/min: 118, Failed: 16, Lockouts: 4\nF3 (Endpoints):   Online: 441, Unpatched: 6, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 35, Blocked: 24, Top blocked: 4 hits\nF5 (Logs):        Errors/min: 4, Warnings: 22, Critical: 10, Volume: 2.1GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 35,
+      "prompt": "TICK 35:\n\nF1 (Traffic):     58048 pps, Bandwidth: 68%, Top talker: 2350 pps\nF2 (Auth):        Login attempts/min: 109, Failed: 17, Lockouts: 5\nF3 (Endpoints):   Online: 441, Unpatched: 8, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 30, Blocked: 21, Top blocked: 3 hits\nF5 (Logs):        Errors/min: 6, Warnings: 23, Critical: 9, Volume: 2.3GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 36,
+      "prompt": "TICK 36:\n\nF1 (Traffic):     169239 pps, Bandwidth: 92%, Top talker: 41542 pps\nF2 (Auth):        Login attempts/min: 114, Failed: 15, Lockouts: 5\nF3 (Endpoints):   Online: 441, Unpatched: 9, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 405, Blocked: 489, Top blocked: 190 hits\nF5 (Logs):        Errors/min: 5, Warnings: 22, Critical: 9, Volume: 2.4GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 37,
+      "prompt": "TICK 37:\n\nF1 (Traffic):     57769 pps, Bandwidth: 65%, Top talker: 2670 pps\nF2 (Auth):        Login attempts/min: 748, Failed: 57, Lockouts: 50\nF3 (Endpoints):   Online: 446, Unpatched: 11, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 31, Blocked: 20, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 7, Warnings: 21, Critical: 10, Volume: 2.5GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 38,
+      "prompt": "TICK 38:\n\nF1 (Traffic):     225834 pps, Bandwidth: 91%, Top talker: 54983 pps\nF2 (Auth):        Login attempts/min: 111, Failed: 17, Lockouts: 5\nF3 (Endpoints):   Online: 441, Unpatched: 13, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 27, Blocked: 18, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 8, Warnings: 18, Critical: 10, Volume: 2.6GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 39,
+      "prompt": "TICK 39:\n\nF1 (Traffic):     60037 pps, Bandwidth: 69%, Top talker: 2652 pps\nF2 (Auth):        Login attempts/min: 1432, Failed: 132, Lockouts: 22\nF3 (Endpoints):   Online: 442, Unpatched: 13, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 26, Blocked: 21, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 8, Warnings: 20, Critical: 10, Volume: 2.7GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 40,
+      "prompt": "TICK 40:\n\nF1 (Traffic):     389561 pps, Bandwidth: 85%, Top talker: 48894 pps\nF2 (Auth):        Login attempts/min: 107, Failed: 14, Lockouts: 5\nF3 (Endpoints):   Online: 437, Unpatched: 13, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 28, Blocked: 23, Top blocked: 1 hits\nF5 (Logs):        Errors/min: 9, Warnings: 22, Critical: 10, Volume: 2.9GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 41,
+      "prompt": "TICK 41:\n\nF1 (Traffic):     60572 pps, Bandwidth: 70%, Top talker: 2879 pps\nF2 (Auth):        Login attempts/min: 101, Failed: 12, Lockouts: 5\nF3 (Endpoints):   Online: 436, Unpatched: 13, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 29, Blocked: 25, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 9, Warnings: 25, Critical: 10, Volume: 3.0GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 42,
+      "prompt": "TICK 42:\n\nF1 (Traffic):     61375 pps, Bandwidth: 69%, Top talker: 2795 pps\nF2 (Auth):        Login attempts/min: 661, Failed: 147, Lockouts: 49\nF3 (Endpoints):   Online: 441, Unpatched: 11, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 26, Blocked: 27, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 7, Warnings: 22, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 43,
+      "prompt": "TICK 43:\n\nF1 (Traffic):     331175 pps, Bandwidth: 94%, Top talker: 69210 pps\nF2 (Auth):        Login attempts/min: 1808, Failed: 158, Lockouts: 26\nF3 (Endpoints):   Online: 443, Unpatched: 11, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 25, Blocked: 29, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 8, Warnings: 21, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 44,
+      "prompt": "TICK 44:\n\nF1 (Traffic):     61410 pps, Bandwidth: 65%, Top talker: 2845 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 10, Lockouts: 2\nF3 (Endpoints):   Online: 444, Unpatched: 13, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 29, Blocked: 28, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 6, Warnings: 24, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 45,
+      "prompt": "TICK 45:\n\nF1 (Traffic):     63108 pps, Bandwidth: 64%, Top talker: 3042 pps\nF2 (Auth):        Login attempts/min: 103, Failed: 12, Lockouts: 2\nF3 (Endpoints):   Online: 338, Unpatched: 66, Compliance: 75%\nF4 (Firewall):    Rules triggered/min: 28, Blocked: 30, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 4, Warnings: 26, Critical: 10, Volume: 2.9GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 46,
+      "prompt": "TICK 46:\n\nF1 (Traffic):     64697 pps, Bandwidth: 63%, Top talker: 3113 pps\nF2 (Auth):        Login attempts/min: 109, Failed: 12, Lockouts: 1\nF3 (Endpoints):   Online: 441, Unpatched: 13, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 28, Blocked: 33, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 5, Warnings: 23, Critical: 9, Volume: 3.0GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 47,
+      "prompt": "TICK 47:\n\nF1 (Traffic):     62754 pps, Bandwidth: 62%, Top talker: 3187 pps\nF2 (Auth):        Login attempts/min: 102, Failed: 13, Lockouts: 1\nF3 (Endpoints):   Online: 446, Unpatched: 13, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 29, Blocked: 36, Top blocked: 0 hits\nF5 (Logs):        Errors/min: 3, Warnings: 25, Critical: 8, Volume: 3.0GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 48,
+      "prompt": "TICK 48:\n\nF1 (Traffic):     63413 pps, Bandwidth: 62%, Top talker: 3046 pps\nF2 (Auth):        Login attempts/min: 96, Failed: 11, Lockouts: 0\nF3 (Endpoints):   Online: 445, Unpatched: 14, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 450, Blocked: 415, Top blocked: 154 hits\nF5 (Logs):        Errors/min: 2, Warnings: 25, Critical: 8, Volume: 2.9GB\nF6 (Threats):     IOC matches: 13, Level: CRITICAL, Active campaigns: 4, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "threats"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 49,
+      "prompt": "TICK 49:\n\nF1 (Traffic):     63229 pps, Bandwidth: 62%, Top talker: 2966 pps\nF2 (Auth):        Login attempts/min: 97, Failed: 9, Lockouts: 1\nF3 (Endpoints):   Online: 445, Unpatched: 16, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 264, Blocked: 389, Top blocked: 102 hits\nF5 (Logs):        Errors/min: 2, Warnings: 23, Critical: 7, Volume: 3.1GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 50,
+      "prompt": "TICK 50:\n\nF1 (Traffic):     61510 pps, Bandwidth: 65%, Top talker: 3157 pps\nF2 (Auth):        Login attempts/min: 104, Failed: 8, Lockouts: 2\nF3 (Endpoints):   Online: 260, Unpatched: 51, Compliance: 61%\nF4 (Firewall):    Rules triggered/min: 22, Blocked: 34, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 0, Warnings: 22, Critical: 6, Volume: 3.3GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 2, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats",
+          "endpoints"
+        ],
+        "correct_action": "isolate_endpoint",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 51,
+      "prompt": "TICK 51:\n\nF1 (Traffic):     59574 pps, Bandwidth: 63%, Top talker: 3092 pps\nF2 (Auth):        Login attempts/min: 563, Failed: 65, Lockouts: 40\nF3 (Endpoints):   Online: 444, Unpatched: 17, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 18, Blocked: 34, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 0, Warnings: 23, Critical: 7, Volume: 3.1GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 52,
+      "prompt": "TICK 52:\n\nF1 (Traffic):     61044 pps, Bandwidth: 63%, Top talker: 3110 pps\nF2 (Auth):        Login attempts/min: 88, Failed: 8, Lockouts: 4\nF3 (Endpoints):   Online: 446, Unpatched: 15, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 18, Blocked: 35, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 0, Warnings: 21, Critical: 7, Volume: 3.1GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 53,
+      "prompt": "TICK 53:\n\nF1 (Traffic):     62292 pps, Bandwidth: 65%, Top talker: 2968 pps\nF2 (Auth):        Login attempts/min: 98, Failed: 10, Lockouts: 5\nF3 (Endpoints):   Online: 444, Unpatched: 16, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 16, Blocked: 35, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 1, Warnings: 21, Critical: 7, Volume: 3.2GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 5, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 54,
+      "prompt": "TICK 54:\n\nF1 (Traffic):     402806 pps, Bandwidth: 88%, Top talker: 44184 pps\nF2 (Auth):        Login attempts/min: 92, Failed: 12, Lockouts: 4\nF3 (Endpoints):   Online: 448, Unpatched: 18, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 379, Blocked: 384, Top blocked: 144 hits\nF5 (Logs):        Errors/min: 2, Warnings: 20, Critical: 8, Volume: 3.4GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "firewall"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 55,
+      "prompt": "TICK 55:\n\nF1 (Traffic):     446915 pps, Bandwidth: 95%, Top talker: 82531 pps\nF2 (Auth):        Login attempts/min: 100, Failed: 11, Lockouts: 4\nF3 (Endpoints):   Online: 451, Unpatched: 20, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 21, Blocked: 39, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 67, Warnings: 289, Critical: 9, Volume: 15.6GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "logs"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 56,
+      "prompt": "TICK 56:\n\nF1 (Traffic):     381758 pps, Bandwidth: 91%, Top talker: 65804 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 10, Lockouts: 4\nF3 (Endpoints):   Online: 452, Unpatched: 21, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 18, Blocked: 38, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 0, Warnings: 24, Critical: 10, Volume: 3.5GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 57,
+      "prompt": "TICK 57:\n\nF1 (Traffic):     58818 pps, Bandwidth: 70%, Top talker: 3144 pps\nF2 (Auth):        Login attempts/min: 99, Failed: 10, Lockouts: 4\nF3 (Endpoints):   Online: 327, Unpatched: 65, Compliance: 50%\nF4 (Firewall):    Rules triggered/min: 228, Blocked: 103, Top blocked: 102 hits\nF5 (Logs):        Errors/min: 127, Warnings: 296, Critical: 11, Volume: 9.6GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs",
+          "endpoints"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 58,
+      "prompt": "TICK 58:\n\nF1 (Traffic):     59877 pps, Bandwidth: 70%, Top talker: 3033 pps\nF2 (Auth):        Login attempts/min: 93, Failed: 11, Lockouts: 5\nF3 (Endpoints):   Online: 446, Unpatched: 23, Compliance: 100%\nF4 (Firewall):    Rules triggered/min: 28, Blocked: 42, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 0, Warnings: 26, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 59,
+      "prompt": "TICK 59:\n\nF1 (Traffic):     58348 pps, Bandwidth: 70%, Top talker: 2843 pps\nF2 (Auth):        Login attempts/min: 93, Failed: 10, Lockouts: 6\nF3 (Endpoints):   Online: 448, Unpatched: 23, Compliance: 99%\nF4 (Firewall):    Rules triggered/min: 29, Blocked: 45, Top blocked: 4 hits\nF5 (Logs):        Errors/min: 185, Warnings: 298, Critical: 11, Volume: 12.2GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 60,
+      "prompt": "TICK 60:\n\nF1 (Traffic):     59327 pps, Bandwidth: 73%, Top talker: 2973 pps\nF2 (Auth):        Login attempts/min: 87, Failed: 9, Lockouts: 5\nF3 (Endpoints):   Online: 445, Unpatched: 23, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 26, Blocked: 46, Top blocked: 3 hits\nF5 (Logs):        Errors/min: 0, Warnings: 24, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 61,
+      "prompt": "TICK 61:\n\nF1 (Traffic):     59896 pps, Bandwidth: 72%, Top talker: 2850 pps\nF2 (Auth):        Login attempts/min: 91, Failed: 7, Lockouts: 5\nF3 (Endpoints):   Online: 447, Unpatched: 23, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 30, Blocked: 43, Top blocked: 3 hits\nF5 (Logs):        Errors/min: 148, Warnings: 248, Critical: 19, Volume: 14.7GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 62,
+      "prompt": "TICK 62:\n\nF1 (Traffic):     469713 pps, Bandwidth: 87%, Top talker: 77696 pps\nF2 (Auth):        Login attempts/min: 95, Failed: 9, Lockouts: 6\nF3 (Endpoints):   Online: 299, Unpatched: 97, Compliance: 59%\nF4 (Firewall):    Rules triggered/min: 32, Blocked: 44, Top blocked: 2 hits\nF5 (Logs):        Errors/min: 0, Warnings: 21, Critical: 9, Volume: 3.2GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "endpoints"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 63,
+      "prompt": "TICK 63:\n\nF1 (Traffic):     60813 pps, Bandwidth: 77%, Top talker: 2644 pps\nF2 (Auth):        Login attempts/min: 104, Failed: 7, Lockouts: 7\nF3 (Endpoints):   Online: 450, Unpatched: 23, Compliance: 98%\nF4 (Firewall):    Rules triggered/min: 400, Blocked: 166, Top blocked: 71 hits\nF5 (Logs):        Errors/min: 1, Warnings: 20, Critical: 9, Volume: 3.3GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 64,
+      "prompt": "TICK 64:\n\nF1 (Traffic):     416175 pps, Bandwidth: 97%, Top talker: 99013 pps\nF2 (Auth):        Login attempts/min: 1199, Failed: 174, Lockouts: 22\nF3 (Endpoints):   Online: 455, Unpatched: 25, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 37, Blocked: 43, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 3, Warnings: 19, Critical: 8, Volume: 3.2GB\nF6 (Threats):     IOC matches: 12, Level: CRITICAL, Active campaigns: 3, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats",
+          "traffic"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 65,
+      "prompt": "TICK 65:\n\nF1 (Traffic):     58235 pps, Bandwidth: 80%, Top talker: 2608 pps\nF2 (Auth):        Login attempts/min: 123, Failed: 6, Lockouts: 7\nF3 (Endpoints):   Online: 456, Unpatched: 24, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 34, Blocked: 46, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 2, Warnings: 21, Critical: 8, Volume: 3.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 66,
+      "prompt": "TICK 66:\n\nF1 (Traffic):     420485 pps, Bandwidth: 98%, Top talker: 46341 pps\nF2 (Auth):        Login attempts/min: 119, Failed: 6, Lockouts: 8\nF3 (Endpoints):   Online: 460, Unpatched: 25, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 33, Blocked: 49, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 4, Warnings: 22, Critical: 8, Volume: 3.2GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 67,
+      "prompt": "TICK 67:\n\nF1 (Traffic):     490766 pps, Bandwidth: 90%, Top talker: 49142 pps\nF2 (Auth):        Login attempts/min: 114, Failed: 6, Lockouts: 8\nF3 (Endpoints):   Online: 463, Unpatched: 24, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 270, Blocked: 119, Top blocked: 123 hits\nF5 (Logs):        Errors/min: 4, Warnings: 19, Critical: 8, Volume: 3.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "firewall"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 68,
+      "prompt": "TICK 68:\n\nF1 (Traffic):     58138 pps, Bandwidth: 79%, Top talker: 2879 pps\nF2 (Auth):        Login attempts/min: 628, Failed: 78, Lockouts: 41\nF3 (Endpoints):   Online: 204, Unpatched: 126, Compliance: 67%\nF4 (Firewall):    Rules triggered/min: 24, Blocked: 46, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 3, Warnings: 20, Critical: 9, Volume: 3.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "endpoints"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 69,
+      "prompt": "TICK 69:\n\nF1 (Traffic):     396486 pps, Bandwidth: 85%, Top talker: 80709 pps\nF2 (Auth):        Login attempts/min: 105, Failed: 6, Lockouts: 8\nF3 (Endpoints):   Online: 468, Unpatched: 20, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 24, Blocked: 44, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 4, Warnings: 18, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 70,
+      "prompt": "TICK 70:\n\nF1 (Traffic):     58255 pps, Bandwidth: 79%, Top talker: 3155 pps\nF2 (Auth):        Login attempts/min: 95, Failed: 6, Lockouts: 7\nF3 (Endpoints):   Online: 468, Unpatched: 19, Compliance: 97%\nF4 (Firewall):    Rules triggered/min: 29, Blocked: 46, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 6, Warnings: 20, Critical: 10, Volume: 3.0GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 71,
+      "prompt": "TICK 71:\n\nF1 (Traffic):     300004 pps, Bandwidth: 90%, Top talker: 36265 pps\nF2 (Auth):        Login attempts/min: 87, Failed: 7, Lockouts: 6\nF3 (Endpoints):   Online: 467, Unpatched: 18, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 329, Blocked: 118, Top blocked: 98 hits\nF5 (Logs):        Errors/min: 6, Warnings: 21, Critical: 10, Volume: 3.2GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 72,
+      "prompt": "TICK 72:\n\nF1 (Traffic):     56360 pps, Bandwidth: 81%, Top talker: 2887 pps\nF2 (Auth):        Login attempts/min: 88, Failed: 8, Lockouts: 6\nF3 (Endpoints):   Online: 469, Unpatched: 19, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 367, Blocked: 438, Top blocked: 125 hits\nF5 (Logs):        Errors/min: 6, Warnings: 24, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 73,
+      "prompt": "TICK 73:\n\nF1 (Traffic):     55615 pps, Bandwidth: 81%, Top talker: 2995 pps\nF2 (Auth):        Login attempts/min: 91, Failed: 7, Lockouts: 7\nF3 (Endpoints):   Online: 471, Unpatched: 19, Compliance: 96%\nF4 (Firewall):    Rules triggered/min: 19, Blocked: 45, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 8, Warnings: 24, Critical: 10, Volume: 3.2GB\nF6 (Threats):     IOC matches: 24, Level: CRITICAL, Active campaigns: 2, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 74,
+      "prompt": "TICK 74:\n\nF1 (Traffic):     53890 pps, Bandwidth: 79%, Top talker: 3193 pps\nF2 (Auth):        Login attempts/min: 101, Failed: 7, Lockouts: 7\nF3 (Endpoints):   Online: 472, Unpatched: 21, Compliance: 95%\nF4 (Firewall):    Rules triggered/min: 23, Blocked: 43, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 8, Warnings: 23, Critical: 10, Volume: 3.3GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 75,
+      "prompt": "TICK 75:\n\nF1 (Traffic):     53934 pps, Bandwidth: 80%, Top talker: 3191 pps\nF2 (Auth):        Login attempts/min: 108, Failed: 5, Lockouts: 7\nF3 (Endpoints):   Online: 216, Unpatched: 94, Compliance: 72%\nF4 (Firewall):    Rules triggered/min: 27, Blocked: 42, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 7, Warnings: 20, Critical: 9, Volume: 3.4GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 76,
+      "prompt": "TICK 76:\n\nF1 (Traffic):     54186 pps, Bandwidth: 81%, Top talker: 3139 pps\nF2 (Auth):        Login attempts/min: 107, Failed: 4, Lockouts: 8\nF3 (Endpoints):   Online: 476, Unpatched: 21, Compliance: 94%\nF4 (Firewall):    Rules triggered/min: 30, Blocked: 40, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 6, Warnings: 23, Critical: 8, Volume: 3.3GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 77,
+      "prompt": "TICK 77:\n\nF1 (Traffic):     52455 pps, Bandwidth: 80%, Top talker: 3142 pps\nF2 (Auth):        Login attempts/min: 754, Failed: 182, Lockouts: 19\nF3 (Endpoints):   Online: 477, Unpatched: 23, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 27, Blocked: 39, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 7, Warnings: 23, Critical: 9, Volume: 3.3GB\nF6 (Threats):     IOC matches: 14, Level: CRITICAL, Active campaigns: 3, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 78,
+      "prompt": "TICK 78:\n\nF1 (Traffic):     54283 pps, Bandwidth: 82%, Top talker: 3057 pps\nF2 (Auth):        Login attempts/min: 113, Failed: 8, Lockouts: 8\nF3 (Endpoints):   Online: 286, Unpatched: 142, Compliance: 69%\nF4 (Firewall):    Rules triggered/min: 32, Blocked: 40, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 93, Warnings: 143, Critical: 9, Volume: 15.9GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 79,
+      "prompt": "TICK 79:\n\nF1 (Traffic):     54591 pps, Bandwidth: 79%, Top talker: 2871 pps\nF2 (Auth):        Login attempts/min: 105, Failed: 6, Lockouts: 9\nF3 (Endpoints):   Online: 477, Unpatched: 23, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 30, Blocked: 43, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 7, Warnings: 26, Critical: 10, Volume: 3.1GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 80,
+      "prompt": "TICK 80:\n\nF1 (Traffic):     279980 pps, Bandwidth: 87%, Top talker: 42689 pps\nF2 (Auth):        Login attempts/min: 100, Failed: 7, Lockouts: 9\nF3 (Endpoints):   Online: 479, Unpatched: 24, Compliance: 92%\nF4 (Firewall):    Rules triggered/min: 30, Blocked: 44, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 7, Warnings: 29, Critical: 10, Volume: 3.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 81,
+      "prompt": "TICK 81:\n\nF1 (Traffic):     176497 pps, Bandwidth: 89%, Top talker: 94866 pps\nF2 (Auth):        Login attempts/min: 109, Failed: 8, Lockouts: 8\nF3 (Endpoints):   Online: 476, Unpatched: 24, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 30, Blocked: 42, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 8, Warnings: 30, Critical: 10, Volume: 3.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 82,
+      "prompt": "TICK 82:\n\nF1 (Traffic):     51543 pps, Bandwidth: 83%, Top talker: 2831 pps\nF2 (Auth):        Login attempts/min: 114, Failed: 8, Lockouts: 9\nF3 (Endpoints):   Online: 230, Unpatched: 129, Compliance: 71%\nF4 (Firewall):    Rules triggered/min: 27, Blocked: 41, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 9, Warnings: 29, Critical: 9, Volume: 3.0GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 83,
+      "prompt": "TICK 83:\n\nF1 (Traffic):     50070 pps, Bandwidth: 80%, Top talker: 2832 pps\nF2 (Auth):        Login attempts/min: 115, Failed: 8, Lockouts: 10\nF3 (Endpoints):   Online: 300, Unpatched: 90, Compliance: 55%\nF4 (Firewall):    Rules triggered/min: 31, Blocked: 42, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 126, Warnings: 229, Critical: 15, Volume: 17.9GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "logs"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 84,
+      "prompt": "TICK 84:\n\nF1 (Traffic):     50250 pps, Bandwidth: 80%, Top talker: 2994 pps\nF2 (Auth):        Login attempts/min: 123, Failed: 8, Lockouts: 10\nF3 (Endpoints):   Online: 466, Unpatched: 21, Compliance: 92%\nF4 (Firewall):    Rules triggered/min: 36, Blocked: 39, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 13, Warnings: 25, Critical: 9, Volume: 2.9GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 85,
+      "prompt": "TICK 85:\n\nF1 (Traffic):     48460 pps, Bandwidth: 81%, Top talker: 3039 pps\nF2 (Auth):        Login attempts/min: 118, Failed: 10, Lockouts: 11\nF3 (Endpoints):   Online: 320, Unpatched: 102, Compliance: 66%\nF4 (Firewall):    Rules triggered/min: 41, Blocked: 37, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 15, Warnings: 27, Critical: 8, Volume: 2.8GB\nF6 (Threats):     IOC matches: 18, Level: CRITICAL, Active campaigns: 5, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats",
+          "endpoints"
+        ],
+        "correct_action": "isolate_endpoint",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 86,
+      "prompt": "TICK 86:\n\nF1 (Traffic):     49473 pps, Bandwidth: 83%, Top talker: 2870 pps\nF2 (Auth):        Login attempts/min: 112, Failed: 12, Lockouts: 10\nF3 (Endpoints):   Online: 473, Unpatched: 22, Compliance: 92%\nF4 (Firewall):    Rules triggered/min: 43, Blocked: 38, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 15, Warnings: 25, Critical: 8, Volume: 3.0GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 87,
+      "prompt": "TICK 87:\n\nF1 (Traffic):     48260 pps, Bandwidth: 81%, Top talker: 2812 pps\nF2 (Auth):        Login attempts/min: 119, Failed: 12, Lockouts: 9\nF3 (Endpoints):   Online: 472, Unpatched: 22, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 41, Blocked: 40, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 15, Warnings: 25, Critical: 8, Volume: 3.0GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 88,
+      "prompt": "TICK 88:\n\nF1 (Traffic):     49426 pps, Bandwidth: 84%, Top talker: 2686 pps\nF2 (Auth):        Login attempts/min: 962, Failed: 109, Lockouts: 13\nF3 (Endpoints):   Online: 468, Unpatched: 22, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 39, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 75, Warnings: 184, Critical: 18, Volume: 16.6GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "logs"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 89,
+      "prompt": "TICK 89:\n\nF1 (Traffic):     47837 pps, Bandwidth: 86%, Top talker: 2880 pps\nF2 (Auth):        Login attempts/min: 112, Failed: 8, Lockouts: 10\nF3 (Endpoints):   Online: 465, Unpatched: 23, Compliance: 94%\nF4 (Firewall):    Rules triggered/min: 48, Blocked: 39, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 14, Warnings: 22, Critical: 9, Volume: 3.0GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 5, CVE alerts: 12\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 90,
+      "prompt": "TICK 90:\n\nF1 (Traffic):     46600 pps, Bandwidth: 88%, Top talker: 2828 pps\nF2 (Auth):        Login attempts/min: 103, Failed: 6, Lockouts: 10\nF3 (Endpoints):   Online: 286, Unpatched: 73, Compliance: 50%\nF4 (Firewall):    Rules triggered/min: 48, Blocked: 38, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 16, Warnings: 23, Critical: 9, Volume: 3.2GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 91,
+      "prompt": "TICK 91:\n\nF1 (Traffic):     47838 pps, Bandwidth: 87%, Top talker: 2918 pps\nF2 (Auth):        Login attempts/min: 99, Failed: 5, Lockouts: 11\nF3 (Endpoints):   Online: 474, Unpatched: 26, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 51, Blocked: 37, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 17, Warnings: 25, Critical: 8, Volume: 3.1GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 92,
+      "prompt": "TICK 92:\n\nF1 (Traffic):     47074 pps, Bandwidth: 88%, Top talker: 3088 pps\nF2 (Auth):        Login attempts/min: 1479, Failed: 89, Lockouts: 39\nF3 (Endpoints):   Online: 256, Unpatched: 87, Compliance: 61%\nF4 (Firewall):    Rules triggered/min: 49, Blocked: 34, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 129, Warnings: 263, Critical: 8, Volume: 19.0GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "endpoints",
+          "auth"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 93,
+      "prompt": "TICK 93:\n\nF1 (Traffic):     48136 pps, Bandwidth: 89%, Top talker: 3079 pps\nF2 (Auth):        Login attempts/min: 836, Failed: 133, Lockouts: 43\nF3 (Endpoints):   Online: 482, Unpatched: 25, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 54, Blocked: 37, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 16, Warnings: 25, Critical: 7, Volume: 3.1GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 94,
+      "prompt": "TICK 94:\n\nF1 (Traffic):     47945 pps, Bandwidth: 86%, Top talker: 3227 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 7, Lockouts: 11\nF3 (Endpoints):   Online: 308, Unpatched: 59, Compliance: 51%\nF4 (Firewall):    Rules triggered/min: 49, Blocked: 37, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 138, Warnings: 238, Critical: 7, Volume: 19.9GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "logs"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 95,
+      "prompt": "TICK 95:\n\nF1 (Traffic):     49773 pps, Bandwidth: 83%, Top talker: 3268 pps\nF2 (Auth):        Login attempts/min: 760, Failed: 107, Lockouts: 10\nF3 (Endpoints):   Online: 475, Unpatched: 26, Compliance: 94%\nF4 (Firewall):    Rules triggered/min: 211, Blocked: 252, Top blocked: 168 hits\nF5 (Logs):        Errors/min: 19, Warnings: 25, Critical: 7, Volume: 3.1GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "firewall"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 96,
+      "prompt": "TICK 96:\n\nF1 (Traffic):     50531 pps, Bandwidth: 85%, Top talker: 3346 pps\nF2 (Auth):        Login attempts/min: 100, Failed: 9, Lockouts: 11\nF3 (Endpoints):   Online: 473, Unpatched: 25, Compliance: 94%\nF4 (Firewall):    Rules triggered/min: 54, Blocked: 35, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 164, Warnings: 162, Critical: 6, Volume: 16.9GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 97,
+      "prompt": "TICK 97:\n\nF1 (Traffic):     50178 pps, Bandwidth: 85%, Top talker: 3265 pps\nF2 (Auth):        Login attempts/min: 1711, Failed: 94, Lockouts: 50\nF3 (Endpoints):   Online: 470, Unpatched: 27, Compliance: 94%\nF4 (Firewall):    Rules triggered/min: 52, Blocked: 38, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 18, Warnings: 28, Critical: 7, Volume: 3.0GB\nF6 (Threats):     IOC matches: 18, Level: CRITICAL, Active campaigns: 2, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 98,
+      "prompt": "TICK 98:\n\nF1 (Traffic):     353643 pps, Bandwidth: 88%, Top talker: 63422 pps\nF2 (Auth):        Login attempts/min: 109, Failed: 10, Lockouts: 10\nF3 (Endpoints):   Online: 220, Unpatched: 76, Compliance: 60%\nF4 (Firewall):    Rules triggered/min: 51, Blocked: 38, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 20, Warnings: 28, Critical: 6, Volume: 3.1GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "endpoints"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 99,
+      "prompt": "TICK 99:\n\nF1 (Traffic):     53811 pps, Bandwidth: 87%, Top talker: 3397 pps\nF2 (Auth):        Login attempts/min: 1875, Failed: 193, Lockouts: 23\nF3 (Endpoints):   Online: 469, Unpatched: 26, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 52, Blocked: 40, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 22, Warnings: 25, Critical: 5, Volume: 3.0GB\nF6 (Threats):     IOC matches: 20, Level: CRITICAL, Active campaigns: 4, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 100,
+      "prompt": "TICK 100:\n\nF1 (Traffic):     51873 pps, Bandwidth: 85%, Top talker: 3294 pps\nF2 (Auth):        Login attempts/min: 94, Failed: 13, Lockouts: 10\nF3 (Endpoints):   Online: 473, Unpatched: 25, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 363, Blocked: 204, Top blocked: 144 hits\nF5 (Logs):        Errors/min: 22, Warnings: 25, Critical: 5, Volume: 3.0GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 101,
+      "prompt": "TICK 101:\n\nF1 (Traffic):     51154 pps, Bandwidth: 85%, Top talker: 3117 pps\nF2 (Auth):        Login attempts/min: 102, Failed: 12, Lockouts: 11\nF3 (Endpoints):   Online: 470, Unpatched: 23, Compliance: 93%\nF4 (Firewall):    Rules triggered/min: 53, Blocked: 42, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 23, Warnings: 24, Critical: 4, Volume: 2.9GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 102,
+      "prompt": "TICK 102:\n\nF1 (Traffic):     264672 pps, Bandwidth: 93%, Top talker: 89770 pps\nF2 (Auth):        Login attempts/min: 1264, Failed: 65, Lockouts: 49\nF3 (Endpoints):   Online: 323, Unpatched: 131, Compliance: 71%\nF4 (Firewall):    Rules triggered/min: 56, Blocked: 42, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 174, Warnings: 101, Critical: 5, Volume: 14.4GB\nF6 (Threats):     IOC matches: 18, Level: CRITICAL, Active campaigns: 2, CVE alerts: 13\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth",
+          "endpoints",
+          "logs",
+          "threats"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 103,
+      "prompt": "TICK 103:\n\nF1 (Traffic):     52113 pps, Bandwidth: 86%, Top talker: 3319 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 11, Lockouts: 11\nF3 (Endpoints):   Online: 475, Unpatched: 23, Compliance: 91%\nF4 (Firewall):    Rules triggered/min: 52, Blocked: 39, Top blocked: 13 hits\nF5 (Logs):        Errors/min: 24, Warnings: 24, Critical: 2, Volume: 2.9GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 104,
+      "prompt": "TICK 104:\n\nF1 (Traffic):     51038 pps, Bandwidth: 85%, Top talker: 3469 pps\nF2 (Auth):        Login attempts/min: 98, Failed: 9, Lockouts: 10\nF3 (Endpoints):   Online: 476, Unpatched: 24, Compliance: 91%\nF4 (Firewall):    Rules triggered/min: 308, Blocked: 454, Top blocked: 195 hits\nF5 (Logs):        Errors/min: 22, Warnings: 26, Critical: 1, Volume: 2.7GB\nF6 (Threats):     IOC matches: 20, Level: CRITICAL, Active campaigns: 2, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "threats"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 105,
+      "prompt": "TICK 105:\n\nF1 (Traffic):     51841 pps, Bandwidth: 84%, Top talker: 3547 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 7, Lockouts: 9\nF3 (Endpoints):   Online: 476, Unpatched: 22, Compliance: 90%\nF4 (Firewall):    Rules triggered/min: 59, Blocked: 37, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 20, Warnings: 25, Critical: 0, Volume: 2.7GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 106,
+      "prompt": "TICK 106:\n\nF1 (Traffic):     50162 pps, Bandwidth: 85%, Top talker: 3728 pps\nF2 (Auth):        Login attempts/min: 107, Failed: 5, Lockouts: 8\nF3 (Endpoints):   Online: 477, Unpatched: 21, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 451, Blocked: 216, Top blocked: 141 hits\nF5 (Logs):        Errors/min: 191, Warnings: 210, Critical: 17, Volume: 10.2GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 107,
+      "prompt": "TICK 107:\n\nF1 (Traffic):     49718 pps, Bandwidth: 82%, Top talker: 3923 pps\nF2 (Auth):        Login attempts/min: 116, Failed: 5, Lockouts: 7\nF3 (Endpoints):   Online: 226, Unpatched: 115, Compliance: 63%\nF4 (Firewall):    Rules triggered/min: 213, Blocked: 145, Top blocked: 140 hits\nF5 (Logs):        Errors/min: 23, Warnings: 24, Critical: 0, Volume: 2.3GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "firewall"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 108,
+      "prompt": "TICK 108:\n\nF1 (Traffic):     49988 pps, Bandwidth: 79%, Top talker: 4028 pps\nF2 (Auth):        Login attempts/min: 125, Failed: 5, Lockouts: 7\nF3 (Endpoints):   Online: 468, Unpatched: 19, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 353, Blocked: 347, Top blocked: 69 hits\nF5 (Logs):        Errors/min: 142, Warnings: 163, Critical: 13, Volume: 16.7GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 109,
+      "prompt": "TICK 109:\n\nF1 (Traffic):     50018 pps, Bandwidth: 80%, Top talker: 4143 pps\nF2 (Auth):        Login attempts/min: 1315, Failed: 131, Lockouts: 28\nF3 (Endpoints):   Online: 465, Unpatched: 19, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 58, Blocked: 40, Top blocked: 13 hits\nF5 (Logs):        Errors/min: 26, Warnings: 25, Critical: 1, Volume: 2.3GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 110,
+      "prompt": "TICK 110:\n\nF1 (Traffic):     51028 pps, Bandwidth: 82%, Top talker: 4267 pps\nF2 (Auth):        Login attempts/min: 1918, Failed: 67, Lockouts: 36\nF3 (Endpoints):   Online: 465, Unpatched: 20, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 59, Blocked: 39, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 28, Warnings: 23, Critical: 2, Volume: 2.5GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 111,
+      "prompt": "TICK 111:\n\nF1 (Traffic):     51784 pps, Bandwidth: 82%, Top talker: 4138 pps\nF2 (Auth):        Login attempts/min: 136, Failed: 8, Lockouts: 4\nF3 (Endpoints):   Online: 464, Unpatched: 19, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 60, Blocked: 42, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 26, Warnings: 23, Critical: 3, Volume: 2.5GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 112,
+      "prompt": "TICK 112:\n\nF1 (Traffic):     265884 pps, Bandwidth: 92%, Top talker: 79036 pps\nF2 (Auth):        Login attempts/min: 1301, Failed: 168, Lockouts: 47\nF3 (Endpoints):   Online: 462, Unpatched: 19, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 65, Blocked: 43, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 28, Warnings: 25, Critical: 4, Volume: 2.6GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "auth"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 113,
+      "prompt": "TICK 113:\n\nF1 (Traffic):     54279 pps, Bandwidth: 86%, Top talker: 4089 pps\nF2 (Auth):        Login attempts/min: 146, Failed: 4, Lockouts: 3\nF3 (Endpoints):   Online: 315, Unpatched: 106, Compliance: 73%\nF4 (Firewall):    Rules triggered/min: 61, Blocked: 40, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 28, Warnings: 24, Critical: 4, Volume: 2.6GB\nF6 (Threats):     IOC matches: 20, Level: CRITICAL, Active campaigns: 5, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats",
+          "endpoints"
+        ],
+        "correct_action": "isolate_endpoint",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 114,
+      "prompt": "TICK 114:\n\nF1 (Traffic):     53508 pps, Bandwidth: 83%, Top talker: 4252 pps\nF2 (Auth):        Login attempts/min: 139, Failed: 2, Lockouts: 3\nF3 (Endpoints):   Online: 463, Unpatched: 17, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 58, Blocked: 42, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 30, Warnings: 22, Critical: 5, Volume: 2.5GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 115,
+      "prompt": "TICK 115:\n\nF1 (Traffic):     51627 pps, Bandwidth: 85%, Top talker: 4366 pps\nF2 (Auth):        Login attempts/min: 135, Failed: 3, Lockouts: 4\nF3 (Endpoints):   Online: 299, Unpatched: 90, Compliance: 69%\nF4 (Firewall):    Rules triggered/min: 56, Blocked: 40, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 28, Warnings: 23, Critical: 4, Volume: 2.6GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 116,
+      "prompt": "TICK 116:\n\nF1 (Traffic):     52130 pps, Bandwidth: 85%, Top talker: 4466 pps\nF2 (Auth):        Login attempts/min: 1677, Failed: 148, Lockouts: 37\nF3 (Endpoints):   Online: 466, Unpatched: 20, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 295, Blocked: 349, Top blocked: 187 hits\nF5 (Logs):        Errors/min: 30, Warnings: 24, Critical: 3, Volume: 2.7GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "firewall"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 117,
+      "prompt": "TICK 117:\n\nF1 (Traffic):     52970 pps, Bandwidth: 87%, Top talker: 4354 pps\nF2 (Auth):        Login attempts/min: 135, Failed: 2, Lockouts: 4\nF3 (Endpoints):   Online: 465, Unpatched: 19, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 61, Blocked: 45, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 32, Warnings: 21, Critical: 3, Volume: 2.9GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 118,
+      "prompt": "TICK 118:\n\nF1 (Traffic):     53878 pps, Bandwidth: 90%, Top talker: 4381 pps\nF2 (Auth):        Login attempts/min: 140, Failed: 1, Lockouts: 3\nF3 (Endpoints):   Online: 469, Unpatched: 17, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 387, Blocked: 377, Top blocked: 60 hits\nF5 (Logs):        Errors/min: 162, Warnings: 208, Critical: 11, Volume: 9.2GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 119,
+      "prompt": "TICK 119:\n\nF1 (Traffic):     55277 pps, Bandwidth: 92%, Top talker: 4565 pps\nF2 (Auth):        Login attempts/min: 137, Failed: 1, Lockouts: 2\nF3 (Endpoints):   Online: 471, Unpatched: 17, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 56, Blocked: 42, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 30, Warnings: 20, Critical: 4, Volume: 2.8GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 120,
+      "prompt": "TICK 120:\n\nF1 (Traffic):     55612 pps, Bandwidth: 91%, Top talker: 4637 pps\nF2 (Auth):        Login attempts/min: 135, Failed: 3, Lockouts: 3\nF3 (Endpoints):   Online: 233, Unpatched: 133, Compliance: 54%\nF4 (Firewall):    Rules triggered/min: 326, Blocked: 489, Top blocked: 150 hits\nF5 (Logs):        Errors/min: 84, Warnings: 115, Critical: 18, Volume: 19.9GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "endpoints",
+          "firewall"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 121,
+      "prompt": "TICK 121:\n\nF1 (Traffic):     55616 pps, Bandwidth: 89%, Top talker: 4732 pps\nF2 (Auth):        Login attempts/min: 145, Failed: 3, Lockouts: 4\nF3 (Endpoints):   Online: 291, Unpatched: 108, Compliance: 70%\nF4 (Firewall):    Rules triggered/min: 51, Blocked: 43, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 31, Warnings: 24, Critical: 6, Volume: 2.9GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 122,
+      "prompt": "TICK 122:\n\nF1 (Traffic):     57098 pps, Bandwidth: 86%, Top talker: 4805 pps\nF2 (Auth):        Login attempts/min: 147, Failed: 2, Lockouts: 4\nF3 (Endpoints):   Online: 316, Unpatched: 70, Compliance: 64%\nF4 (Firewall):    Rules triggered/min: 51, Blocked: 46, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 31, Warnings: 25, Critical: 7, Volume: 2.8GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 3, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "threats"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 123,
+      "prompt": "TICK 123:\n\nF1 (Traffic):     58711 pps, Bandwidth: 88%, Top talker: 4759 pps\nF2 (Auth):        Login attempts/min: 1563, Failed: 163, Lockouts: 10\nF3 (Endpoints):   Online: 287, Unpatched: 51, Compliance: 72%\nF4 (Firewall):    Rules triggered/min: 47, Blocked: 45, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 80, Warnings: 277, Critical: 18, Volume: 9.6GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "endpoints",
+          "logs"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 124,
+      "prompt": "TICK 124:\n\nF1 (Traffic):     57001 pps, Bandwidth: 86%, Top talker: 4755 pps\nF2 (Auth):        Login attempts/min: 134, Failed: 0, Lockouts: 2\nF3 (Endpoints):   Online: 472, Unpatched: 19, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 44, Blocked: 45, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 28, Warnings: 22, Critical: 9, Volume: 2.7GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 125,
+      "prompt": "TICK 125:\n\nF1 (Traffic):     56813 pps, Bandwidth: 89%, Top talker: 4666 pps\nF2 (Auth):        Login attempts/min: 126, Failed: 0, Lockouts: 1\nF3 (Endpoints):   Online: 468, Unpatched: 21, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 45, Blocked: 44, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 28, Warnings: 25, Critical: 8, Volume: 2.6GB\nF6 (Threats):     IOC matches: 14, Level: CRITICAL, Active campaigns: 6, CVE alerts: 14\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 126,
+      "prompt": "TICK 126:\n\nF1 (Traffic):     56900 pps, Bandwidth: 87%, Top talker: 4848 pps\nF2 (Auth):        Login attempts/min: 128, Failed: 0, Lockouts: 2\nF3 (Endpoints):   Online: 463, Unpatched: 20, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 41, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 29, Warnings: 27, Critical: 9, Volume: 2.4GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 127,
+      "prompt": "TICK 127:\n\nF1 (Traffic):     58024 pps, Bandwidth: 87%, Top talker: 5042 pps\nF2 (Auth):        Login attempts/min: 1367, Failed: 152, Lockouts: 15\nF3 (Endpoints):   Online: 459, Unpatched: 18, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 44, Blocked: 38, Top blocked: 3 hits\nF5 (Logs):        Errors/min: 30, Warnings: 28, Critical: 9, Volume: 2.5GB\nF6 (Threats):     IOC matches: 25, Level: CRITICAL, Active campaigns: 4, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 128,
+      "prompt": "TICK 128:\n\nF1 (Traffic):     58118 pps, Bandwidth: 85%, Top talker: 4921 pps\nF2 (Auth):        Login attempts/min: 781, Failed: 52, Lockouts: 20\nF3 (Endpoints):   Online: 463, Unpatched: 16, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 45, Blocked: 40, Top blocked: 2 hits\nF5 (Logs):        Errors/min: 177, Warnings: 233, Critical: 16, Volume: 14.2GB\nF6 (Threats):     IOC matches: 13, Level: CRITICAL, Active campaigns: 4, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "logs",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 129,
+      "prompt": "TICK 129:\n\nF1 (Traffic):     59189 pps, Bandwidth: 88%, Top talker: 4858 pps\nF2 (Auth):        Login attempts/min: 120, Failed: 0, Lockouts: 3\nF3 (Endpoints):   Online: 464, Unpatched: 16, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 41, Blocked: 39, Top blocked: 4 hits\nF5 (Logs):        Errors/min: 26, Warnings: 26, Critical: 8, Volume: 2.7GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 130,
+      "prompt": "TICK 130:\n\nF1 (Traffic):     57661 pps, Bandwidth: 86%, Top talker: 5037 pps\nF2 (Auth):        Login attempts/min: 126, Failed: 0, Lockouts: 2\nF3 (Endpoints):   Online: 459, Unpatched: 15, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 43, Blocked: 38, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 25, Warnings: 24, Critical: 7, Volume: 2.7GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 131,
+      "prompt": "TICK 131:\n\nF1 (Traffic):     460216 pps, Bandwidth: 92%, Top talker: 55614 pps\nF2 (Auth):        Login attempts/min: 132, Failed: 0, Lockouts: 1\nF3 (Endpoints):   Online: 457, Unpatched: 17, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 44, Blocked: 35, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 25, Warnings: 27, Critical: 7, Volume: 2.6GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 132,
+      "prompt": "TICK 132:\n\nF1 (Traffic):     59002 pps, Bandwidth: 86%, Top talker: 5087 pps\nF2 (Auth):        Login attempts/min: 129, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 458, Unpatched: 15, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 47, Blocked: 34, Top blocked: 4 hits\nF5 (Logs):        Errors/min: 25, Warnings: 24, Critical: 8, Volume: 2.6GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 133,
+      "prompt": "TICK 133:\n\nF1 (Traffic):     57585 pps, Bandwidth: 88%, Top talker: 5030 pps\nF2 (Auth):        Login attempts/min: 1304, Failed: 133, Lockouts: 30\nF3 (Endpoints):   Online: 461, Unpatched: 16, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 431, Blocked: 239, Top blocked: 109 hits\nF5 (Logs):        Errors/min: 69, Warnings: 134, Critical: 11, Volume: 17.4GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 134,
+      "prompt": "TICK 134:\n\nF1 (Traffic):     57979 pps, Bandwidth: 85%, Top talker: 4909 pps\nF2 (Auth):        Login attempts/min: 114, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 463, Unpatched: 16, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 280, Blocked: 451, Top blocked: 127 hits\nF5 (Logs):        Errors/min: 60, Warnings: 183, Critical: 11, Volume: 9.8GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 135,
+      "prompt": "TICK 135:\n\nF1 (Traffic):     59945 pps, Bandwidth: 84%, Top talker: 4911 pps\nF2 (Auth):        Login attempts/min: 120, Failed: 0, Lockouts: 1\nF3 (Endpoints):   Online: 221, Unpatched: 101, Compliance: 61%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 35, Top blocked: 3 hits\nF5 (Logs):        Errors/min: 28, Warnings: 23, Critical: 10, Volume: 2.4GB\nF6 (Threats):     IOC matches: 23, Level: CRITICAL, Active campaigns: 2, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "threats"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 136,
+      "prompt": "TICK 136:\n\nF1 (Traffic):     58209 pps, Bandwidth: 82%, Top talker: 5041 pps\nF2 (Auth):        Login attempts/min: 124, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 462, Unpatched: 14, Compliance: 84%\nF4 (Firewall):    Rules triggered/min: 40, Blocked: 32, Top blocked: 2 hits\nF5 (Logs):        Errors/min: 58, Warnings: 265, Critical: 12, Volume: 11.5GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 137,
+      "prompt": "TICK 137:\n\nF1 (Traffic):     57896 pps, Bandwidth: 83%, Top talker: 5086 pps\nF2 (Auth):        Login attempts/min: 115, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 463, Unpatched: 13, Compliance: 84%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 34, Top blocked: 4 hits\nF5 (Logs):        Errors/min: 29, Warnings: 25, Critical: 10, Volume: 2.5GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 138,
+      "prompt": "TICK 138:\n\nF1 (Traffic):     56632 pps, Bandwidth: 80%, Top talker: 5049 pps\nF2 (Auth):        Login attempts/min: 124, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 462, Unpatched: 11, Compliance: 84%\nF4 (Firewall):    Rules triggered/min: 41, Blocked: 33, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 28, Warnings: 23, Critical: 9, Volume: 2.4GB\nF6 (Threats):     IOC matches: 7, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 139,
+      "prompt": "TICK 139:\n\nF1 (Traffic):     57898 pps, Bandwidth: 80%, Top talker: 5030 pps\nF2 (Auth):        Login attempts/min: 119, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 284, Unpatched: 111, Compliance: 50%\nF4 (Firewall):    Rules triggered/min: 303, Blocked: 166, Top blocked: 137 hits\nF5 (Logs):        Errors/min: 28, Warnings: 24, Critical: 10, Volume: 2.3GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 2, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "firewall",
+          "threats"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 140,
+      "prompt": "TICK 140:\n\nF1 (Traffic):     56503 pps, Bandwidth: 81%, Top talker: 5190 pps\nF2 (Auth):        Login attempts/min: 113, Failed: 0, Lockouts: 1\nF3 (Endpoints):   Online: 466, Unpatched: 9, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 34, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 141, Warnings: 270, Critical: 12, Volume: 15.1GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 141,
+      "prompt": "TICK 141:\n\nF1 (Traffic):     485073 pps, Bandwidth: 96%, Top talker: 74007 pps\nF2 (Auth):        Login attempts/min: 112, Failed: 0, Lockouts: 0\nF3 (Endpoints):   Online: 281, Unpatched: 80, Compliance: 61%\nF4 (Firewall):    Rules triggered/min: 50, Blocked: 31, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 28, Warnings: 22, Critical: 10, Volume: 2.1GB\nF6 (Threats):     IOC matches: 20, Level: CRITICAL, Active campaigns: 4, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats",
+          "endpoints",
+          "traffic"
+        ],
+        "correct_action": "isolate_endpoint",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 142,
+      "prompt": "TICK 142:\n\nF1 (Traffic):     55050 pps, Bandwidth: 78%, Top talker: 5082 pps\nF2 (Auth):        Login attempts/min: 108, Failed: 0, Lockouts: 1\nF3 (Endpoints):   Online: 457, Unpatched: 11, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 315, Blocked: 183, Top blocked: 165 hits\nF5 (Logs):        Errors/min: 26, Warnings: 22, Critical: 10, Volume: 2.2GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 143,
+      "prompt": "TICK 143:\n\nF1 (Traffic):     53351 pps, Bandwidth: 81%, Top talker: 4899 pps\nF2 (Auth):        Login attempts/min: 107, Failed: 0, Lockouts: 1\nF3 (Endpoints):   Online: 456, Unpatched: 9, Compliance: 84%\nF4 (Firewall):    Rules triggered/min: 422, Blocked: 180, Top blocked: 63 hits\nF5 (Logs):        Errors/min: 25, Warnings: 24, Critical: 9, Volume: 2.2GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 3, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "threats"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 144,
+      "prompt": "TICK 144:\n\nF1 (Traffic):     53027 pps, Bandwidth: 83%, Top talker: 4982 pps\nF2 (Auth):        Login attempts/min: 114, Failed: 0, Lockouts: 2\nF3 (Endpoints):   Online: 455, Unpatched: 9, Compliance: 83%\nF4 (Firewall):    Rules triggered/min: 42, Blocked: 28, Top blocked: 5 hits\nF5 (Logs):        Errors/min: 93, Warnings: 120, Critical: 14, Volume: 13.7GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 5, CVE alerts: 12\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "threats"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 145,
+      "prompt": "TICK 145:\n\nF1 (Traffic):     53030 pps, Bandwidth: 85%, Top talker: 4917 pps\nF2 (Auth):        Login attempts/min: 106, Failed: 2, Lockouts: 2\nF3 (Endpoints):   Online: 452, Unpatched: 9, Compliance: 83%\nF4 (Firewall):    Rules triggered/min: 411, Blocked: 487, Top blocked: 200 hits\nF5 (Logs):        Errors/min: 25, Warnings: 24, Critical: 9, Volume: 2.1GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 146,
+      "prompt": "TICK 146:\n\nF1 (Traffic):     51961 pps, Bandwidth: 86%, Top talker: 4748 pps\nF2 (Auth):        Login attempts/min: 108, Failed: 4, Lockouts: 2\nF3 (Endpoints):   Online: 455, Unpatched: 10, Compliance: 84%\nF4 (Firewall):    Rules triggered/min: 285, Blocked: 208, Top blocked: 99 hits\nF5 (Logs):        Errors/min: 23, Warnings: 24, Critical: 10, Volume: 1.9GB\nF6 (Threats):     IOC matches: 9, Level: CRITICAL, Active campaigns: 5, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "threats"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 147,
+      "prompt": "TICK 147:\n\nF1 (Traffic):     52759 pps, Bandwidth: 86%, Top talker: 4651 pps\nF2 (Auth):        Login attempts/min: 118, Failed: 3, Lockouts: 3\nF3 (Endpoints):   Online: 454, Unpatched: 10, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 36, Blocked: 23, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 25, Warnings: 24, Critical: 10, Volume: 1.8GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 148,
+      "prompt": "TICK 148:\n\nF1 (Traffic):     52456 pps, Bandwidth: 84%, Top talker: 4526 pps\nF2 (Auth):        Login attempts/min: 126, Failed: 5, Lockouts: 4\nF3 (Endpoints):   Online: 302, Unpatched: 101, Compliance: 54%\nF4 (Firewall):    Rules triggered/min: 321, Blocked: 125, Top blocked: 171 hits\nF5 (Logs):        Errors/min: 196, Warnings: 109, Critical: 20, Volume: 10.1GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "endpoints",
+          "firewall"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "block_ip",
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 149,
+      "prompt": "TICK 149:\n\nF1 (Traffic):     54227 pps, Bandwidth: 83%, Top talker: 4516 pps\nF2 (Auth):        Login attempts/min: 116, Failed: 5, Lockouts: 4\nF3 (Endpoints):   Online: 332, Unpatched: 112, Compliance: 74%\nF4 (Firewall):    Rules triggered/min: 37, Blocked: 23, Top blocked: 6 hits\nF5 (Logs):        Errors/min: 26, Warnings: 22, Critical: 10, Volume: 1.7GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 150,
+      "prompt": "TICK 150:\n\nF1 (Traffic):     55779 pps, Bandwidth: 82%, Top talker: 4344 pps\nF2 (Auth):        Login attempts/min: 122, Failed: 4, Lockouts: 3\nF3 (Endpoints):   Online: 448, Unpatched: 10, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 34, Blocked: 26, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 179, Warnings: 262, Critical: 17, Volume: 19.1GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 151,
+      "prompt": "TICK 151:\n\nF1 (Traffic):     56569 pps, Bandwidth: 79%, Top talker: 4267 pps\nF2 (Auth):        Login attempts/min: 123, Failed: 5, Lockouts: 4\nF3 (Endpoints):   Online: 450, Unpatched: 9, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 38, Blocked: 27, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 28, Warnings: 17, Critical: 9, Volume: 1.7GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 152,
+      "prompt": "TICK 152:\n\nF1 (Traffic):     57220 pps, Bandwidth: 77%, Top talker: 4413 pps\nF2 (Auth):        Login attempts/min: 119, Failed: 5, Lockouts: 5\nF3 (Endpoints):   Online: 451, Unpatched: 11, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 43, Blocked: 24, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 27, Warnings: 19, Critical: 8, Volume: 1.7GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 153,
+      "prompt": "TICK 153:\n\nF1 (Traffic):     56762 pps, Bandwidth: 80%, Top talker: 4391 pps\nF2 (Auth):        Login attempts/min: 123, Failed: 5, Lockouts: 4\nF3 (Endpoints):   Online: 453, Unpatched: 11, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 27, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 28, Warnings: 20, Critical: 7, Volume: 1.5GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 154,
+      "prompt": "TICK 154:\n\nF1 (Traffic):     55894 pps, Bandwidth: 82%, Top talker: 4357 pps\nF2 (Auth):        Login attempts/min: 572, Failed: 199, Lockouts: 46\nF3 (Endpoints):   Online: 458, Unpatched: 11, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 43, Blocked: 28, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 26, Warnings: 23, Critical: 8, Volume: 1.5GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 155,
+      "prompt": "TICK 155:\n\nF1 (Traffic):     57236 pps, Bandwidth: 80%, Top talker: 4332 pps\nF2 (Auth):        Login attempts/min: 1029, Failed: 193, Lockouts: 21\nF3 (Endpoints):   Online: 460, Unpatched: 11, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 415, Blocked: 269, Top blocked: 145 hits\nF5 (Logs):        Errors/min: 28, Warnings: 21, Critical: 8, Volume: 1.3GB\nF6 (Threats):     IOC matches: 15, Level: CRITICAL, Active campaigns: 3, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats",
+          "firewall"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 156,
+      "prompt": "TICK 156:\n\nF1 (Traffic):     56303 pps, Bandwidth: 81%, Top talker: 4282 pps\nF2 (Auth):        Login attempts/min: 1666, Failed: 167, Lockouts: 19\nF3 (Endpoints):   Online: 455, Unpatched: 13, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 361, Blocked: 466, Top blocked: 96 hits\nF5 (Logs):        Errors/min: 70, Warnings: 185, Critical: 20, Volume: 15.6GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 157,
+      "prompt": "TICK 157:\n\nF1 (Traffic):     55027 pps, Bandwidth: 80%, Top talker: 4406 pps\nF2 (Auth):        Login attempts/min: 113, Failed: 3, Lockouts: 6\nF3 (Endpoints):   Online: 454, Unpatched: 12, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 207, Blocked: 264, Top blocked: 185 hits\nF5 (Logs):        Errors/min: 28, Warnings: 25, Critical: 6, Volume: 1.3GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 158,
+      "prompt": "TICK 158:\n\nF1 (Traffic):     53807 pps, Bandwidth: 77%, Top talker: 4552 pps\nF2 (Auth):        Login attempts/min: 103, Failed: 2, Lockouts: 5\nF3 (Endpoints):   Online: 454, Unpatched: 12, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 31, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 30, Warnings: 24, Critical: 5, Volume: 1.1GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 159,
+      "prompt": "TICK 159:\n\nF1 (Traffic):     52355 pps, Bandwidth: 76%, Top talker: 4602 pps\nF2 (Auth):        Login attempts/min: 104, Failed: 1, Lockouts: 4\nF3 (Endpoints):   Online: 212, Unpatched: 56, Compliance: 69%\nF4 (Firewall):    Rules triggered/min: 44, Blocked: 33, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 77, Warnings: 112, Critical: 5, Volume: 16.3GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "logs"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 160,
+      "prompt": "TICK 160:\n\nF1 (Traffic):     52062 pps, Bandwidth: 76%, Top talker: 4596 pps\nF2 (Auth):        Login attempts/min: 97, Failed: 3, Lockouts: 4\nF3 (Endpoints):   Online: 457, Unpatched: 9, Compliance: 83%\nF4 (Firewall):    Rules triggered/min: 49, Blocked: 35, Top blocked: 8 hits\nF5 (Logs):        Errors/min: 29, Warnings: 26, Critical: 5, Volume: 0.9GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 161,
+      "prompt": "TICK 161:\n\nF1 (Traffic):     51219 pps, Bandwidth: 73%, Top talker: 4450 pps\nF2 (Auth):        Login attempts/min: 102, Failed: 2, Lockouts: 5\nF3 (Endpoints):   Online: 238, Unpatched: 135, Compliance: 65%\nF4 (Firewall):    Rules triggered/min: 47, Blocked: 34, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 29, Warnings: 24, Critical: 4, Volume: 0.9GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 162,
+      "prompt": "TICK 162:\n\nF1 (Traffic):     53107 pps, Bandwidth: 70%, Top talker: 4649 pps\nF2 (Auth):        Login attempts/min: 108, Failed: 0, Lockouts: 6\nF3 (Endpoints):   Online: 451, Unpatched: 9, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 348, Blocked: 284, Top blocked: 130 hits\nF5 (Logs):        Errors/min: 159, Warnings: 124, Critical: 8, Volume: 18.2GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 163,
+      "prompt": "TICK 163:\n\nF1 (Traffic):     51146 pps, Bandwidth: 73%, Top talker: 4519 pps\nF2 (Auth):        Login attempts/min: 118, Failed: 0, Lockouts: 6\nF3 (Endpoints):   Online: 451, Unpatched: 10, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 44, Blocked: 36, Top blocked: 7 hits\nF5 (Logs):        Errors/min: 29, Warnings: 27, Critical: 3, Volume: 0.6GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 164,
+      "prompt": "TICK 164:\n\nF1 (Traffic):     209211 pps, Bandwidth: 99%, Top talker: 83907 pps\nF2 (Auth):        Login attempts/min: 112, Failed: 0, Lockouts: 5\nF3 (Endpoints):   Online: 447, Unpatched: 11, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 39, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 162, Warnings: 116, Critical: 6, Volume: 11.1GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic",
+          "logs"
+        ],
+        "correct_action": "block_ip",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 165,
+      "prompt": "TICK 165:\n\nF1 (Traffic):     51697 pps, Bandwidth: 68%, Top talker: 4536 pps\nF2 (Auth):        Login attempts/min: 118, Failed: 2, Lockouts: 6\nF3 (Endpoints):   Online: 451, Unpatched: 10, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 46, Blocked: 40, Top blocked: 11 hits\nF5 (Logs):        Errors/min: 32, Warnings: 22, Critical: 4, Volume: 0.7GB\nF6 (Threats):     IOC matches: 0, Level: LOW, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 166,
+      "prompt": "TICK 166:\n\nF1 (Traffic):     49920 pps, Bandwidth: 65%, Top talker: 4665 pps\nF2 (Auth):        Login attempts/min: 113, Failed: 4, Lockouts: 6\nF3 (Endpoints):   Online: 280, Unpatched: 113, Compliance: 64%\nF4 (Firewall):    Rules triggered/min: 48, Blocked: 39, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 32, Warnings: 21, Critical: 3, Volume: 0.7GB\nF6 (Threats):     IOC matches: 8, Level: CRITICAL, Active campaigns: 2, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints",
+          "threats"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 167,
+      "prompt": "TICK 167:\n\nF1 (Traffic):     49572 pps, Bandwidth: 65%, Top talker: 4483 pps\nF2 (Auth):        Login attempts/min: 120, Failed: 6, Lockouts: 5\nF3 (Endpoints):   Online: 449, Unpatched: 11, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 53, Blocked: 38, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 34, Warnings: 19, Critical: 4, Volume: 0.8GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 168,
+      "prompt": "TICK 168:\n\nF1 (Traffic):     50507 pps, Bandwidth: 67%, Top talker: 4469 pps\nF2 (Auth):        Login attempts/min: 124, Failed: 4, Lockouts: 4\nF3 (Endpoints):   Online: 454, Unpatched: 10, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 53, Blocked: 37, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 80, Warnings: 155, Critical: 17, Volume: 13.5GB\nF6 (Threats):     IOC matches: 11, Level: CRITICAL, Active campaigns: 2, CVE alerts: 11\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "threats"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 169,
+      "prompt": "TICK 169:\n\nF1 (Traffic):     48697 pps, Bandwidth: 69%, Top talker: 4613 pps\nF2 (Auth):        Login attempts/min: 132, Failed: 2, Lockouts: 4\nF3 (Endpoints):   Online: 226, Unpatched: 143, Compliance: 54%\nF4 (Firewall):    Rules triggered/min: 50, Blocked: 37, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 38, Warnings: 22, Critical: 3, Volume: 0.9GB\nF6 (Threats):     IOC matches: 20, Level: CRITICAL, Active campaigns: 6, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats",
+          "endpoints"
+        ],
+        "correct_action": "isolate_endpoint",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 170,
+      "prompt": "TICK 170:\n\nF1 (Traffic):     49156 pps, Bandwidth: 70%, Top talker: 4577 pps\nF2 (Auth):        Login attempts/min: 138, Failed: 3, Lockouts: 4\nF3 (Endpoints):   Online: 460, Unpatched: 11, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 51, Blocked: 36, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 191, Warnings: 151, Critical: 11, Volume: 10.5GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 171,
+      "prompt": "TICK 171:\n\nF1 (Traffic):     50082 pps, Bandwidth: 69%, Top talker: 4728 pps\nF2 (Auth):        Login attempts/min: 139, Failed: 2, Lockouts: 5\nF3 (Endpoints):   Online: 465, Unpatched: 10, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 54, Blocked: 38, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 37, Warnings: 28, Critical: 2, Volume: 0.8GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 172,
+      "prompt": "TICK 172:\n\nF1 (Traffic):     49812 pps, Bandwidth: 72%, Top talker: 4534 pps\nF2 (Auth):        Login attempts/min: 145, Failed: 0, Lockouts: 4\nF3 (Endpoints):   Online: 466, Unpatched: 9, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 59, Blocked: 35, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 37, Warnings: 31, Critical: 1, Volume: 1.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 173,
+      "prompt": "TICK 173:\n\nF1 (Traffic):     49665 pps, Bandwidth: 69%, Top talker: 4649 pps\nF2 (Auth):        Login attempts/min: 152, Failed: 0, Lockouts: 5\nF3 (Endpoints):   Online: 471, Unpatched: 11, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 57, Blocked: 36, Top blocked: 9 hits\nF5 (Logs):        Errors/min: 35, Warnings: 31, Critical: 1, Volume: 1.0GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 174,
+      "prompt": "TICK 174:\n\nF1 (Traffic):     49479 pps, Bandwidth: 72%, Top talker: 4564 pps\nF2 (Auth):        Login attempts/min: 162, Failed: 0, Lockouts: 6\nF3 (Endpoints):   Online: 474, Unpatched: 13, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 55, Blocked: 35, Top blocked: 10 hits\nF5 (Logs):        Errors/min: 115, Warnings: 184, Critical: 5, Volume: 13.6GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 175,
+      "prompt": "TICK 175:\n\nF1 (Traffic):     51318 pps, Bandwidth: 70%, Top talker: 4384 pps\nF2 (Auth):        Login attempts/min: 156, Failed: 0, Lockouts: 7\nF3 (Endpoints):   Online: 256, Unpatched: 61, Compliance: 61%\nF4 (Firewall):    Rules triggered/min: 54, Blocked: 35, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 36, Warnings: 32, Critical: 0, Volume: 1.0GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 176,
+      "prompt": "TICK 176:\n\nF1 (Traffic):     52936 pps, Bandwidth: 68%, Top talker: 4523 pps\nF2 (Auth):        Login attempts/min: 156, Failed: 0, Lockouts: 7\nF3 (Endpoints):   Online: 229, Unpatched: 98, Compliance: 75%\nF4 (Firewall):    Rules triggered/min: 57, Blocked: 35, Top blocked: 14 hits\nF5 (Logs):        Errors/min: 112, Warnings: 274, Critical: 6, Volume: 18.6GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 177,
+      "prompt": "TICK 177:\n\nF1 (Traffic):     53148 pps, Bandwidth: 70%, Top talker: 4467 pps\nF2 (Auth):        Login attempts/min: 146, Failed: 2, Lockouts: 7\nF3 (Endpoints):   Online: 471, Unpatched: 16, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 59, Blocked: 32, Top blocked: 14 hits\nF5 (Logs):        Errors/min: 104, Warnings: 126, Critical: 18, Volume: 10.5GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 178,
+      "prompt": "TICK 178:\n\nF1 (Traffic):     54542 pps, Bandwidth: 72%, Top talker: 4646 pps\nF2 (Auth):        Login attempts/min: 149, Failed: 0, Lockouts: 8\nF3 (Endpoints):   Online: 476, Unpatched: 15, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 61, Blocked: 34, Top blocked: 14 hits\nF5 (Logs):        Errors/min: 31, Warnings: 25, Critical: 1, Volume: 0.5GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 179,
+      "prompt": "TICK 179:\n\nF1 (Traffic):     53837 pps, Bandwidth: 69%, Top talker: 4645 pps\nF2 (Auth):        Login attempts/min: 142, Failed: 2, Lockouts: 7\nF3 (Endpoints):   Online: 481, Unpatched: 17, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 65, Blocked: 31, Top blocked: 12 hits\nF5 (Logs):        Errors/min: 31, Warnings: 26, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 10, Level: CRITICAL, Active campaigns: 3, CVE alerts: 11\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 180,
+      "prompt": "TICK 180:\n\nF1 (Traffic):     55100 pps, Bandwidth: 72%, Top talker: 4724 pps\nF2 (Auth):        Login attempts/min: 141, Failed: 1, Lockouts: 7\nF3 (Endpoints):   Online: 486, Unpatched: 17, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 68, Blocked: 34, Top blocked: 14 hits\nF5 (Logs):        Errors/min: 30, Warnings: 23, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 18, Level: CRITICAL, Active campaigns: 3, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 181,
+      "prompt": "TICK 181:\n\nF1 (Traffic):     54004 pps, Bandwidth: 73%, Top talker: 4653 pps\nF2 (Auth):        Login attempts/min: 137, Failed: 0, Lockouts: 6\nF3 (Endpoints):   Online: 491, Unpatched: 19, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 71, Blocked: 34, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 28, Warnings: 22, Critical: 1, Volume: 0.5GB\nF6 (Threats):     IOC matches: 24, Level: CRITICAL, Active campaigns: 3, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 182,
+      "prompt": "TICK 182:\n\nF1 (Traffic):     53994 pps, Bandwidth: 73%, Top talker: 4621 pps\nF2 (Auth):        Login attempts/min: 146, Failed: 0, Lockouts: 7\nF3 (Endpoints):   Online: 495, Unpatched: 18, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 75, Blocked: 33, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 29, Warnings: 20, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 183,
+      "prompt": "TICK 183:\n\nF1 (Traffic):     53889 pps, Bandwidth: 73%, Top talker: 4604 pps\nF2 (Auth):        Login attempts/min: 1989, Failed: 69, Lockouts: 11\nF3 (Endpoints):   Online: 491, Unpatched: 17, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 79, Blocked: 30, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 28, Warnings: 21, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 21, Level: CRITICAL, Active campaigns: 6, CVE alerts: 14\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "auth",
+          "threats"
+        ],
+        "correct_action": "force_password_reset",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "force_password_reset",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 184,
+      "prompt": "TICK 184:\n\nF1 (Traffic):     54305 pps, Bandwidth: 71%, Top talker: 4422 pps\nF2 (Auth):        Login attempts/min: 152, Failed: 1, Lockouts: 9\nF3 (Endpoints):   Online: 494, Unpatched: 18, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 76, Blocked: 29, Top blocked: 17 hits\nF5 (Logs):        Errors/min: 27, Warnings: 24, Critical: 1, Volume: 0.6GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 185,
+      "prompt": "TICK 185:\n\nF1 (Traffic):     55608 pps, Bandwidth: 72%, Top talker: 4572 pps\nF2 (Auth):        Login attempts/min: 147, Failed: 3, Lockouts: 8\nF3 (Endpoints):   Online: 211, Unpatched: 110, Compliance: 64%\nF4 (Firewall):    Rules triggered/min: 80, Blocked: 30, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 28, Warnings: 23, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 186,
+      "prompt": "TICK 186:\n\nF1 (Traffic):     53771 pps, Bandwidth: 74%, Top talker: 4537 pps\nF2 (Auth):        Login attempts/min: 140, Failed: 5, Lockouts: 9\nF3 (Endpoints):   Online: 495, Unpatched: 17, Compliance: 88%\nF4 (Firewall):    Rules triggered/min: 83, Blocked: 31, Top blocked: 15 hits\nF5 (Logs):        Errors/min: 29, Warnings: 25, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 6\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 187,
+      "prompt": "TICK 187:\n\nF1 (Traffic):     53765 pps, Bandwidth: 77%, Top talker: 4583 pps\nF2 (Auth):        Login attempts/min: 149, Failed: 3, Lockouts: 10\nF3 (Endpoints):   Online: 492, Unpatched: 18, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 81, Blocked: 28, Top blocked: 17 hits\nF5 (Logs):        Errors/min: 29, Warnings: 23, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 7\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 188,
+      "prompt": "TICK 188:\n\nF1 (Traffic):     53726 pps, Bandwidth: 77%, Top talker: 4490 pps\nF2 (Auth):        Login attempts/min: 157, Failed: 2, Lockouts: 11\nF3 (Endpoints):   Online: 493, Unpatched: 16, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 76, Blocked: 26, Top blocked: 19 hits\nF5 (Logs):        Errors/min: 31, Warnings: 21, Critical: 0, Volume: 0.6GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 189,
+      "prompt": "TICK 189:\n\nF1 (Traffic):     54337 pps, Bandwidth: 74%, Top talker: 4658 pps\nF2 (Auth):        Login attempts/min: 156, Failed: 0, Lockouts: 10\nF3 (Endpoints):   Online: 495, Unpatched: 18, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 78, Blocked: 24, Top blocked: 18 hits\nF5 (Logs):        Errors/min: 32, Warnings: 22, Critical: 0, Volume: 0.7GB\nF6 (Threats):     IOC matches: 1, Level: MEDIUM, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 190,
+      "prompt": "TICK 190:\n\nF1 (Traffic):     53278 pps, Bandwidth: 74%, Top talker: 4655 pps\nF2 (Auth):        Login attempts/min: 150, Failed: 0, Lockouts: 9\nF3 (Endpoints):   Online: 493, Unpatched: 20, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 219, Blocked: 372, Top blocked: 178 hits\nF5 (Logs):        Errors/min: 80, Warnings: 223, Critical: 7, Volume: 15.9GB\nF6 (Threats):     IOC matches: 2, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "firewall",
+          "logs"
+        ],
+        "correct_action": "update_firewall_rule",
+        "acceptable_actions": [
+          "block_ip",
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "update_firewall_rule"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 191,
+      "prompt": "TICK 191:\n\nF1 (Traffic):     53486 pps, Bandwidth: 77%, Top talker: 4455 pps\nF2 (Auth):        Login attempts/min: 160, Failed: 1, Lockouts: 10\nF3 (Endpoints):   Online: 494, Unpatched: 20, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 86, Blocked: 24, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 35, Warnings: 22, Critical: 0, Volume: 0.6GB\nF6 (Threats):     IOC matches: 24, Level: CRITICAL, Active campaigns: 4, CVE alerts: 8\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats"
+        ],
+        "correct_action": "escalate_alert",
+        "acceptable_actions": [
+          "escalate_alert",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 192,
+      "prompt": "TICK 192:\n\nF1 (Traffic):     51508 pps, Bandwidth: 79%, Top talker: 4635 pps\nF2 (Auth):        Login attempts/min: 150, Failed: 3, Lockouts: 11\nF3 (Endpoints):   Online: 490, Unpatched: 22, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 87, Blocked: 26, Top blocked: 15 hits\nF5 (Logs):        Errors/min: 35, Warnings: 22, Critical: 0, Volume: 0.5GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 193,
+      "prompt": "TICK 193:\n\nF1 (Traffic):     51135 pps, Bandwidth: 82%, Top talker: 4539 pps\nF2 (Auth):        Login attempts/min: 153, Failed: 5, Lockouts: 12\nF3 (Endpoints):   Online: 492, Unpatched: 21, Compliance: 85%\nF4 (Firewall):    Rules triggered/min: 90, Blocked: 27, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 35, Warnings: 21, Critical: 1, Volume: 0.5GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 194,
+      "prompt": "TICK 194:\n\nF1 (Traffic):     49797 pps, Bandwidth: 79%, Top talker: 4448 pps\nF2 (Auth):        Login attempts/min: 159, Failed: 6, Lockouts: 12\nF3 (Endpoints):   Online: 302, Unpatched: 142, Compliance: 62%\nF4 (Firewall):    Rules triggered/min: 95, Blocked: 29, Top blocked: 14 hits\nF5 (Logs):        Errors/min: 34, Warnings: 21, Critical: 2, Volume: 0.5GB\nF6 (Threats):     IOC matches: 3, Level: HIGH, Active campaigns: 0, CVE alerts: 9\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 195,
+      "prompt": "TICK 195:\n\nF1 (Traffic):     50311 pps, Bandwidth: 81%, Top talker: 4514 pps\nF2 (Auth):        Login attempts/min: 158, Failed: 8, Lockouts: 11\nF3 (Endpoints):   Online: 492, Unpatched: 24, Compliance: 86%\nF4 (Firewall):    Rules triggered/min: 90, Blocked: 27, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 34, Warnings: 19, Critical: 1, Volume: 0.6GB\nF6 (Threats):     IOC matches: 4, Level: HIGH, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 196,
+      "prompt": "TICK 196:\n\nF1 (Traffic):     48666 pps, Bandwidth: 80%, Top talker: 4713 pps\nF2 (Auth):        Login attempts/min: 160, Failed: 8, Lockouts: 12\nF3 (Endpoints):   Online: 493, Unpatched: 25, Compliance: 87%\nF4 (Firewall):    Rules triggered/min: 88, Blocked: 28, Top blocked: 14 hits\nF5 (Logs):        Errors/min: 197, Warnings: 166, Critical: 5, Volume: 10.1GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 197,
+      "prompt": "TICK 197:\n\nF1 (Traffic):     48739 pps, Bandwidth: 77%, Top talker: 4799 pps\nF2 (Auth):        Login attempts/min: 152, Failed: 10, Lockouts: 12\nF3 (Endpoints):   Online: 207, Unpatched: 108, Compliance: 68%\nF4 (Firewall):    Rules triggered/min: 87, Blocked: 29, Top blocked: 16 hits\nF5 (Logs):        Errors/min: 32, Warnings: 18, Critical: 2, Volume: 0.7GB\nF6 (Threats):     IOC matches: 12, Level: CRITICAL, Active campaigns: 5, CVE alerts: 15\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "threats",
+          "endpoints"
+        ],
+        "correct_action": "isolate_endpoint",
+        "acceptable_actions": [
+          "deploy_patch",
+          "escalate_alert",
+          "increase_monitoring",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 198,
+      "prompt": "TICK 198:\n\nF1 (Traffic):     47795 pps, Bandwidth: 74%, Top talker: 4794 pps\nF2 (Auth):        Login attempts/min: 162, Failed: 9, Lockouts: 13\nF3 (Endpoints):   Online: 246, Unpatched: 123, Compliance: 58%\nF4 (Firewall):    Rules triggered/min: 87, Blocked: 30, Top blocked: 18 hits\nF5 (Logs):        Errors/min: 30, Warnings: 20, Critical: 2, Volume: 0.6GB\nF6 (Threats):     IOC matches: 5, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "endpoints"
+        ],
+        "correct_action": "deploy_patch",
+        "acceptable_actions": [
+          "deploy_patch",
+          "increase_monitoring",
+          "isolate_endpoint"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 199,
+      "prompt": "TICK 199:\n\nF1 (Traffic):     49674 pps, Bandwidth: 76%, Top talker: 4943 pps\nF2 (Auth):        Login attempts/min: 158, Failed: 10, Lockouts: 14\nF3 (Endpoints):   Online: 489, Unpatched: 22, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 85, Blocked: 33, Top blocked: 18 hits\nF5 (Logs):        Errors/min: 29, Warnings: 18, Critical: 1, Volume: 0.7GB\nF6 (Threats):     IOC matches: 6, Level: CRITICAL, Active campaigns: 0, CVE alerts: 10\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 200,
+      "prompt": "TICK 200:\n\nF1 (Traffic):     50804 pps, Bandwidth: 79%, Top talker: 5020 pps\nF2 (Auth):        Login attempts/min: 149, Failed: 11, Lockouts: 14\nF3 (Endpoints):   Online: 493, Unpatched: 22, Compliance: 89%\nF4 (Firewall):    Rules triggered/min: 89, Blocked: 36, Top blocked: 18 hits\nF5 (Logs):        Errors/min: 94, Warnings: 130, Critical: 19, Volume: 16.4GB\nF6 (Threats):     IOC matches: 19, Level: CRITICAL, Active campaigns: 2, CVE alerts: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "logs",
+          "threats"
+        ],
+        "correct_action": "investigate_further",
+        "acceptable_actions": [
+          "escalate_alert",
+          "increase_monitoring",
+          "investigate_further",
+          "isolate_endpoint",
+          "quarantine_file"
+        ],
+        "is_multi_factor": false
+      }
+    }
+  ]
+}

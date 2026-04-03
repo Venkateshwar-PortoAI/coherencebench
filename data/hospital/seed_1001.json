@@ -1,0 +1,3339 @@
+{
+  "scenario": "hospital",
+  "seed": 1001,
+  "num_ticks": 200,
+  "factors": {
+    "vitals": {
+      "display_name": "Vitals (Heart Rate, BP, SpO2)",
+      "description": "Heart rate in bpm, blood pressure systolic/diastolic, SpO2 percentage"
+    },
+    "labs": {
+      "display_name": "Labs (Blood Work Results)",
+      "description": "WBC count, hemoglobin, lactate, creatinine, troponin levels"
+    },
+    "imaging": {
+      "display_name": "Imaging (X-ray, CT Findings)",
+      "description": "Chest X-ray and CT scan findings, opacity, effusion, mass status"
+    },
+    "medications": {
+      "display_name": "Medications (Current Meds, Interactions)",
+      "description": "Active medications, dosages, known interactions, contraindications"
+    },
+    "history": {
+      "display_name": "History (Patient History, Allergies)",
+      "description": "Past medical history, surgical history, known allergies, family history"
+    },
+    "capacity": {
+      "display_name": "Capacity (Bed Availability, Staff)",
+      "description": "ICU beds available, ward beds available, nurse-to-patient ratio, on-call specialists"
+    }
+  },
+  "actions": [
+    "admit_icu",
+    "admit_ward",
+    "discharge",
+    "order_labs",
+    "order_imaging",
+    "start_medication",
+    "adjust_medication",
+    "call_specialist",
+    "monitor_closely",
+    "no_action_needed"
+  ],
+  "system_prompt": "You are an autonomous hospital triage decision system. Every tick, you receive updates from 6 patient data streams: Vitals (Heart Rate, BP, SpO2), Labs (Blood Work Results), Imaging (X-ray, CT Findings), Medications (Current Meds, Interactions), History (Patient History, Allergies), Capacity (Bed Availability, Staff).\n\nYour job is to analyze ALL 6 factors every tick and recommend an action.\n\nYou MUST respond in this exact format:\nANALYSIS:\n- Vitals: [your analysis of current vital signs]\n- Labs: [your analysis of current lab results]\n- Imaging: [your analysis of current imaging findings]\n- Medications: [your analysis of current medication status]\n- History: [your analysis of relevant patient history]\n- Capacity: [your analysis of current hospital capacity]\nACTION: [one of: admit_icu, admit_ward, discharge, order_labs, order_imaging, start_medication, adjust_medication, call_specialist, monitor_closely, no_action_needed]\nREASON: [1-2 sentences explaining why, referencing the specific factors that informed your decision]\n\nIMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. Each factor line must contain substantive analysis, not just 'stable' or 'unchanged'.",
+  "ticks": [
+    {
+      "tick_number": 1,
+      "prompt": "TICK 1:\n\nF1 (Vitals):      HR: 152 bpm, BP: 117/79 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 7.5 K/uL, Hgb: 14.0 g/dL, Lactate: 0.9 mmol/L, Cr: 0.92 mg/dL, Troponin: 0.011 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 13, Nurse ratio: 1:3.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 2,
+      "prompt": "TICK 2:\n\nF1 (Vitals):      HR: 83 bpm, BP: 118/78 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 7.5 K/uL, Hgb: 13.8 g/dL, Lactate: 1.0 mmol/L, Cr: 0.94 mg/dL, Troponin: 0.007 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 13, Nurse ratio: 1:3.9, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 3,
+      "prompt": "TICK 3:\n\nF1 (Vitals):      HR: 84 bpm, BP: 116/76 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 7.5 K/uL, Hgb: 13.9 g/dL, Lactate: 0.9 mmol/L, Cr: 0.98 mg/dL, Troponin: 1.795 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 13, Nurse ratio: 1:4.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 4,
+      "prompt": "TICK 4:\n\nF1 (Vitals):      HR: 81 bpm, BP: 117/74 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 7.5 K/uL, Hgb: 13.8 g/dL, Lactate: 0.8 mmol/L, Cr: 1.0 mg/dL, Troponin: 0.013 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 14, Nurse ratio: 1:4.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 5,
+      "prompt": "TICK 5:\n\nF1 (Vitals):      HR: 78 bpm, BP: 115/72 mmHg, SpO2: 85%\nF2 (Labs):        WBC: 7.3 K/uL, Hgb: 13.8 g/dL, Lactate: 0.9 mmol/L, Cr: 0.96 mg/dL, Troponin: 0.014 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 14, Nurse ratio: 1:4.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 6,
+      "prompt": "TICK 6:\n\nF1 (Vitals):      HR: 81 bpm, BP: 112/72 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 7.3 K/uL, Hgb: 13.6 g/dL, Lactate: 6.1 mmol/L, Cr: 1.01 mg/dL, Troponin: 0.015 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 13, Nurse ratio: 1:3.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 7,
+      "prompt": "TICK 7:\n\nF1 (Vitals):      HR: 82 bpm, BP: 115/70 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 7.0 K/uL, Hgb: 13.8 g/dL, Lactate: 0.9 mmol/L, Cr: 1.01 mg/dL, Troponin: 0.017 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 12, Nurse ratio: 1:3.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 8,
+      "prompt": "TICK 8:\n\nF1 (Vitals):      HR: 83 bpm, BP: 114/71 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 6.7 K/uL, Hgb: 13.9 g/dL, Lactate: 7.8 mmol/L, Cr: 0.99 mg/dL, Troponin: 0.016 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 12, Nurse ratio: 1:3.6, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 9,
+      "prompt": "TICK 9:\n\nF1 (Vitals):      HR: 85 bpm, BP: 117/70 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 28.6 K/uL, Hgb: 14.1 g/dL, Lactate: 0.8 mmol/L, Cr: 0.98 mg/dL, Troponin: 0.021 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 13, Nurse ratio: 1:3.6, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "medications"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 10,
+      "prompt": "TICK 10:\n\nF1 (Vitals):      HR: 86 bpm, BP: 116/70 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 27.9 K/uL, Hgb: 14.3 g/dL, Lactate: 0.8 mmol/L, Cr: 1.0 mg/dL, Troponin: 0.02 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 13, Nurse ratio: 1:3.6, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "labs"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 11,
+      "prompt": "TICK 11:\n\nF1 (Vitals):      HR: 89 bpm, BP: 114/70 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 6.9 K/uL, Hgb: 14.3 g/dL, Lactate: 0.7 mmol/L, Cr: 1.0 mg/dL, Troponin: 0.024 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 4, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 13, Nurse ratio: 1:3.7, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 12,
+      "prompt": "TICK 12:\n\nF1 (Vitals):      HR: 88 bpm, BP: 112/72 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 6.9 K/uL, Hgb: 14.2 g/dL, Lactate: 0.6 mmol/L, Cr: 1.01 mg/dL, Troponin: 1.953 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 13, Nurse ratio: 1:3.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 13,
+      "prompt": "TICK 13:\n\nF1 (Vitals):      HR: 87 bpm, BP: 114/71 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 14.2 g/dL, Lactate: 0.7 mmol/L, Cr: 0.97 mg/dL, Troponin: 0.026 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 13, Nurse ratio: 1:3.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 14,
+      "prompt": "TICK 14:\n\nF1 (Vitals):      HR: 90 bpm, BP: 111/70 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 14.2 g/dL, Lactate: 0.7 mmol/L, Cr: 0.97 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 13, Nurse ratio: 1:4.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 15,
+      "prompt": "TICK 15:\n\nF1 (Vitals):      HR: 87 bpm, BP: 79/44 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 6.7 K/uL, Hgb: 14.2 g/dL, Lactate: 0.7 mmol/L, Cr: 0.93 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:6.2, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 16,
+      "prompt": "TICK 16:\n\nF1 (Vitals):      HR: 88 bpm, BP: 109/68 mmHg, SpO2: 85%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 14.1 g/dL, Lactate: 0.8 mmol/L, Cr: 0.93 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 13, Nurse ratio: 1:4.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 17,
+      "prompt": "TICK 17:\n\nF1 (Vitals):      HR: 90 bpm, BP: 111/69 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 6.7 K/uL, Hgb: 14.2 g/dL, Lactate: 6.2 mmol/L, Cr: 0.92 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 13, Nurse ratio: 1:4.0, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 18,
+      "prompt": "TICK 18:\n\nF1 (Vitals):      HR: 91 bpm, BP: 113/68 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 14.1 g/dL, Lactate: 0.9 mmol/L, Cr: 0.87 mg/dL, Troponin: 0.033 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 13, Nurse ratio: 1:4.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 19,
+      "prompt": "TICK 19:\n\nF1 (Vitals):      HR: 89 bpm, BP: 110/68 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 14.0 g/dL, Lactate: 0.9 mmol/L, Cr: 0.86 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 13, Nurse ratio: 1:3.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 20,
+      "prompt": "TICK 20:\n\nF1 (Vitals):      HR: 90 bpm, BP: 110/70 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 13.9 g/dL, Lactate: 0.8 mmol/L, Cr: 0.9 mg/dL, Troponin: 1.756 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 12, Nurse ratio: 1:3.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 21,
+      "prompt": "TICK 21:\n\nF1 (Vitals):      HR: 93 bpm, BP: 108/72 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 14.0 g/dL, Lactate: 0.8 mmol/L, Cr: 0.85 mg/dL, Troponin: 0.028 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 11, Nurse ratio: 1:3.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 22,
+      "prompt": "TICK 22:\n\nF1 (Vitals):      HR: 93 bpm, BP: 105/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 14.0 g/dL, Lactate: 0.7 mmol/L, Cr: 0.89 mg/dL, Troponin: 1.01 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 10, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 10, Nurse ratio: 1:3.9, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "labs"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 23,
+      "prompt": "TICK 23:\n\nF1 (Vitals):      HR: 95 bpm, BP: 84/44 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.8 g/dL, Lactate: 0.8 mmol/L, Cr: 0.86 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 10, Nurse ratio: 1:4.1, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 24,
+      "prompt": "TICK 24:\n\nF1 (Vitals):      HR: 97 bpm, BP: 102/71 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 14.0 g/dL, Lactate: 6.9 mmol/L, Cr: 0.87 mg/dL, Troponin: 0.026 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 10, Nurse ratio: 1:4.2, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 25,
+      "prompt": "TICK 25:\n\nF1 (Vitals):      HR: 98 bpm, BP: 70/47 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 25.4 K/uL, Hgb: 14.1 g/dL, Lactate: 0.8 mmol/L, Cr: 0.85 mg/dL, Troponin: 0.026 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 10, Nurse ratio: 1:4.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "labs"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 26,
+      "prompt": "TICK 26:\n\nF1 (Vitals):      HR: 97 bpm, BP: 98/70 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 14.2 g/dL, Lactate: 0.8 mmol/L, Cr: 0.87 mg/dL, Troponin: 1.482 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 11, Nurse ratio: 1:4.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 27,
+      "prompt": "TICK 27:\n\nF1 (Vitals):      HR: 98 bpm, BP: 100/72 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 14.4 g/dL, Lactate: 6.5 mmol/L, Cr: 0.86 mg/dL, Troponin: 0.022 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 10, Nurse ratio: 1:4.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 28,
+      "prompt": "TICK 28:\n\nF1 (Vitals):      HR: 100 bpm, BP: 103/71 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 14.5 g/dL, Lactate: 6.4 mmol/L, Cr: 0.91 mg/dL, Troponin: 0.02 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 10, Nurse ratio: 1:4.2, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 29,
+      "prompt": "TICK 29:\n\nF1 (Vitals):      HR: 102 bpm, BP: 101/72 mmHg, SpO2: 87%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 14.4 g/dL, Lactate: 5.1 mmol/L, Cr: 0.91 mg/dL, Troponin: 0.017 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 11, Nurse ratio: 1:4.0, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 30,
+      "prompt": "TICK 30:\n\nF1 (Vitals):      HR: 143 bpm, BP: 104/71 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 14.2 g/dL, Lactate: 0.8 mmol/L, Cr: 0.89 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 12, Nurse ratio: 1:4.2, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "history"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 31,
+      "prompt": "TICK 31:\n\nF1 (Vitals):      HR: 108 bpm, BP: 101/72 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 14.2 g/dL, Lactate: 0.8 mmol/L, Cr: 0.85 mg/dL, Troponin: 0.015 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 13, Nurse ratio: 1:4.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 32,
+      "prompt": "TICK 32:\n\nF1 (Vitals):      HR: 105 bpm, BP: 99/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 14.1 g/dL, Lactate: 0.8 mmol/L, Cr: 0.84 mg/dL, Troponin: 0.019 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:6.7, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 33,
+      "prompt": "TICK 33:\n\nF1 (Vitals):      HR: 140 bpm, BP: 102/68 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 14.0 g/dL, Lactate: 0.9 mmol/L, Cr: 0.81 mg/dL, Troponin: 0.02 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 15, Nurse ratio: 1:4.3, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 34,
+      "prompt": "TICK 34:\n\nF1 (Vitals):      HR: 104 bpm, BP: 102/68 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.9 g/dL, Lactate: 4.0 mmol/L, Cr: 0.84 mg/dL, Troponin: 0.018 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 8, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 16, Nurse ratio: 1:4.3, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "medications"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 35,
+      "prompt": "TICK 35:\n\nF1 (Vitals):      HR: 106 bpm, BP: 103/68 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 26.2 K/uL, Hgb: 13.9 g/dL, Lactate: 0.8 mmol/L, Cr: 0.83 mg/dL, Troponin: 0.018 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 16, Nurse ratio: 1:4.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 36,
+      "prompt": "TICK 36:\n\nF1 (Vitals):      HR: 107 bpm, BP: 102/68 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 13.9 g/dL, Lactate: 7.7 mmol/L, Cr: 0.82 mg/dL, Troponin: 0.021 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 15, Nurse ratio: 1:4.4, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 37,
+      "prompt": "TICK 37:\n\nF1 (Vitals):      HR: 105 bpm, BP: 101/68 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 13.8 g/dL, Lactate: 0.8 mmol/L, Cr: 0.81 mg/dL, Troponin: 0.026 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 14, Nurse ratio: 1:4.4, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 38,
+      "prompt": "TICK 38:\n\nF1 (Vitals):      HR: 107 bpm, BP: 98/66 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 29.0 K/uL, Hgb: 13.7 g/dL, Lactate: 0.9 mmol/L, Cr: 0.82 mg/dL, Troponin: 0.027 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 13, Nurse ratio: 1:4.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 39,
+      "prompt": "TICK 39:\n\nF1 (Vitals):      HR: 159 bpm, BP: 100/67 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.9 K/uL, Hgb: 13.5 g/dL, Lactate: 1.0 mmol/L, Cr: 0.82 mg/dL, Troponin: 0.03 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 14, Nurse ratio: 1:4.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 40,
+      "prompt": "TICK 40:\n\nF1 (Vitals):      HR: 108 bpm, BP: 73/45 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.7 K/uL, Hgb: 13.4 g/dL, Lactate: 1.1 mmol/L, Cr: 0.87 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 15, Nurse ratio: 1:4.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 41,
+      "prompt": "TICK 41:\n\nF1 (Vitals):      HR: 158 bpm, BP: 99/65 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 13.4 g/dL, Lactate: 1.2 mmol/L, Cr: 0.82 mg/dL, Troponin: 0.034 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 15, Nurse ratio: 1:4.2, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 42,
+      "prompt": "TICK 42:\n\nF1 (Vitals):      HR: 104 bpm, BP: 101/65 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.3 g/dL, Lactate: 1.2 mmol/L, Cr: 0.83 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 7, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 15, Nurse ratio: 1:4.2, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "medications"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 43,
+      "prompt": "TICK 43:\n\nF1 (Vitals):      HR: 101 bpm, BP: 102/63 mmHg, SpO2: 85%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.4 g/dL, Lactate: 1.3 mmol/L, Cr: 0.79 mg/dL, Troponin: 1.668 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 16, Nurse ratio: 1:4.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 44,
+      "prompt": "TICK 44:\n\nF1 (Vitals):      HR: 103 bpm, BP: 101/62 mmHg, SpO2: 82%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.3 g/dL, Lactate: 1.4 mmol/L, Cr: 0.83 mg/dL, Troponin: 1.778 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 12, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:6.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "labs",
+          "medications",
+          "capacity"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 45,
+      "prompt": "TICK 45:\n\nF1 (Vitals):      HR: 105 bpm, BP: 103/62 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.4 g/dL, Lactate: 1.4 mmol/L, Cr: 0.83 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 14, Nurse ratio: 1:3.7, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 46,
+      "prompt": "TICK 46:\n\nF1 (Vitals):      HR: 108 bpm, BP: 101/61 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 13.4 g/dL, Lactate: 1.5 mmol/L, Cr: 0.85 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 15, Nurse ratio: 1:3.6, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 47,
+      "prompt": "TICK 47:\n\nF1 (Vitals):      HR: 109 bpm, BP: 104/60 mmHg, SpO2: 83%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 13.2 g/dL, Lactate: 7.4 mmol/L, Cr: 0.81 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 8, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 8, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 16, Nurse ratio: 1:3.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "labs",
+          "medications",
+          "history"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 48,
+      "prompt": "TICK 48:\n\nF1 (Vitals):      HR: 108 bpm, BP: 104/59 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 13.3 g/dL, Lactate: 1.5 mmol/L, Cr: 0.8 mg/dL, Troponin: 0.042 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 15, Nurse ratio: 1:3.8, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 49,
+      "prompt": "TICK 49:\n\nF1 (Vitals):      HR: 109 bpm, BP: 102/59 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.4 g/dL, Lactate: 1.5 mmol/L, Cr: 0.82 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 16, Nurse ratio: 1:3.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 50,
+      "prompt": "TICK 50:\n\nF1 (Vitals):      HR: 109 bpm, BP: 104/57 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 13.4 g/dL, Lactate: 1.4 mmol/L, Cr: 0.79 mg/dL, Troponin: 0.034 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 6, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 16, Nurse ratio: 1:3.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 51,
+      "prompt": "TICK 51:\n\nF1 (Vitals):      HR: 112 bpm, BP: 106/55 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.2 g/dL, Lactate: 1.4 mmol/L, Cr: 0.75 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 12, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 17, Nurse ratio: 1:3.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "medications"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 52,
+      "prompt": "TICK 52:\n\nF1 (Vitals):      HR: 112 bpm, BP: 103/53 mmHg, SpO2: 86%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.1 g/dL, Lactate: 1.5 mmol/L, Cr: 0.75 mg/dL, Troponin: 0.037 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 7, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 18, Nurse ratio: 1:3.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "medications"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 53,
+      "prompt": "TICK 53:\n\nF1 (Vitals):      HR: 110 bpm, BP: 105/55 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.0 g/dL, Lactate: 1.4 mmol/L, Cr: 0.72 mg/dL, Troponin: 0.037 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 19, Nurse ratio: 1:3.7, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 54,
+      "prompt": "TICK 54:\n\nF1 (Vitals):      HR: 158 bpm, BP: 107/56 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 12.9 g/dL, Lactate: 1.4 mmol/L, Cr: 0.72 mg/dL, Troponin: 0.039 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 18, Nurse ratio: 1:3.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 55,
+      "prompt": "TICK 55:\n\nF1 (Vitals):      HR: 109 bpm, BP: 104/56 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 5.4 K/uL, Hgb: 13.0 g/dL, Lactate: 6.7 mmol/L, Cr: 0.72 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 10, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 17, Nurse ratio: 1:3.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "medications"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 56,
+      "prompt": "TICK 56:\n\nF1 (Vitals):      HR: 108 bpm, BP: 105/55 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 12.8 g/dL, Lactate: 1.5 mmol/L, Cr: 0.69 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 12, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 17, Nurse ratio: 1:3.7, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 57,
+      "prompt": "TICK 57:\n\nF1 (Vitals):      HR: 106 bpm, BP: 102/55 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 12.8 g/dL, Lactate: 1.4 mmol/L, Cr: 0.69 mg/dL, Troponin: 0.557 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 8, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 17, Nurse ratio: 1:3.8, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "labs"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 58,
+      "prompt": "TICK 58:\n\nF1 (Vitals):      HR: 104 bpm, BP: 99/54 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 12.7 g/dL, Lactate: 1.4 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 16, Nurse ratio: 1:3.8, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 59,
+      "prompt": "TICK 59:\n\nF1 (Vitals):      HR: 105 bpm, BP: 96/52 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 12.9 g/dL, Lactate: 1.5 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.033 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 16, Nurse ratio: 1:4.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 60,
+      "prompt": "TICK 60:\n\nF1 (Vitals):      HR: 108 bpm, BP: 95/54 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 12.8 g/dL, Lactate: 1.5 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.037 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 16, Nurse ratio: 1:4.1, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 61,
+      "prompt": "TICK 61:\n\nF1 (Vitals):      HR: 107 bpm, BP: 97/54 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 13.0 g/dL, Lactate: 1.5 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 17, Nurse ratio: 1:4.3, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 62,
+      "prompt": "TICK 62:\n\nF1 (Vitals):      HR: 110 bpm, BP: 98/54 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 13.2 g/dL, Lactate: 1.6 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.037 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 8, Ward beds: 18, Nurse ratio: 1:4.3, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 63,
+      "prompt": "TICK 63:\n\nF1 (Vitals):      HR: 107 bpm, BP: 101/56 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.3 g/dL, Lactate: 1.7 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.037 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 19, Nurse ratio: 1:4.1, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 64,
+      "prompt": "TICK 64:\n\nF1 (Vitals):      HR: 106 bpm, BP: 78/38 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.3 g/dL, Lactate: 1.7 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.034 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:8.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 65,
+      "prompt": "TICK 65:\n\nF1 (Vitals):      HR: 108 bpm, BP: 103/56 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.4 g/dL, Lactate: 1.6 mmol/L, Cr: 0.69 mg/dL, Troponin: 0.03 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 7, Ward beds: 17, Nurse ratio: 1:4.0, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 66,
+      "prompt": "TICK 66:\n\nF1 (Vitals):      HR: 153 bpm, BP: 105/57 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.5 g/dL, Lactate: 1.6 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 16, Nurse ratio: 1:3.8, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 67,
+      "prompt": "TICK 67:\n\nF1 (Vitals):      HR: 108 bpm, BP: 108/56 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 13.4 g/dL, Lactate: 1.6 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.034 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 17, Nurse ratio: 1:3.6, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 68,
+      "prompt": "TICK 68:\n\nF1 (Vitals):      HR: 143 bpm, BP: 109/56 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 13.4 g/dL, Lactate: 1.6 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.034 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 17, Nurse ratio: 1:3.8, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "imaging"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 69,
+      "prompt": "TICK 69:\n\nF1 (Vitals):      HR: 108 bpm, BP: 106/55 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 13.4 g/dL, Lactate: 1.5 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 17, Nurse ratio: 1:3.7, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 70,
+      "prompt": "TICK 70:\n\nF1 (Vitals):      HR: 111 bpm, BP: 109/56 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 18.5 K/uL, Hgb: 13.4 g/dL, Lactate: 1.6 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.031 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 16, Nurse ratio: 1:3.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "history"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 71,
+      "prompt": "TICK 71:\n\nF1 (Vitals):      HR: 109 bpm, BP: 109/56 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 18.5 K/uL, Hgb: 13.3 g/dL, Lactate: 1.6 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.033 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 15, Nurse ratio: 1:3.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 72,
+      "prompt": "TICK 72:\n\nF1 (Vitals):      HR: 106 bpm, BP: 111/57 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 13.2 g/dL, Lactate: 6.2 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 14, Nurse ratio: 1:3.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 73,
+      "prompt": "TICK 73:\n\nF1 (Vitals):      HR: 107 bpm, BP: 74/47 mmHg, SpO2: 100%\nF2 (Labs):        WBC: 24.5 K/uL, Hgb: 13.1 g/dL, Lactate: 1.6 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.031 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 14, Nurse ratio: 1:3.6, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "labs"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 74,
+      "prompt": "TICK 74:\n\nF1 (Vitals):      HR: 106 bpm, BP: 112/59 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 13.2 g/dL, Lactate: 5.9 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.028 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 14, Nurse ratio: 1:3.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "history"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 75,
+      "prompt": "TICK 75:\n\nF1 (Vitals):      HR: 107 bpm, BP: 113/61 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.8 K/uL, Hgb: 13.3 g/dL, Lactate: 1.7 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.031 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 9, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 14, Nurse ratio: 1:3.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "medications"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "order_imaging",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 76,
+      "prompt": "TICK 76:\n\nF1 (Vitals):      HR: 107 bpm, BP: 110/60 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.6 K/uL, Hgb: 13.4 g/dL, Lactate: 1.7 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 13, Nurse ratio: 1:3.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 77,
+      "prompt": "TICK 77:\n\nF1 (Vitals):      HR: 109 bpm, BP: 107/58 mmHg, SpO2: 86%\nF2 (Labs):        WBC: 6.5 K/uL, Hgb: 13.3 g/dL, Lactate: 1.7 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 12, Nurse ratio: 1:3.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 78,
+      "prompt": "TICK 78:\n\nF1 (Vitals):      HR: 108 bpm, BP: 105/58 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 25.5 K/uL, Hgb: 13.3 g/dL, Lactate: 1.8 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.04 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 5, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 12, Nurse ratio: 1:3.7, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "medications",
+          "labs"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 79,
+      "prompt": "TICK 79:\n\nF1 (Vitals):      HR: 111 bpm, BP: 105/58 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.2 g/dL, Lactate: 4.7 mmol/L, Cr: 0.57 mg/dL, Troponin: 0.045 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 12, Nurse ratio: 1:3.9, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 80,
+      "prompt": "TICK 80:\n\nF1 (Vitals):      HR: 108 bpm, BP: 104/58 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.1 g/dL, Lactate: 1.7 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.04 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 12, Nurse ratio: 1:3.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 81,
+      "prompt": "TICK 81:\n\nF1 (Vitals):      HR: 109 bpm, BP: 104/60 mmHg, SpO2: 87%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.1 g/dL, Lactate: 1.7 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.041 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 13, Nurse ratio: 1:3.9, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "imaging"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 82,
+      "prompt": "TICK 82:\n\nF1 (Vitals):      HR: 106 bpm, BP: 101/61 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.0 g/dL, Lactate: 1.7 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.046 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:4.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 83,
+      "prompt": "TICK 83:\n\nF1 (Vitals):      HR: 108 bpm, BP: 98/61 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.1 g/dL, Lactate: 1.6 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.043 ng/mL\nF3 (Imaging):     Chest X-ray: pleural effusion. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 13, Nurse ratio: 1:4.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 84,
+      "prompt": "TICK 84:\n\nF1 (Vitals):      HR: 111 bpm, BP: 101/63 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 13.2 g/dL, Lactate: 1.6 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.04 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 5, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:4.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 85,
+      "prompt": "TICK 85:\n\nF1 (Vitals):      HR: 109 bpm, BP: 102/63 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.3 g/dL, Lactate: 1.7 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 13, Nurse ratio: 1:4.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 86,
+      "prompt": "TICK 86:\n\nF1 (Vitals):      HR: 111 bpm, BP: 101/62 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.3 g/dL, Lactate: 1.7 mmol/L, Cr: 0.66 mg/dL, Troponin: 0.039 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:3.9, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 87,
+      "prompt": "TICK 87:\n\nF1 (Vitals):      HR: 108 bpm, BP: 103/64 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.4 g/dL, Lactate: 1.7 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.039 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 15, Nurse ratio: 1:4.0, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 88,
+      "prompt": "TICK 88:\n\nF1 (Vitals):      HR: 105 bpm, BP: 102/62 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.6 g/dL, Lactate: 1.8 mmol/L, Cr: 0.66 mg/dL, Troponin: 1.548 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:3.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 89,
+      "prompt": "TICK 89:\n\nF1 (Vitals):      HR: 106 bpm, BP: 102/60 mmHg, SpO2: 99%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.7 g/dL, Lactate: 1.7 mmol/L, Cr: 0.69 mg/dL, Troponin: 0.041 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:4.0, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 90,
+      "prompt": "TICK 90:\n\nF1 (Vitals):      HR: 103 bpm, BP: 101/62 mmHg, SpO2: 98%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.9 g/dL, Lactate: 1.8 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:6.4, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 91,
+      "prompt": "TICK 91:\n\nF1 (Vitals):      HR: 101 bpm, BP: 98/62 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 13.9 g/dL, Lactate: 1.8 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.039 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 12, Nurse ratio: 1:4.3, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 92,
+      "prompt": "TICK 92:\n\nF1 (Vitals):      HR: 152 bpm, BP: 100/60 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 13.9 g/dL, Lactate: 1.8 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:7.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 93,
+      "prompt": "TICK 93:\n\nF1 (Vitals):      HR: 97 bpm, BP: 97/61 mmHg, SpO2: 82%\nF2 (Labs):        WBC: 6.4 K/uL, Hgb: 13.9 g/dL, Lactate: 6.5 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 7, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 13, Nurse ratio: 1:4.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "labs",
+          "medications"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 94,
+      "prompt": "TICK 94:\n\nF1 (Vitals):      HR: 98 bpm, BP: 100/61 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 6.3 K/uL, Hgb: 14.0 g/dL, Lactate: 1.9 mmol/L, Cr: 0.68 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 12, Nurse ratio: 1:4.4, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 95,
+      "prompt": "TICK 95:\n\nF1 (Vitals):      HR: 96 bpm, BP: 100/61 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.8 g/dL, Lactate: 1.9 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 6, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:7.4, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 96,
+      "prompt": "TICK 96:\n\nF1 (Vitals):      HR: 94 bpm, BP: 102/61 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.7 g/dL, Lactate: 1.9 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.028 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:4.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 97,
+      "prompt": "TICK 97:\n\nF1 (Vitals):      HR: 97 bpm, BP: 100/60 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.8 g/dL, Lactate: 2.0 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.025 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 15, Nurse ratio: 1:4.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 98,
+      "prompt": "TICK 98:\n\nF1 (Vitals):      HR: 95 bpm, BP: 98/62 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 6.2 K/uL, Hgb: 13.8 g/dL, Lactate: 1.9 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.025 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 7, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 6, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 15, Nurse ratio: 1:4.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "history"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 99,
+      "prompt": "TICK 99:\n\nF1 (Vitals):      HR: 96 bpm, BP: 101/63 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.7 g/dL, Lactate: 1.9 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.023 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 8, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 8, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 15, Nurse ratio: 1:4.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "medications"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 100,
+      "prompt": "TICK 100:\n\nF1 (Vitals):      HR: 94 bpm, BP: 100/61 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.7 g/dL, Lactate: 1.9 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.02 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 16, Nurse ratio: 1:4.9, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 101,
+      "prompt": "TICK 101:\n\nF1 (Vitals):      HR: 96 bpm, BP: 102/61 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.9 g/dL, Lactate: 1.9 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.023 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 17, Nurse ratio: 1:4.7, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 102,
+      "prompt": "TICK 102:\n\nF1 (Vitals):      HR: 93 bpm, BP: 105/61 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.7 g/dL, Lactate: 4.6 mmol/L, Cr: 0.67 mg/dL, Troponin: 0.024 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:8.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "medications",
+          "capacity"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 103,
+      "prompt": "TICK 103:\n\nF1 (Vitals):      HR: 94 bpm, BP: 103/63 mmHg, SpO2: 83%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.6 g/dL, Lactate: 1.8 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.021 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 17, Nurse ratio: 1:4.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 104,
+      "prompt": "TICK 104:\n\nF1 (Vitals):      HR: 93 bpm, BP: 105/64 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.4 g/dL, Lactate: 7.8 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.024 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 6, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 17, Nurse ratio: 1:4.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 105,
+      "prompt": "TICK 105:\n\nF1 (Vitals):      HR: 94 bpm, BP: 105/66 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 13.6 g/dL, Lactate: 1.9 mmol/L, Cr: 0.59 mg/dL, Troponin: 0.027 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 18, Nurse ratio: 1:4.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 106,
+      "prompt": "TICK 106:\n\nF1 (Vitals):      HR: 93 bpm, BP: 106/68 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.6 g/dL, Lactate: 1.9 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 17, Nurse ratio: 1:4.9, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 107,
+      "prompt": "TICK 107:\n\nF1 (Vitals):      HR: 94 bpm, BP: 109/69 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 19.1 K/uL, Hgb: 13.5 g/dL, Lactate: 2.0 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 16, Nurse ratio: 1:5.0, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 108,
+      "prompt": "TICK 108:\n\nF1 (Vitals):      HR: 92 bpm, BP: 107/68 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.6 g/dL, Lactate: 2.1 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:9.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 109,
+      "prompt": "TICK 109:\n\nF1 (Vitals):      HR: 95 bpm, BP: 104/70 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 18.3 K/uL, Hgb: 13.4 g/dL, Lactate: 2.0 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 16, Nurse ratio: 1:4.9, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 110,
+      "prompt": "TICK 110:\n\nF1 (Vitals):      HR: 97 bpm, BP: 79/49 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.4 g/dL, Lactate: 2.0 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 17, Nurse ratio: 1:5.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 111,
+      "prompt": "TICK 111:\n\nF1 (Vitals):      HR: 94 bpm, BP: 105/70 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.3 g/dL, Lactate: 2.1 mmol/L, Cr: 0.59 mg/dL, Troponin: 0.033 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 17, Nurse ratio: 1:4.9, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 112,
+      "prompt": "TICK 112:\n\nF1 (Vitals):      HR: 92 bpm, BP: 106/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.2 g/dL, Lactate: 2.1 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:7.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 113,
+      "prompt": "TICK 113:\n\nF1 (Vitals):      HR: 136 bpm, BP: 106/69 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.4 g/dL, Lactate: 2.1 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.031 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:8.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 114,
+      "prompt": "TICK 114:\n\nF1 (Vitals):      HR: 90 bpm, BP: 104/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 27.0 K/uL, Hgb: 13.2 g/dL, Lactate: 2.0 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.034 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 16, Nurse ratio: 1:5.1, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 115,
+      "prompt": "TICK 115:\n\nF1 (Vitals):      HR: 89 bpm, BP: 103/72 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 6.1 K/uL, Hgb: 13.2 g/dL, Lactate: 2.0 mmol/L, Cr: 0.69 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 17, Nurse ratio: 1:5.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 116,
+      "prompt": "TICK 116:\n\nF1 (Vitals):      HR: 91 bpm, BP: 103/71 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.2 g/dL, Lactate: 2.0 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.039 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:7.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 117,
+      "prompt": "TICK 117:\n\nF1 (Vitals):      HR: 94 bpm, BP: 100/71 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.4 g/dL, Lactate: 2.0 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.037 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 17, Nurse ratio: 1:5.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 118,
+      "prompt": "TICK 118:\n\nF1 (Vitals):      HR: 93 bpm, BP: 102/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 6.0 K/uL, Hgb: 13.3 g/dL, Lactate: 2.1 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:9.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 119,
+      "prompt": "TICK 119:\n\nF1 (Vitals):      HR: 95 bpm, BP: 101/68 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 13.1 g/dL, Lactate: 2.1 mmol/L, Cr: 0.57 mg/dL, Troponin: 0.039 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 11, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 6, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 19, Nurse ratio: 1:5.3, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "history"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 120,
+      "prompt": "TICK 120:\n\nF1 (Vitals):      HR: 93 bpm, BP: 101/68 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 13.0 g/dL, Lactate: 2.2 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.038 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 7, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 5, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 20, Nurse ratio: 1:5.4, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "medications"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 121,
+      "prompt": "TICK 121:\n\nF1 (Vitals):      HR: 96 bpm, BP: 103/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.9 K/uL, Hgb: 12.9 g/dL, Lactate: 2.2 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 10, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 19, Nurse ratio: 1:5.4, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 122,
+      "prompt": "TICK 122:\n\nF1 (Vitals):      HR: 98 bpm, BP: 106/69 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.1 g/dL, Lactate: 2.3 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 18, Nurse ratio: 1:5.3, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 123,
+      "prompt": "TICK 123:\n\nF1 (Vitals):      HR: 101 bpm, BP: 105/69 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 12.9 g/dL, Lactate: 2.3 mmol/L, Cr: 0.64 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 18, Nurse ratio: 1:5.3, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 124,
+      "prompt": "TICK 124:\n\nF1 (Vitals):      HR: 99 bpm, BP: 104/68 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 13.0 g/dL, Lactate: 2.4 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.03 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:9.4, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 125,
+      "prompt": "TICK 125:\n\nF1 (Vitals):      HR: 101 bpm, BP: 104/67 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.1 g/dL, Lactate: 2.3 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:9.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 126,
+      "prompt": "TICK 126:\n\nF1 (Vitals):      HR: 104 bpm, BP: 103/69 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.1 g/dL, Lactate: 2.4 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.036 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 17, Nurse ratio: 1:5.4, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 127,
+      "prompt": "TICK 127:\n\nF1 (Vitals):      HR: 101 bpm, BP: 103/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 13.3 g/dL, Lactate: 2.4 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:7.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 128,
+      "prompt": "TICK 128:\n\nF1 (Vitals):      HR: 99 bpm, BP: 104/71 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.3 g/dL, Lactate: 2.4 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.032 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:9.5, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 129,
+      "prompt": "TICK 129:\n\nF1 (Vitals):      HR: 99 bpm, BP: 102/73 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.2 g/dL, Lactate: 2.4 mmol/L, Cr: 0.51 mg/dL, Troponin: 0.035 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:9.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 130,
+      "prompt": "TICK 130:\n\nF1 (Vitals):      HR: 96 bpm, BP: 104/75 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.1 g/dL, Lactate: 2.5 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.033 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 15, Nurse ratio: 1:5.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 131,
+      "prompt": "TICK 131:\n\nF1 (Vitals):      HR: 98 bpm, BP: 101/75 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 13.2 g/dL, Lactate: 2.5 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.029 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 11, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:5.0, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 132,
+      "prompt": "TICK 132:\n\nF1 (Vitals):      HR: 95 bpm, BP: 98/73 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.7 K/uL, Hgb: 13.2 g/dL, Lactate: 2.6 mmol/L, Cr: 0.52 mg/dL, Troponin: 0.025 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 5, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:5.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 133,
+      "prompt": "TICK 133:\n\nF1 (Vitals):      HR: 156 bpm, BP: 100/71 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.1 g/dL, Lactate: 2.6 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.022 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 15, Nurse ratio: 1:5.2, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 134,
+      "prompt": "TICK 134:\n\nF1 (Vitals):      HR: 94 bpm, BP: 84/41 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 5.8 K/uL, Hgb: 13.0 g/dL, Lactate: 2.7 mmol/L, Cr: 0.52 mg/dL, Troponin: 0.019 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:7.6, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 135,
+      "prompt": "TICK 135:\n\nF1 (Vitals):      HR: 95 bpm, BP: 104/72 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.0 g/dL, Lactate: 2.7 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.016 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 8, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:7.7, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "capacity"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 136,
+      "prompt": "TICK 136:\n\nF1 (Vitals):      HR: 92 bpm, BP: 104/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.2 g/dL, Lactate: 2.7 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.018 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 15, Nurse ratio: 1:4.9, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 137,
+      "prompt": "TICK 137:\n\nF1 (Vitals):      HR: 91 bpm, BP: 106/71 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.3 K/uL, Hgb: 13.0 g/dL, Lactate: 2.7 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.015 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 16, Nurse ratio: 1:4.8, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 138,
+      "prompt": "TICK 138:\n\nF1 (Vitals):      HR: 92 bpm, BP: 107/69 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.2 K/uL, Hgb: 13.0 g/dL, Lactate: 2.7 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.018 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 17, Nurse ratio: 1:4.7, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 139,
+      "prompt": "TICK 139:\n\nF1 (Vitals):      HR: 89 bpm, BP: 104/71 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.0 g/dL, Lactate: 2.6 mmol/L, Cr: 0.53 mg/dL, Troponin: 0.017 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 16, Nurse ratio: 1:4.8, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 140,
+      "prompt": "TICK 140:\n\nF1 (Vitals):      HR: 91 bpm, BP: 107/73 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.6 K/uL, Hgb: 13.1 g/dL, Lactate: 5.5 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.014 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 8, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 15, Nurse ratio: 1:4.9, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "medications"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 141,
+      "prompt": "TICK 141:\n\nF1 (Vitals):      HR: 89 bpm, BP: 109/72 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.1 g/dL, Lactate: 2.5 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.009 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 10, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 5, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 14, Nurse ratio: 1:4.9, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "medications"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 142,
+      "prompt": "TICK 142:\n\nF1 (Vitals):      HR: 89 bpm, BP: 107/73 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.5 K/uL, Hgb: 13.2 g/dL, Lactate: 2.5 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.007 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 4, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 14, Nurse ratio: 1:5.0, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 143,
+      "prompt": "TICK 143:\n\nF1 (Vitals):      HR: 86 bpm, BP: 108/74 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.3 K/uL, Hgb: 13.3 g/dL, Lactate: 2.6 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.01 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 11, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 7, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 15, Nurse ratio: 1:4.8, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "history"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 144,
+      "prompt": "TICK 144:\n\nF1 (Vitals):      HR: 85 bpm, BP: 105/74 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.0 K/uL, Hgb: 13.2 g/dL, Lactate: 2.6 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.007 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 15, Nurse ratio: 1:5.0, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 145,
+      "prompt": "TICK 145:\n\nF1 (Vitals):      HR: 88 bpm, BP: 75/35 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.1 K/uL, Hgb: 13.0 g/dL, Lactate: 2.6 mmol/L, Cr: 0.51 mg/dL, Troponin: 0.008 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 5, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 14, Nurse ratio: 1:5.0, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "history"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "admit_icu",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 146,
+      "prompt": "TICK 146:\n\nF1 (Vitals):      HR: 88 bpm, BP: 103/73 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.1 K/uL, Hgb: 12.9 g/dL, Lactate: 2.7 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.004 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:9.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 147,
+      "prompt": "TICK 147:\n\nF1 (Vitals):      HR: 86 bpm, BP: 102/72 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.1 K/uL, Hgb: 12.8 g/dL, Lactate: 2.7 mmol/L, Cr: 0.53 mg/dL, Troponin: 0.004 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 14, Nurse ratio: 1:5.2, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 148,
+      "prompt": "TICK 148:\n\nF1 (Vitals):      HR: 86 bpm, BP: 101/73 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 5.0 K/uL, Hgb: 12.9 g/dL, Lactate: 2.8 mmol/L, Cr: 0.53 mg/dL, Troponin: 0.004 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 4, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:7.2, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 149,
+      "prompt": "TICK 149:\n\nF1 (Vitals):      HR: 84 bpm, BP: 103/72 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 5.0 K/uL, Hgb: 12.8 g/dL, Lactate: 2.9 mmol/L, Cr: 0.57 mg/dL, Troponin: 0.824 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:7.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "capacity"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 150,
+      "prompt": "TICK 150:\n\nF1 (Vitals):      HR: 81 bpm, BP: 102/70 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 4.9 K/uL, Hgb: 12.6 g/dL, Lactate: 2.9 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.0 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 15, Nurse ratio: 1:5.4, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 151,
+      "prompt": "TICK 151:\n\nF1 (Vitals):      HR: 79 bpm, BP: 104/71 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 4.9 K/uL, Hgb: 12.7 g/dL, Lactate: 4.2 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.0 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 16, Nurse ratio: 1:5.4, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 152,
+      "prompt": "TICK 152:\n\nF1 (Vitals):      HR: 80 bpm, BP: 106/72 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 4.7 K/uL, Hgb: 12.5 g/dL, Lactate: 2.8 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.0 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:8.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 153,
+      "prompt": "TICK 153:\n\nF1 (Vitals):      HR: 82 bpm, BP: 105/73 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 4.7 K/uL, Hgb: 12.4 g/dL, Lactate: 2.8 mmol/L, Cr: 0.59 mg/dL, Troponin: 0.0 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 1, Ward beds: 18, Nurse ratio: 1:5.0, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 154,
+      "prompt": "TICK 154:\n\nF1 (Vitals):      HR: 81 bpm, BP: 103/75 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 4.5 K/uL, Hgb: 12.5 g/dL, Lactate: 2.7 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.001 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 6, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 18, Nurse ratio: 1:4.9, Specialists on-call: 5\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 155,
+      "prompt": "TICK 155:\n\nF1 (Vitals):      HR: 149 bpm, BP: 100/74 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 4.6 K/uL, Hgb: 12.4 g/dL, Lactate: 2.8 mmol/L, Cr: 0.57 mg/dL, Troponin: 0.003 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:8.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 156,
+      "prompt": "TICK 156:\n\nF1 (Vitals):      HR: 81 bpm, BP: 103/73 mmHg, SpO2: 87%\nF2 (Labs):        WBC: 4.5 K/uL, Hgb: 12.2 g/dL, Lactate: 2.8 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.005 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 18, Nurse ratio: 1:4.8, Specialists on-call: 4\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 157,
+      "prompt": "TICK 157:\n\nF1 (Vitals):      HR: 81 bpm, BP: 102/75 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 25.5 K/uL, Hgb: 12.1 g/dL, Lactate: 2.9 mmol/L, Cr: 0.52 mg/dL, Troponin: 0.009 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:7.9, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "capacity"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 158,
+      "prompt": "TICK 158:\n\nF1 (Vitals):      HR: 78 bpm, BP: 99/74 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 4.6 K/uL, Hgb: 12.2 g/dL, Lactate: 2.8 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.014 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 20, Nurse ratio: 1:4.7, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 159,
+      "prompt": "TICK 159:\n\nF1 (Vitals):      HR: 80 bpm, BP: 98/72 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 4.6 K/uL, Hgb: 12.3 g/dL, Lactate: 2.8 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.019 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 5, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 20, Nurse ratio: 1:4.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 160,
+      "prompt": "TICK 160:\n\nF1 (Vitals):      HR: 77 bpm, BP: 95/70 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 4.7 K/uL, Hgb: 12.2 g/dL, Lactate: 6.9 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.022 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 5, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 20, Nurse ratio: 1:4.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "medications",
+          "history"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 161,
+      "prompt": "TICK 161:\n\nF1 (Vitals):      HR: 74 bpm, BP: 93/71 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 5.0 K/uL, Hgb: 12.4 g/dL, Lactate: 2.8 mmol/L, Cr: 0.59 mg/dL, Troponin: 0.019 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 6, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 19, Nurse ratio: 1:4.7, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 162,
+      "prompt": "TICK 162:\n\nF1 (Vitals):      HR: 73 bpm, BP: 90/69 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 4.8 K/uL, Hgb: 12.5 g/dL, Lactate: 2.8 mmol/L, Cr: 0.57 mg/dL, Troponin: 0.016 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 11, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 6, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:9.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "medications",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 163,
+      "prompt": "TICK 163:\n\nF1 (Vitals):      HR: 71 bpm, BP: 93/67 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 4.6 K/uL, Hgb: 12.5 g/dL, Lactate: 2.8 mmol/L, Cr: 0.53 mg/dL, Troponin: 0.015 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 18, Nurse ratio: 1:4.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 164,
+      "prompt": "TICK 164:\n\nF1 (Vitals):      HR: 68 bpm, BP: 91/69 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 4.8 K/uL, Hgb: 12.7 g/dL, Lactate: 2.7 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.011 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 19, Nurse ratio: 1:4.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 165,
+      "prompt": "TICK 165:\n\nF1 (Vitals):      HR: 69 bpm, BP: 90/67 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 4.8 K/uL, Hgb: 12.6 g/dL, Lactate: 2.8 mmol/L, Cr: 0.51 mg/dL, Troponin: 0.008 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 18, Nurse ratio: 1:4.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 166,
+      "prompt": "TICK 166:\n\nF1 (Vitals):      HR: 67 bpm, BP: 90/66 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 5.1 K/uL, Hgb: 12.5 g/dL, Lactate: 2.9 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:6.2, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 167,
+      "prompt": "TICK 167:\n\nF1 (Vitals):      HR: 68 bpm, BP: 93/66 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 4.9 K/uL, Hgb: 12.6 g/dL, Lactate: 3.0 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.008 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 18, Nurse ratio: 1:4.7, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 168,
+      "prompt": "TICK 168:\n\nF1 (Vitals):      HR: 65 bpm, BP: 95/64 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 4.8 K/uL, Hgb: 12.5 g/dL, Lactate: 3.0 mmol/L, Cr: 0.52 mg/dL, Troponin: 0.009 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 19, Nurse ratio: 1:4.6, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 169,
+      "prompt": "TICK 169:\n\nF1 (Vitals):      HR: 64 bpm, BP: 96/64 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 5.1 K/uL, Hgb: 12.7 g/dL, Lactate: 3.1 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.005 ng/mL\nF3 (Imaging):     Chest X-ray: pneumothorax. CT: STAT ordered.\nF4 (Medications): Active meds: 8, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 7, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 20, Nurse ratio: 1:4.7, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging",
+          "medications"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 170,
+      "prompt": "TICK 170:\n\nF1 (Vitals):      HR: 66 bpm, BP: 98/65 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 4.9 K/uL, Hgb: 12.5 g/dL, Lactate: 3.2 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.007 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 20, Nurse ratio: 1:4.8, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 171,
+      "prompt": "TICK 171:\n\nF1 (Vitals):      HR: 68 bpm, BP: 98/66 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 4.6 K/uL, Hgb: 12.5 g/dL, Lactate: 3.1 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.01 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:7.0, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 172,
+      "prompt": "TICK 172:\n\nF1 (Vitals):      HR: 71 bpm, BP: 97/67 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 4.3 K/uL, Hgb: 12.6 g/dL, Lactate: 3.2 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.008 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 7, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 20, Nurse ratio: 1:5.0, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 173,
+      "prompt": "TICK 173:\n\nF1 (Vitals):      HR: 68 bpm, BP: 95/68 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 4.1 K/uL, Hgb: 12.6 g/dL, Lactate: 3.1 mmol/L, Cr: 0.51 mg/dL, Troponin: 0.011 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 7, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 4, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 0, Nurse ratio: 1:6.1, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "history",
+          "capacity"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 174,
+      "prompt": "TICK 174:\n\nF1 (Vitals):      HR: 68 bpm, BP: 92/67 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 4.0 K/uL, Hgb: 12.6 g/dL, Lactate: 3.1 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.011 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 18, Nurse ratio: 1:5.3, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "order_imaging"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 175,
+      "prompt": "TICK 175:\n\nF1 (Vitals):      HR: 70 bpm, BP: 92/68 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 4.1 K/uL, Hgb: 12.7 g/dL, Lactate: 3.1 mmol/L, Cr: 0.57 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 12, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 17, Nurse ratio: 1:5.4, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 176,
+      "prompt": "TICK 176:\n\nF1 (Vitals):      HR: 154 bpm, BP: 92/66 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 4.0 K/uL, Hgb: 12.7 g/dL, Lactate: 3.1 mmol/L, Cr: 0.59 mg/dL, Troponin: 0.013 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:8.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 177,
+      "prompt": "TICK 177:\n\nF1 (Vitals):      HR: 74 bpm, BP: 95/66 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 3.8 K/uL, Hgb: 12.6 g/dL, Lactate: 3.0 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.01 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:9.1, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 178,
+      "prompt": "TICK 178:\n\nF1 (Vitals):      HR: 73 bpm, BP: 92/67 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 4.0 K/uL, Hgb: 12.8 g/dL, Lactate: 3.0 mmol/L, Cr: 0.66 mg/dL, Troponin: 0.009 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 4, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 18, Nurse ratio: 1:5.1, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 179,
+      "prompt": "TICK 179:\n\nF1 (Vitals):      HR: 70 bpm, BP: 94/68 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 3.7 K/uL, Hgb: 12.7 g/dL, Lactate: 3.0 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.007 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 19, Nurse ratio: 1:5.1, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 180,
+      "prompt": "TICK 180:\n\nF1 (Vitals):      HR: 68 bpm, BP: 74/39 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 3.6 K/uL, Hgb: 12.8 g/dL, Lactate: 3.0 mmol/L, Cr: 0.62 mg/dL, Troponin: 0.007 ng/mL\nF3 (Imaging):     Chest X-ray: pleural effusion. CT: STAT ordered.\nF4 (Medications): Active meds: 11, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 18, Nurse ratio: 1:5.1, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "imaging",
+          "medications"
+        ],
+        "correct_action": "admit_icu",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 181,
+      "prompt": "TICK 181:\n\nF1 (Vitals):      HR: 70 bpm, BP: 93/71 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 3.6 K/uL, Hgb: 12.7 g/dL, Lactate: 2.9 mmol/L, Cr: 0.65 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 19, Nurse ratio: 1:5.0, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 182,
+      "prompt": "TICK 182:\n\nF1 (Vitals):      HR: 71 bpm, BP: 91/70 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 3.8 K/uL, Hgb: 12.9 g/dL, Lactate: 2.8 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: bilateral opacity. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 4, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 18, Nurse ratio: 1:4.8, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 183,
+      "prompt": "TICK 183:\n\nF1 (Vitals):      HR: 72 bpm, BP: 91/72 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 3.8 K/uL, Hgb: 12.8 g/dL, Lactate: 2.9 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.009 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 11, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 5, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 19, Nurse ratio: 1:4.6, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "medications"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 184,
+      "prompt": "TICK 184:\n\nF1 (Vitals):      HR: 70 bpm, BP: 92/70 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.8 g/dL, Lactate: 2.9 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.013 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 20, Nurse ratio: 1:4.5, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 185,
+      "prompt": "TICK 185:\n\nF1 (Vitals):      HR: 68 bpm, BP: 94/69 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.9 g/dL, Lactate: 4.9 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.018 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 20, Nurse ratio: 1:4.3, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "call_specialist",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 186,
+      "prompt": "TICK 186:\n\nF1 (Vitals):      HR: 71 bpm, BP: 96/67 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.9 g/dL, Lactate: 2.8 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.021 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 2, Ward beds: 20, Nurse ratio: 1:4.3, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 187,
+      "prompt": "TICK 187:\n\nF1 (Vitals):      HR: 71 bpm, BP: 97/68 mmHg, SpO2: 97%\nF2 (Labs):        WBC: 4.1 K/uL, Hgb: 12.9 g/dL, Lactate: 2.7 mmol/L, Cr: 0.63 mg/dL, Troponin: 0.02 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:6.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 188,
+      "prompt": "TICK 188:\n\nF1 (Vitals):      HR: 71 bpm, BP: 94/67 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 4.0 K/uL, Hgb: 13.0 g/dL, Lactate: 2.6 mmol/L, Cr: 0.59 mg/dL, Troponin: 0.016 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 8, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 3, Ward beds: 20, Nurse ratio: 1:4.1, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_imaging",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 189,
+      "prompt": "TICK 189:\n\nF1 (Vitals):      HR: 72 bpm, BP: 93/69 mmHg, SpO2: 96%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.9 g/dL, Lactate: 2.7 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 19, Nurse ratio: 1:4.1, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 190,
+      "prompt": "TICK 190:\n\nF1 (Vitals):      HR: 69 bpm, BP: 92/68 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.7 g/dL, Lactate: 2.8 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.008 ng/mL\nF3 (Imaging):     Chest X-ray: pleural effusion. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 18, Nurse ratio: 1:3.9, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "imaging"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 191,
+      "prompt": "TICK 191:\n\nF1 (Vitals):      HR: 72 bpm, BP: 89/70 mmHg, SpO2: 95%\nF2 (Labs):        WBC: 4.1 K/uL, Hgb: 12.6 g/dL, Lactate: 2.8 mmol/L, Cr: 0.6 mg/dL, Troponin: 0.008 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 6, Allergies: 4, recent surgery\nF6 (Capacity):    ICU beds: 6, Ward beds: 18, Nurse ratio: 1:3.9, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 192,
+      "prompt": "TICK 192:\n\nF1 (Vitals):      HR: 74 bpm, BP: 89/72 mmHg, SpO2: 94%\nF2 (Labs):        WBC: 4.2 K/uL, Hgb: 12.7 g/dL, Lactate: 2.8 mmol/L, Cr: 0.61 mg/dL, Troponin: 0.012 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 5, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 5, Ward beds: 17, Nurse ratio: 1:4.1, Specialists on-call: 3\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "call_specialist",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 193,
+      "prompt": "TICK 193:\n\nF1 (Vitals):      HR: 77 bpm, BP: 92/72 mmHg, SpO2: 93%\nF2 (Labs):        WBC: 4.0 K/uL, Hgb: 12.8 g/dL, Lactate: 2.7 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.014 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:8.0, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "capacity"
+        ],
+        "correct_action": "admit_ward",
+        "acceptable_actions": [
+          "admit_ward",
+          "discharge",
+          "monitor_closely"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 194,
+      "prompt": "TICK 194:\n\nF1 (Vitals):      HR: 76 bpm, BP: 94/70 mmHg, SpO2: 92%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.8 g/dL, Lactate: 2.7 mmol/L, Cr: 0.58 mg/dL, Troponin: 0.01 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:6.5, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "capacity"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 195,
+      "prompt": "TICK 195:\n\nF1 (Vitals):      HR: 74 bpm, BP: 97/70 mmHg, SpO2: 91%\nF2 (Labs):        WBC: 28.2 K/uL, Hgb: 12.6 g/dL, Lactate: 2.8 mmol/L, Cr: 0.55 mg/dL, Troponin: 0.015 ng/mL\nF3 (Imaging):     Chest X-ray: suspicious mass. CT: STAT ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 7, Allergies: 5, recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 18, Nurse ratio: 1:4.0, Specialists on-call: 2\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "imaging",
+          "history"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "monitor_closely",
+          "order_imaging",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 196,
+      "prompt": "TICK 196:\n\nF1 (Vitals):      HR: 73 bpm, BP: 95/71 mmHg, SpO2: 90%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.6 g/dL, Lactate: 2.9 mmol/L, Cr: 0.56 mg/dL, Troponin: 0.016 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 4, Allergies: 3, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:7.5, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "history",
+          "capacity"
+        ],
+        "correct_action": "call_specialist",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 197,
+      "prompt": "TICK 197:\n\nF1 (Vitals):      HR: 141 bpm, BP: 94/69 mmHg, SpO2: 89%\nF2 (Labs):        WBC: 3.8 K/uL, Hgb: 12.6 g/dL, Lactate: 2.9 mmol/L, Cr: 0.54 mg/dL, Troponin: 0.015 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 11, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:8.9, Specialists on-call: 1\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "vitals",
+          "capacity",
+          "medications"
+        ],
+        "correct_action": "monitor_closely",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_icu",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "start_medication"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 198,
+      "prompt": "TICK 198:\n\nF1 (Vitals):      HR: 68 bpm, BP: 97/70 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.7 g/dL, Lactate: 2.8 mmol/L, Cr: 0.52 mg/dL, Troponin: 0.018 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 9, Interaction risk: CRITICAL, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 4, Ward beds: 16, Nurse ratio: 1:3.9, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "call_specialist",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 199,
+      "prompt": "TICK 199:\n\nF1 (Vitals):      HR: 71 bpm, BP: 99/71 mmHg, SpO2: 87%\nF2 (Labs):        WBC: 3.9 K/uL, Hgb: 12.7 g/dL, Lactate: 2.8 mmol/L, Cr: 0.5 mg/dL, Troponin: 0.014 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 10, Interaction risk: HIGH, Pain mgmt: inadequate\nF5 (History):     Comorbidities: 7, Allergies: 6, recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 1, Nurse ratio: 1:9.6, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "medications",
+          "history",
+          "capacity"
+        ],
+        "correct_action": "adjust_medication",
+        "acceptable_actions": [
+          "adjust_medication",
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 200,
+      "prompt": "TICK 200:\n\nF1 (Vitals):      HR: 68 bpm, BP: 96/69 mmHg, SpO2: 88%\nF2 (Labs):        WBC: 3.6 K/uL, Hgb: 12.7 g/dL, Lactate: 2.9 mmol/L, Cr: 0.53 mg/dL, Troponin: 0.508 ng/mL\nF3 (Imaging):     Chest X-ray: clear. CT: not_ordered.\nF4 (Medications): Active meds: 3, Interaction risk: none, Pain mgmt: adequate\nF5 (History):     Comorbidities: 1, No known allergies, no recent surgery\nF6 (Capacity):    ICU beds: 0, Ward beds: 2, Nurse ratio: 1:8.8, Specialists on-call: 0\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "labs",
+          "capacity"
+        ],
+        "correct_action": "order_labs",
+        "acceptable_actions": [
+          "admit_ward",
+          "call_specialist",
+          "discharge",
+          "monitor_closely",
+          "order_labs",
+          "start_medication"
+        ],
+        "is_multi_factor": false
+      }
+    }
+  ]
+}

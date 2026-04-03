@@ -12,6 +12,9 @@ dist/
 results/*
 !results/.gitkeep
 
+# Data files are committed (NOT gitignored)
+# data/
+
 # Paper (not public yet)
 paper/
 
