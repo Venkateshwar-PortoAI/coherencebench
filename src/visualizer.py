@@ -109,25 +109,25 @@ class CoherenceVisualizer:
 
     def plot_per_factor_attention(
         self,
-        token_counts_over_time: list[dict[str, int]],
-        title: str = "Per-Factor Token Allocation Over Time",
+        word_counts_over_time: list[dict[str, int]],
+        title: str = "Per-Factor Word Allocation Over Time",
         save_as: str = "factor_attention_heatmap.png",
     ) -> Path:
-        """Heatmap showing per-factor token allocation across ticks.
+        """Heatmap showing per-factor word allocation across ticks.
 
         Args:
-            token_counts_over_time: List of {factor_name: word_count} per tick.
+            word_counts_over_time: List of {factor_name: word_count} per tick.
             save_as: Output filename.
 
         Returns:
             Path to saved figure.
         """
-        n_ticks = len(token_counts_over_time)
+        n_ticks = len(word_counts_over_time)
         factors = FACTOR_NAMES
 
         # Build matrix: rows=factors, cols=ticks
         matrix = np.zeros((len(factors), n_ticks))
-        for t, counts in enumerate(token_counts_over_time):
+        for t, counts in enumerate(word_counts_over_time):
             total = max(sum(counts.values()), 1)
             for f_idx, f_name in enumerate(factors):
                 matrix[f_idx, t] = counts.get(f_name, 0) / total

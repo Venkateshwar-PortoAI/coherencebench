@@ -131,7 +131,7 @@ def test_intervention_recovery_out_of_bounds():
 def test_compute_all_metrics():
     result = compute_all_metrics(
         factors_substantive=["load", "generation", "frequency"],
-        token_counts={
+        word_counts={
             "load": 20, "generation": 18, "frequency": 15,
             "voltage": 3, "weather": 2, "reserve": 1,
         },

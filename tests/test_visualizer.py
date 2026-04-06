@@ -21,8 +21,8 @@ def _synthetic_fc_curve(n: int = 200, seed: int = 42) -> list[float]:
     return list(np.clip(base + noise, 0, 1))
 
 
-def _synthetic_token_counts(n: int = 200, seed: int = 42) -> list[dict[str, int]]:
-    """Generate synthetic per-factor token counts that shift over time."""
+def _synthetic_word_counts(n: int = 200, seed: int = 42) -> list[dict[str, int]]:
+    """Generate synthetic per-factor word counts that shift over time."""
     rng = np.random.default_rng(seed)
     counts = []
     for t in range(n):
@@ -77,7 +77,7 @@ class TestFactorCoverageOverTime:
 class TestPerFactorAttention:
     def test_creates_heatmap(self, tmp_path):
         viz = _make_visualizer(tmp_path)
-        counts = _synthetic_token_counts(100)
+        counts = _synthetic_word_counts(100)
         path = viz.plot_per_factor_attention(counts, save_as="test_heatmap.png")
         assert path.exists()
         assert path.stat().st_size > 1000

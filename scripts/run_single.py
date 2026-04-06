@@ -118,7 +118,7 @@ def run(config_path: str, provider_name: str, seed: int, dry_run: bool = False, 
 
     # Analyze
     logger.info("Analyzing responses...")
-    analyzer = ResponseAnalyzer()
+    analyzer = ResponseAnalyzer(scenario=runner.scenario)
     analyses = analyzer.analyze_run(raw_results)
 
     # Compute summary metrics
@@ -150,7 +150,7 @@ def run(config_path: str, provider_name: str, seed: int, dry_run: bool = False, 
                 "adr": a.anomaly_detection_rate,
                 "action": a.action,
                 "factors_substantive": a.factors_substantive,
-                "token_counts": a.token_counts,
+                "word_counts": a.word_counts,
             }
             for a in analyses
         ],

@@ -18,6 +18,9 @@ results/*
 # Paper (not public yet)
 paper/
 
+# Funding (contains personal details, publish separately when ready)
+funding.json
+
 # OS
 .DS_Store
 .pytest_cache/

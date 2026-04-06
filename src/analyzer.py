@@ -79,7 +79,7 @@ class TickAnalysis:
     action: str
     factors_mentioned: list[str]
     factors_substantive: list[str]
-    token_counts: dict[str, int]
+    word_counts: dict[str, int]
     reason: str
     # FIX 1: Behavior-based metrics (PRIMARY)
     anomaly_detection_rate: float
@@ -130,7 +130,7 @@ class ResponseAnalyzer:
 
         Returns dict with:
             action, factors_mentioned, factors_substantive,
-            token_counts, reason, refused
+            word_counts, reason, refused
         """
         refused = self._is_refusal(response)
         action = self._extract_action(response)
@@ -138,12 +138,12 @@ class ResponseAnalyzer:
 
         factors_mentioned = []
         factors_substantive = []
-        token_counts = {}
+        word_counts = {}
 
         for factor in self.factors:
             section_text = factor_sections.get(factor.name, "")
             word_count = len(section_text.split()) if section_text else 0
-            token_counts[factor.name] = word_count
+            word_counts[factor.name] = word_count
 
             if word_count > 0:
                 factors_mentioned.append(factor.name)
@@ -157,7 +157,7 @@ class ResponseAnalyzer:
             "action": action,
             "factors_mentioned": factors_mentioned,
             "factors_substantive": factors_substantive,
-            "token_counts": token_counts,
+            "word_counts": word_counts,
             "reason": reason,
             "refused": refused,
         }
@@ -179,7 +179,7 @@ class ResponseAnalyzer:
 
         metrics = compute_all_metrics(
             factors_substantive=parsed["factors_substantive"],
-            token_counts=parsed["token_counts"],
+            word_counts=parsed["word_counts"],
             predicted_action=parsed["action"],
             correct_action=correct_action,
             anomalous_factors=anomalous,
@@ -191,7 +191,7 @@ class ResponseAnalyzer:
             action=parsed["action"],
             factors_mentioned=parsed["factors_mentioned"],
             factors_substantive=parsed["factors_substantive"],
-            token_counts=parsed["token_counts"],
+            word_counts=parsed["word_counts"],
             reason=parsed["reason"],
             anomaly_detection_rate=metrics["anomaly_detection_rate"],
             decision_accuracy=metrics["decision_accuracy"],

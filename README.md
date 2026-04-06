@@ -2,7 +2,9 @@
 
 **Measuring Attention Collapse in Long-Running Autonomous Agents**
 
-CoherenceBench is an open-source benchmark that measures how LLM-based autonomous agents degrade their decision quality over extended interactions. It places agents in simulated control-room scenarios where they must continuously monitor 6 subsystems across 200 sequential decisions.
+CoherenceBench is an open-source research framework for measuring how LLM-based autonomous agents degrade their decision quality over extended interactions. It places agents in simulated control-room scenarios where they must continuously monitor 6 subsystems across 200 sequential decisions.
+
+> **Status:** Early research release. Results are preliminary (2 models evaluated so far). We welcome additional model submissions to strengthen the evidence base. See [EVALUATION.md](EVALUATION.md) to contribute results.
 
 ## Key Finding
 
@@ -34,7 +36,8 @@ CoherenceBench enforces a strict split between development and evaluation data:
 - **`power_grid` and `hospital`** scenarios are the **public development set**.
   Use these freely for development, debugging, prompt tuning, and ablations.
 - **`network`** scenario is the **held-out evaluation set**.
-  Do not use its ground truth for training or prompt engineering.
+  Ground truth labels are stripped from the public data — only tick prompts are included.
+  Submit results for server-side scoring via the evaluation protocol below.
   Evaluation data lives under `data/eval/network/`.
 
 This separation ensures that reported benchmark numbers reflect genuine

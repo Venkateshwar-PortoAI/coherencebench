@@ -58,11 +58,11 @@ def aggregate_fc_curves(results: list[dict]) -> tuple[list[float], list[float]]:
     return list(arr.mean(axis=0)), list(arr.std(axis=0))
 
 
-def aggregate_token_counts(results: list[dict]) -> list[dict[str, int]]:
-    """Average token counts across seeds."""
+def aggregate_word_counts(results: list[dict]) -> list[dict[str, int]]:
+    """Average word counts across seeds."""
     all_counts = []
     for r in results:
-        counts = [t["token_counts"] for t in r["per_tick"]]
+        counts = [t.get("word_counts", t.get("token_counts", {})) for t in r["per_tick"]]
         all_counts.append(counts)
 
     min_len = min(len(c) for c in all_counts)
@@ -132,10 +132,10 @@ def generate_figures(results_dir: Path, output_dir: Path):
     # --- Figure 2: Per-factor attention heatmap ---
     for key, results in baseline_groups.items():
         provider = key.split("/")[-1]
-        token_counts = aggregate_token_counts(results)
+        word_counts = aggregate_word_counts(results)
         viz.plot_per_factor_attention(
-            token_counts,
-            title=f"Per-Factor Token Allocation: {provider}",
+            word_counts,
+            title=f"Per-Factor Word Allocation: {provider}",
             save_as=f"fig2_attention_heatmap_{provider}.png",
         )
         logger.info("  Generated attention heatmap for %s", provider)

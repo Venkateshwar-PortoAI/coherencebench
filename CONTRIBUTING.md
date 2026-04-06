@@ -15,12 +15,12 @@ cp .env.example .env
 
 ## Adding a New Scenario
 
-Scenarios live in `src/scenario.py` and configs live in `configs/`. To add a new scenario:
+Scenarios live in `src/scenarios/` and configs live in `configs/`. To add a new scenario:
 
-1. Define the scenario's subsystems, anomaly injection rules, and ground-truth action mapping in `src/scenario.py`.
-2. Update `src/generator.py` to produce synthetic tick data for the new scenario.
+1. Create a new file in `src/scenarios/` (e.g., `my_scenario.py`) implementing the `BaseScenario` interface from `src/scenarios/base.py`. Define the scenario's factors, actions, anomaly injection rules, and ground-truth action mapping.
+2. Register your scenario in `src/scenarios/__init__.py`.
 3. Create a YAML config in `configs/` specifying tick count, anomaly schedule, and experimental condition.
-4. Add ground-truth action logic to `src/analyzer.py` so metrics can be computed.
+4. The analyzer and metrics work automatically via the `BaseScenario` interface — no changes needed.
 
 ## Adding a New Provider
 

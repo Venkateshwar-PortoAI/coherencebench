@@ -16,20 +16,25 @@ from .providers.base import LLMProvider
 logger = logging.getLogger(__name__)
 
 
-INTERVENTION_PROMPT = (
-    "WARNING: Your recent analyses have been incomplete. "
-    "You are NOT analyzing all 6 factors. "
-    "You MUST provide substantive analysis for Load, Generation, Frequency, "
-    "Voltage, Weather, AND Reserve before making your decision. "
-    "Failure to analyze all factors leads to dangerous grid management decisions. "
-    "Resume full analysis now."
-)
+def _intervention_prompt(scenario) -> str:
+    factor_names = ", ".join(f.display_name.split("(")[0].strip() for f in scenario.factors)
+    n = len(scenario.factors)
+    return (
+        "WARNING: Your recent analyses have been incomplete. "
+        f"You are NOT analyzing all {n} factors. "
+        f"You MUST provide substantive analysis for {factor_names} before making your decision. "
+        "Failure to analyze all factors leads to dangerous decisions. "
+        "Resume full analysis now."
+    )
 
-CHECKLIST_SUFFIX = (
-    "\n\nREMINDER: Before answering, verify you have analyzed: "
-    "(1) Load, (2) Generation, (3) Frequency, (4) Voltage, (5) Weather, (6) Reserve. "
-    "ALL SIX are required."
-)
+
+def _checklist_suffix(scenario) -> str:
+    items = ", ".join(
+        f"({i+1}) {f.display_name.split('(')[0].strip()}"
+        for i, f in enumerate(scenario.factors)
+    )
+    n = len(scenario.factors)
+    return f"\n\nREMINDER: Before answering, verify you have analyzed: {items}. ALL {n} are required."
 
 
 class BenchmarkRunner:
@@ -132,6 +137,11 @@ class BenchmarkRunner:
                         state_summary = self.scenario.format_state_summary(
                             last_tick_data, tick_num - 1
                         )
+                        factor_names = ", ".join(
+                            f.display_name.split("(")[0].strip()
+                            for f in self.scenario.factors
+                        )
+                        n = len(self.scenario.factors)
                         messages = [
                             {
                                 "role": "user",
@@ -140,10 +150,9 @@ class BenchmarkRunner:
                             {
                                 "role": "assistant",
                                 "content": (
-                                    "Understood. I have the current grid state. "
-                                    "I will continue monitoring all 6 factors: "
-                                    "Load, Generation, Frequency, Voltage, Weather, "
-                                    "and Reserve."
+                                    f"Understood. I have the current state. "
+                                    f"I will continue monitoring all {n} factors: "
+                                    f"{factor_names}."
                                 ),
                             },
                         ]
@@ -153,18 +162,19 @@ class BenchmarkRunner:
 
                 # Intervention if this tick is flagged
                 if tick_num in self.intervention_ticks:
-                    messages.append({"role": "user", "content": INTERVENTION_PROMPT})
+                    messages.append({"role": "user", "content": _intervention_prompt(self.scenario)})
+                    n = len(self.scenario.factors)
                     messages.append({
                         "role": "assistant",
                         "content": (
-                            "Understood. I will analyze all 6 factors thoroughly from now on."
+                            f"Understood. I will analyze all {n} factors thoroughly from now on."
                         ),
                     })
 
                 # Format tick prompt
                 user_msg = self.scenario.format_tick(tick_num, tick["data"])
                 if self.force_checklist:
-                    user_msg += CHECKLIST_SUFFIX
+                    user_msg += _checklist_suffix(self.scenario)
 
                 # FIX 3: Truncate if over context budget
                 pre_truncate_len = len(messages)

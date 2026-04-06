@@ -92,5 +92,6 @@ class BaseScenario(ABC):
         return self.actions[0]
 
     def deep_copy_state(self, state: dict) -> dict:
-        """Deep copy a state dict (assumes one level of nesting)."""
-        return {k: dict(v) for k, v in state.items()}
+        """Deep copy a state dict (handles arbitrary nesting)."""
+        import copy
+        return copy.deepcopy(state)

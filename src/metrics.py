@@ -19,15 +19,15 @@ def factor_coverage(factors_mentioned: list[str], total: int = 6) -> float:
     return min(unique / total, 1.0)
 
 
-def fixation_index(token_counts: dict[str, int]) -> float:
-    """FI: fraction of analysis tokens devoted to the top factor (0.0 to 1.0).
+def fixation_index(word_counts: dict[str, int]) -> float:
+    """FI: fraction of analysis words devoted to the top factor (0.0 to 1.0).
 
     Low FI = balanced attention. High FI = fixated on one factor.
     """
-    total = sum(token_counts.values())
+    total = sum(word_counts.values())
     if total == 0:
         return 0.0
-    max_count = max(token_counts.values())
+    max_count = max(word_counts.values())
     return max_count / total
 
 
@@ -87,7 +87,7 @@ def intervention_recovery(fc_values: list[float], intervention_idx: int) -> int:
 
 def compute_all_metrics(
     factors_substantive: list[str],
-    token_counts: dict[str, int],
+    word_counts: dict[str, int],
     predicted_action: str,
     correct_action: str,
     anomalous_factors: list[str],
@@ -101,7 +101,7 @@ def compute_all_metrics(
     """
     return {
         "factor_coverage": factor_coverage(factors_substantive, total_factors),
-        "fixation_index": fixation_index(token_counts),
+        "fixation_index": fixation_index(word_counts),
         "decision_accuracy": decision_accuracy(
             predicted_action, correct_action, acceptable_actions
         ),

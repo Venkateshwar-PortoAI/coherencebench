@@ -63,11 +63,11 @@ def test_analyzer_detects_substantive_vs_dismissive():
     assert len(parsed["factors_substantive"]) <= 2
 
 
-def test_analyzer_counts_tokens_per_factor():
+def test_analyzer_counts_words_per_factor():
     analyzer = ResponseAnalyzer()
     parsed = analyzer.parse_response(FIXATED_RESPONSE)
-    assert parsed["token_counts"]["load"] > parsed["token_counts"]["generation"]
-    assert parsed["token_counts"]["load"] > parsed["token_counts"]["frequency"]
+    assert parsed["word_counts"]["load"] > parsed["word_counts"]["generation"]
+    assert parsed["word_counts"]["load"] > parsed["word_counts"]["frequency"]
 
 
 def test_analyzer_handles_malformed_response():
@@ -167,7 +167,7 @@ def test_directional_validation_insufficient_data():
             action="hold_steady",
             factors_mentioned=["load", "generation"],
             factors_substantive=["load", "generation"],
-            token_counts={"load": 20, "generation": 18, "frequency": 0, "voltage": 0, "weather": 0, "reserve": 0},
+            word_counts={"load": 20, "generation": 18, "frequency": 0, "voltage": 0, "weather": 0, "reserve": 0},
             reason="",
             anomaly_detection_rate=1.0,
             decision_accuracy=1.0,
@@ -197,7 +197,7 @@ def test_directional_validation_fixation():
                 action="hold_steady",
                 factors_mentioned=subs,
                 factors_substantive=subs,
-                token_counts={f: (20 if f in subs else 1) for f in
+                word_counts={f: (20 if f in subs else 1) for f in
                               ["load", "generation", "frequency", "voltage", "weather", "reserve"]},
                 reason="",
                 anomaly_detection_rate=1.0,
@@ -228,7 +228,7 @@ def test_directional_validation_correct_adaptation():
                 action="hold_steady",
                 factors_mentioned=subs,
                 factors_substantive=subs,
-                token_counts={f: (20 if f in subs else 1) for f in
+                word_counts={f: (20 if f in subs else 1) for f in
                               ["load", "generation", "frequency", "voltage", "weather", "reserve"]},
                 reason="",
                 anomaly_detection_rate=1.0,
