@@ -1,111 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#0f172a"/>
-      <stop offset="100%" stop-color="#1e293b"/>
-    </linearGradient>
-    <linearGradient id="fc-line" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="100%" stop-color="#06b6d4"/>
-    </linearGradient>
-    <linearGradient id="da-line" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ef4444"/>
+      <stop offset="60%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <filter id="text-glow">
-      <feGaussianBlur stdDeviation="1.5" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
   <!-- Background -->
-  <rect width="1200" height="400" fill="url(#bg)" rx="12"/>
+  <rect width="1200" height="200" fill="url(#bg)" rx="8"/>
 
-  <!-- Subtle grid -->
-  <g opacity="0.06" stroke="#94a3b8" stroke-width="0.5">
-    <line x1="580" y1="80" x2="580" y2="340"/>
-    <line x1="700" y1="80" x2="700" y2="340"/>
-    <line x1="820" y1="80" x2="820" y2="340"/>
-    <line x1="940" y1="80" x2="940" y2="340"/>
-    <line x1="1060" y1="80" x2="1060" y2="340"/>
-    <line x1="520" y1="120" x2="1120" y2="120"/>
-    <line x1="520" y1="170" x2="1120" y2="170"/>
-    <line x1="520" y1="220" x2="1120" y2="220"/>
-    <line x1="520" y1="270" x2="1120" y2="270"/>
-    <line x1="520" y1="320" x2="1120" y2="320"/>
+  <!-- Subtle grid in chart area -->
+  <g opacity="0.05" stroke="#94a3b8" stroke-width="0.5">
+    <line x1="520" y1="30" x2="520" y2="170"/>
+    <line x1="660" y1="30" x2="660" y2="170"/>
+    <line x1="800" y1="30" x2="800" y2="170"/>
+    <line x1="940" y1="30" x2="940" y2="170"/>
+    <line x1="1080" y1="30" x2="1080" y2="170"/>
+    <line x1="480" y1="55" x2="1120" y2="55"/>
+    <line x1="480" y1="100" x2="1120" y2="100"/>
+    <line x1="480" y1="145" x2="1120" y2="145"/>
   </g>
 
   <!-- Chart axes -->
-  <line x1="520" y1="340" x2="1120" y2="340" stroke="#475569" stroke-width="1.5"/>
-  <line x1="520" y1="80" x2="520" y2="340" stroke="#475569" stroke-width="1.5"/>
+  <line x1="480" y1="170" x2="1120" y2="170" stroke="#475569" stroke-width="1"/>
+  <line x1="480" y1="30" x2="480" y2="170" stroke="#475569" stroke-width="1"/>
 
   <!-- Y-axis labels -->
-  <text x="505" y="95" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="end">100%</text>
-  <text x="505" y="225" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="end">50%</text>
-  <text x="505" y="345" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="end">0%</text>
+  <text x="472" y="38" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="end">100%</text>
+  <text x="472" y="104" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="end">50%</text>
+  <text x="472" y="175" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="end">0%</text>
 
-  <!-- X-axis labels -->
-  <text x="520" y="362" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="middle">0</text>
-  <text x="820" y="362" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="middle">100</text>
-  <text x="1120" y="362" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="middle">200</text>
-  <text x="820" y="385" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="12" text-anchor="middle">Sequential Decisions</text>
+  <!-- X-axis label -->
+  <text x="800" y="192" fill="#475569" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">Sequential Decisions (0 - 200)</text>
 
   <!-- Format Compliance line (stays high ~95%) -->
   <polyline
-    points="520,93 550,90 580,95 610,88 640,92 670,90 700,93 730,88 760,91 790,89 820,93 850,90 880,92 910,88 940,91 970,89 1000,93 1030,90 1060,92 1090,89 1120,91"
-    fill="none" stroke="url(#fc-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    points="480,38 512,35 544,40 576,34 608,37 640,35 672,38 704,34 736,37 768,35 800,38 832,35 864,37 896,34 928,36 960,34 992,38 1024,35 1056,37 1088,34 1120,36"
+    fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
 
-  <!-- Decision Accuracy line (collapses from ~60% to ~20%) -->
+  <!-- Decision Accuracy line (collapses from ~58% to ~22%) -->
   <polyline
-    points="520,188 550,185 580,195 610,200 640,210 670,218 700,225 730,238 760,245 790,255 820,260 850,268 880,275 910,282 940,288 970,295 1000,300 1030,305 1060,310 1090,315 1120,318"
-    fill="none" stroke="url(#da-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    points="480,88 512,86 544,92 576,96 608,102 640,108 672,112 704,120 736,126 768,132 800,136 832,140 864,144 896,148 928,150 960,153 992,155 1024,157 1056,159 1088,161 1120,162"
+    fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
 
-  <!-- DA fill area (subtle) -->
+  <!-- DA fill area -->
   <polyline
-    points="520,188 550,185 580,195 610,200 640,210 670,218 700,225 730,238 760,245 790,255 820,260 850,268 880,275 910,282 940,288 970,295 1000,300 1030,305 1060,310 1090,315 1120,318 1120,340 520,340"
-    fill="url(#da-line)" opacity="0.07"/>
+    points="480,88 512,86 544,92 576,96 608,102 640,108 672,112 704,120 736,126 768,132 800,136 832,140 864,144 896,148 928,150 960,153 992,155 1024,157 1056,159 1088,161 1120,162 1120,170 480,170"
+    fill="#f97316" opacity="0.06"/>
 
-  <!-- Random baseline dashed line -->
-  <line x1="520" y1="277" x2="1120" y2="277" stroke="#ef4444" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
-  <text x="1125" y="281" fill="#ef4444" font-family="system-ui, -apple-system, sans-serif" font-size="10" opacity="0.6">random</text>
+  <!-- Random baseline -->
+  <line x1="480" y1="142" x2="1120" y2="142" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.4"/>
+  <text x="1125" y="145" fill="#ef4444" font-family="system-ui, sans-serif" font-size="8" opacity="0.5">random</text>
 
-  <!-- Gap annotation -->
-  <line x1="1080" y1="91" x2="1080" y2="315" stroke="#f8fafc" stroke-width="1" stroke-dasharray="3,3" opacity="0.3"/>
-  <text x="1085" y="205" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="11" opacity="0.5" transform="rotate(-90, 1085, 205)">invisible collapse</text>
+  <!-- Legend (compact, inside chart) -->
+  <line x1="500" y1="50" x2="522" y2="50" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+  <text x="528" y="53" fill="#22d3ee" font-family="system-ui, sans-serif" font-size="10">Format Compliance</text>
+  <line x1="660" y1="50" x2="682" y2="50" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+  <text x="688" y="53" fill="#f97316" font-family="system-ui, sans-serif" font-size="10">Decision Accuracy</text>
 
-  <!-- Legend -->
-  <line x1="540" y1="105" x2="570" y2="105" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/>
-  <text x="578" y="109" fill="#22d3ee" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500">Format Compliance (looks fine)</text>
+  <!-- Title (left) -->
+  <text x="50" y="62" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="32" font-weight="700">Coherence</text>
+  <text x="260" y="62" fill="#22d3ee" font-family="system-ui, sans-serif" font-size="32" font-weight="700">Bench</text>
 
-  <line x1="540" y1="125" x2="570" y2="125" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
-  <text x="578" y="129" fill="#f97316" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500">Decision Accuracy (actually broken)</text>
+  <text x="50" y="88" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Measuring Attention Collapse in Long-Running Autonomous Agents</text>
 
-  <!-- Title section (left side) -->
-  <text x="60" y="130" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="700" filter="url(#text-glow)">Coherence</text>
-  <text x="60" y="180" fill="#22d3ee" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="700" filter="url(#text-glow)">Bench</text>
+  <!-- Stats row -->
+  <rect x="50" y="108" width="130" height="38" rx="6" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
+  <text x="115" y="126" fill="#f97316" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">58% &rarr; 22%</text>
+  <text x="115" y="140" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">DA collapse</text>
 
-  <text x="60" y="220" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400">Measuring Attention Collapse in</text>
-  <text x="60" y="242" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400">Long-Running Autonomous Agents</text>
+  <rect x="195" y="108" width="130" height="38" rx="6" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
+  <text x="260" y="126" fill="#22d3ee" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">FC = 1.00</text>
+  <text x="260" y="140" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">format stays perfect</text>
 
-  <!-- Key stat callouts -->
-  <rect x="60" y="270" width="170" height="55" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="145" y="293" fill="#f97316" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" text-anchor="middle">58% &rarr; 22%</text>
-  <text x="145" y="313" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="middle">DA collapse (below random)</text>
+  <rect x="340" y="108" width="100" height="38" rx="6" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
+  <text x="390" y="126" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">200</text>
+  <text x="390" y="140" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">decisions/run</text>
 
-  <rect x="250" y="270" width="170" height="55" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="335" y="293" fill="#22d3ee" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" text-anchor="middle">FC = 1.00</text>
-  <text x="335" y="313" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="11" text-anchor="middle">format stays perfect</text>
-
-  <!-- Subtle version tag -->
-  <text x="60" y="365" fill="#475569" font-family="system-ui, -apple-system, sans-serif" font-size="11">v0.1.0 &middot; MIT License &middot; pranaalpha.com</text>
+  <!-- Version -->
+  <text x="50" y="170" fill="#475569" font-family="system-ui, sans-serif" font-size="9">v0.1.0 &middot; MIT License &middot; PranaAlpha Labs</text>
 </svg>

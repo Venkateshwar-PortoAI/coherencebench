@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="CoherenceBench — Measuring Attention Collapse in Long-Running Autonomous Agents" width="100%"/>
+  <img src="assets/banner.svg" alt="CoherenceBench — Measuring Attention Collapse in Long-Running Autonomous Agents" width="900"/>
 </p>
 
 <p align="center">
@@ -7,8 +7,6 @@
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
 </p>
-
-# CoherenceBench
 
 CoherenceBench is an open-source research framework for measuring how LLM-based autonomous agents degrade their decision quality over extended interactions. It places agents in simulated control-room scenarios where they must continuously monitor 6 subsystems across 200 sequential decisions.
 
