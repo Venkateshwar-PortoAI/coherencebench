@@ -71,7 +71,7 @@
 
   <!-- Stats row -->
   <rect x="50" y="108" width="130" height="38" rx="6" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
-  <text x="115" y="126" fill="#f97316" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">58% &rarr; 22%</text>
+  <text x="115" y="126" fill="#f97316" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">58% &#x2192; 22%</text>
   <text x="115" y="140" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">DA collapse</text>
 
   <rect x="195" y="108" width="130" height="38" rx="6" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
@@ -83,5 +83,5 @@
   <text x="390" y="140" fill="#64748b" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle">decisions/run</text>
 
   <!-- Version -->
-  <text x="50" y="170" fill="#475569" font-family="system-ui, sans-serif" font-size="9">v0.1.0 &middot; MIT License &middot; PranaAlpha Labs</text>
+  <text x="50" y="170" fill="#475569" font-family="system-ui, sans-serif" font-size="9">v0.1.0 &#x00B7; MIT License &#x00B7; PranaAlpha Labs</text>
 </svg>
