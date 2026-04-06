@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="CoherenceBench — Measuring Attention Collapse in Long-Running Autonomous Agents" width="900"/>
+  <img src="assets/banner.png" alt="CoherenceBench — Measuring Attention Collapse in Long-Running Autonomous Agents" width="900"/>
 </p>
 
 <p align="center">
