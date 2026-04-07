@@ -12,6 +12,52 @@ CoherenceBench is an open-source research framework for measuring how LLM-based 
 
 > **Status:** Early research release. Results are preliminary (2 models evaluated so far). We welcome additional model submissions to strengthen the evidence base. See [EVALUATION.md](EVALUATION.md) to contribute results.
 
+## How It Works
+
+```mermaid
+graph LR
+    subgraph Scenario["Scenario (e.g. Power Grid, ATC)"]
+        F1[6 Subsystems]
+        A1[10 Possible Actions]
+        PW[Phase-Shifted<br/>Anomalies]
+    end
+
+    subgraph Loop["200-Tick Benchmark Loop"]
+        TG[Tick Generator] -->|tick prompt| LLM[LLM Agent]
+        LLM -->|structured response| PA[Response Analyzer]
+        PA -->|DA, FC, FI, ADR| M[Metrics]
+    end
+
+    F1 --> TG
+    PW --> TG
+    A1 --> PA
+
+    style LLM fill:#f9f,stroke:#333
+    style M fill:#9f9,stroke:#333
+```
+
+```mermaid
+graph TB
+    subgraph Early["Early Ticks (1-40)"]
+        E1["Anomalies in Subsystems 1-2<br/>Agent learns these patterns"]
+    end
+
+    subgraph Late["Late Ticks (160-200)"]
+        L1["Anomalies shift to Subsystems 5-6<br/>Agent still fixates on 1-2"]
+    end
+
+    subgraph Result["The Coherence Collapse"]
+        R1["Format Compliance: 100% ✓<br/>(still writes about all 6)"]
+        R2["Decision Accuracy: ▼ below random<br/>(picks wrong actions)"]
+    end
+
+    Early --> Late
+    Late --> Result
+
+    style R1 fill:#9f9,stroke:#333
+    style R2 fill:#f99,stroke:#333
+```
+
 ## Key Finding
 
 Agents maintain near-perfect format compliance throughout a run -- they keep writing structured responses that mention all required subsystems -- while their actual decision accuracy quietly collapses. An agent can look like it is performing well (high format scores) while missing critical anomalies that shift to new subsystems over time. CoherenceBench separates "looks correct" from "is correct" by measuring behavioral metrics independently from format metrics.
@@ -111,12 +157,13 @@ See `CONTRIBUTING.md` for full details.
 
 ## Scenarios
 
-CoherenceBench ships with 3 scenarios. Each has 6 factors, 10 actions, phase-shifted anomalies, and multi-factor ticks.
+CoherenceBench ships with 4 scenarios across different domains. Each has 6 factors, 10 actions, phase-shifted anomalies, and multi-factor ticks.
 
 | Scenario | Domain | Split | Factors | Default action |
 |----------|--------|-------|---------|----------------|
 | `power_grid` | Electricity grid control room | Development | Load, Generation, Frequency, Voltage, Weather, Reserve | `hold_steady` |
 | `hospital` | Hospital triage | Development | Vitals, Labs, Imaging, Medications, History, Capacity | `no_action_needed` |
+| `air_traffic_control` | ATC tower operations | Development | Radar, Weather, Runway, Comms, Traffic Flow, Systems | `hold_steady` |
 | `network` | Network security SOC | **Evaluation** | Traffic, Auth, Endpoints, Firewall, Logs, Threats | `no_action_needed` |
 
 Run a specific scenario:
