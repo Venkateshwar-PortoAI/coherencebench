@@ -52,6 +52,8 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 
 Claude Haiku starts at 58% but collapses to 22% (below random) by tick 200. GPT-5.4 stays flat at ~30%. Both maintain perfect format compliance the entire time. The collapse is invisible without behavioral metrics.
 
+![Decision Accuracy Over Time](assets/da_over_time.png)
+
 **[Add your model](EVALUATION.md)** -- submit a PR with your results.
 
 ## Quick Start

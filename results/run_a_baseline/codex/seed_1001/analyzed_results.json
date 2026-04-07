@@ -1,0 +1,4824 @@
+{
+  "config": "run_a_baseline",
+  "provider": "codex",
+  "seed": 1001,
+  "num_ticks": 200,
+  "per_tick": [
+    {
+      "tick": 1,
+      "fc": 1.0,
+      "fi": 0.19487179487179487,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 38,
+        "generation": 32,
+        "frequency": 35,
+        "voltage": 28,
+        "weather": 27,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 2,
+      "fc": 1.0,
+      "fi": 0.20918367346938777,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 30,
+        "frequency": 32,
+        "voltage": 27,
+        "weather": 41,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 3,
+      "fc": 1.0,
+      "fi": 0.17894736842105263,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 33,
+        "frequency": 34,
+        "voltage": 31,
+        "weather": 32,
+        "reserve": 27
+      }
+    },
+    {
+      "tick": 4,
+      "fc": 1.0,
+      "fi": 0.2242152466367713,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 37,
+        "frequency": 50,
+        "voltage": 35,
+        "weather": 31,
+        "reserve": 39
+      }
+    },
+    {
+      "tick": 5,
+      "fc": 1.0,
+      "fi": 0.18181818181818182,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 25,
+        "frequency": 29,
+        "voltage": 27,
+        "weather": 32,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 6,
+      "fc": 1.0,
+      "fi": 0.18396226415094338,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 36,
+        "generation": 38,
+        "frequency": 34,
+        "voltage": 30,
+        "weather": 39,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 7,
+      "fc": 1.0,
+      "fi": 0.19902912621359223,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 41,
+        "generation": 35,
+        "frequency": 30,
+        "voltage": 33,
+        "weather": 32,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 8,
+      "fc": 1.0,
+      "fi": 0.1990521327014218,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 37,
+        "generation": 34,
+        "frequency": 29,
+        "voltage": 30,
+        "weather": 39,
+        "reserve": 42
+      }
+    },
+    {
+      "tick": 9,
+      "fc": 1.0,
+      "fi": 0.19473684210526315,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 37,
+        "generation": 33,
+        "frequency": 24,
+        "voltage": 31,
+        "weather": 30,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 10,
+      "fc": 1.0,
+      "fi": 0.21808510638297873,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 26,
+        "frequency": 35,
+        "voltage": 26,
+        "weather": 29,
+        "reserve": 41
+      }
+    },
+    {
+      "tick": 11,
+      "fc": 1.0,
+      "fi": 0.18592964824120603,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 29,
+        "frequency": 33,
+        "voltage": 35,
+        "weather": 33,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 12,
+      "fc": 1.0,
+      "fi": 0.195,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 39,
+        "generation": 29,
+        "frequency": 32,
+        "voltage": 31,
+        "weather": 32,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 13,
+      "fc": 1.0,
+      "fi": 0.19718309859154928,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 39,
+        "generation": 26,
+        "frequency": 39,
+        "voltage": 33,
+        "weather": 42,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 14,
+      "fc": 1.0,
+      "fi": 0.1875,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 26,
+        "frequency": 33,
+        "voltage": 36,
+        "weather": 32,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 15,
+      "fc": 1.0,
+      "fi": 0.18274111675126903,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 25,
+        "frequency": 32,
+        "voltage": 35,
+        "weather": 35,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 16,
+      "fc": 1.0,
+      "fi": 0.18981481481481483,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 41,
+        "generation": 38,
+        "frequency": 29,
+        "voltage": 39,
+        "weather": 33,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 17,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 40,
+        "generation": 29,
+        "frequency": 34,
+        "voltage": 31,
+        "weather": 32,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 18,
+      "fc": 1.0,
+      "fi": 0.18719211822660098,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 38,
+        "generation": 30,
+        "frequency": 31,
+        "voltage": 37,
+        "weather": 37,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 19,
+      "fc": 1.0,
+      "fi": 0.1834862385321101,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 38,
+        "generation": 40,
+        "frequency": 35,
+        "voltage": 30,
+        "weather": 38,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 20,
+      "fc": 1.0,
+      "fi": 0.19072164948453607,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 36,
+        "generation": 35,
+        "frequency": 25,
+        "voltage": 34,
+        "weather": 27,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 21,
+      "fc": 1.0,
+      "fi": 0.2023121387283237,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 23,
+        "frequency": 26,
+        "voltage": 35,
+        "weather": 27,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 22,
+      "fc": 1.0,
+      "fi": 0.20833333333333334,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 26,
+        "frequency": 29,
+        "voltage": 40,
+        "weather": 33,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 23,
+      "fc": 1.0,
+      "fi": 0.19270833333333334,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 27,
+        "frequency": 24,
+        "voltage": 37,
+        "weather": 35,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 24,
+      "fc": 1.0,
+      "fi": 0.18857142857142858,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 26,
+        "frequency": 25,
+        "voltage": 33,
+        "weather": 28,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 25,
+      "fc": 1.0,
+      "fi": 0.19617224880382775,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 38,
+        "generation": 32,
+        "frequency": 24,
+        "voltage": 36,
+        "weather": 38,
+        "reserve": 41
+      }
+    },
+    {
+      "tick": 26,
+      "fc": 1.0,
+      "fi": 0.18627450980392157,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 38,
+        "frequency": 32,
+        "voltage": 26,
+        "weather": 36,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 27,
+      "fc": 1.0,
+      "fi": 0.20634920634920634,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 39,
+        "generation": 29,
+        "frequency": 28,
+        "voltage": 31,
+        "weather": 30,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 28,
+      "fc": 1.0,
+      "fi": 0.20218579234972678,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 19,
+        "frequency": 30,
+        "voltage": 37,
+        "weather": 33,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 29,
+      "fc": 1.0,
+      "fi": 0.18229166666666666,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 33,
+        "frequency": 24,
+        "voltage": 33,
+        "weather": 33,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 30,
+      "fc": 1.0,
+      "fi": 0.18719211822660098,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 37,
+        "generation": 38,
+        "frequency": 28,
+        "voltage": 26,
+        "weather": 37,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 31,
+      "fc": 1.0,
+      "fi": 0.20765027322404372,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 34,
+        "frequency": 25,
+        "voltage": 21,
+        "weather": 38,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 32,
+      "fc": 1.0,
+      "fi": 0.20108695652173914,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 21,
+        "frequency": 31,
+        "voltage": 32,
+        "weather": 31,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 33,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 36,
+        "generation": 21,
+        "frequency": 26,
+        "voltage": 33,
+        "weather": 38,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 34,
+      "fc": 1.0,
+      "fi": 0.17703349282296652,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 36,
+        "frequency": 36,
+        "voltage": 37,
+        "weather": 36,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 35,
+      "fc": 1.0,
+      "fi": 0.18446601941747573,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "emergency_disconnect",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 37,
+        "frequency": 32,
+        "voltage": 30,
+        "weather": 35,
+        "reserve": 38
+      }
+    },
+    {
+      "tick": 36,
+      "fc": 1.0,
+      "fi": 0.19444444444444445,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 35,
+        "frequency": 32,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 37,
+      "fc": 1.0,
+      "fi": 0.193717277486911,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 32,
+        "frequency": 25,
+        "voltage": 35,
+        "weather": 27,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 38,
+      "fc": 1.0,
+      "fi": 0.20634920634920634,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 28,
+        "frequency": 28,
+        "voltage": 34,
+        "weather": 26,
+        "reserve": 39
+      }
+    },
+    {
+      "tick": 39,
+      "fc": 1.0,
+      "fi": 0.2033898305084746,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 19,
+        "frequency": 27,
+        "voltage": 36,
+        "weather": 34,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 40,
+      "fc": 1.0,
+      "fi": 0.19786096256684493,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 19,
+        "frequency": 31,
+        "voltage": 33,
+        "weather": 34,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 41,
+      "fc": 1.0,
+      "fi": 0.19170984455958548,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 37,
+        "generation": 24,
+        "frequency": 25,
+        "voltage": 36,
+        "weather": 35,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 42,
+      "fc": 1.0,
+      "fi": 0.19680851063829788,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 28,
+        "frequency": 24,
+        "voltage": 37,
+        "weather": 30,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 43,
+      "fc": 1.0,
+      "fi": 0.18032786885245902,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 32,
+        "frequency": 22,
+        "voltage": 31,
+        "weather": 33,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 44,
+      "fc": 1.0,
+      "fi": 0.1956521739130435,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 25,
+        "frequency": 29,
+        "voltage": 29,
+        "weather": 36,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 45,
+      "fc": 1.0,
+      "fi": 0.20103092783505155,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 39,
+        "generation": 31,
+        "frequency": 31,
+        "voltage": 25,
+        "weather": 35,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 46,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 19,
+        "frequency": 30,
+        "voltage": 28,
+        "weather": 29,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 47,
+      "fc": 1.0,
+      "fi": 0.1834319526627219,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 19,
+        "frequency": 29,
+        "voltage": 31,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 48,
+      "fc": 1.0,
+      "fi": 0.19101123595505617,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 19,
+        "frequency": 27,
+        "voltage": 34,
+        "weather": 34,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 49,
+      "fc": 1.0,
+      "fi": 0.19444444444444445,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 19,
+        "frequency": 28,
+        "voltage": 35,
+        "weather": 34,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 50,
+      "fc": 1.0,
+      "fi": 0.18681318681318682,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 32,
+        "frequency": 32,
+        "voltage": 23,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 51,
+      "fc": 1.0,
+      "fi": 0.20918367346938777,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 36,
+        "generation": 41,
+        "frequency": 28,
+        "voltage": 24,
+        "weather": 36,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 52,
+      "fc": 1.0,
+      "fi": 0.21264367816091953,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 37,
+        "frequency": 25,
+        "voltage": 21,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 53,
+      "fc": 1.0,
+      "fi": 0.18681318681318682,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 34,
+        "frequency": 22,
+        "voltage": 33,
+        "weather": 30,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 54,
+      "fc": 1.0,
+      "fi": 0.18562874251497005,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 19,
+        "frequency": 29,
+        "voltage": 29,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 55,
+      "fc": 1.0,
+      "fi": 0.18823529411764706,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 19,
+        "frequency": 30,
+        "voltage": 31,
+        "weather": 30,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 56,
+      "fc": 1.0,
+      "fi": 0.1837837837837838,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 26,
+        "frequency": 26,
+        "voltage": 32,
+        "weather": 34,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 57,
+      "fc": 1.0,
+      "fi": 0.19672131147540983,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 25,
+        "frequency": 36,
+        "voltage": 31,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 58,
+      "fc": 1.0,
+      "fi": 0.19021739130434784,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "hold_steady",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 28,
+        "frequency": 25,
+        "voltage": 35,
+        "weather": 33,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 59,
+      "fc": 1.0,
+      "fi": 0.19337016574585636,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 29,
+        "frequency": 28,
+        "voltage": 31,
+        "weather": 29,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 60,
+      "fc": 1.0,
+      "fi": 0.18877551020408162,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 31,
+        "voltage": 33,
+        "weather": 26,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 61,
+      "fc": 1.0,
+      "fi": 0.20603015075376885,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 40,
+        "generation": 30,
+        "frequency": 24,
+        "voltage": 37,
+        "weather": 27,
+        "reserve": 41
+      }
+    },
+    {
+      "tick": 62,
+      "fc": 1.0,
+      "fi": 0.18032786885245902,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 23,
+        "voltage": 32,
+        "weather": 31,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 63,
+      "fc": 1.0,
+      "fi": 0.19270833333333334,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 27,
+        "frequency": 26,
+        "voltage": 33,
+        "weather": 37,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 64,
+      "fc": 1.0,
+      "fi": 0.18090452261306533,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 35,
+        "frequency": 31,
+        "voltage": 34,
+        "weather": 30,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 65,
+      "fc": 1.0,
+      "fi": 0.19230769230769232,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 23,
+        "frequency": 26,
+        "voltage": 32,
+        "weather": 33,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 66,
+      "fc": 1.0,
+      "fi": 0.18781725888324874,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 37,
+        "frequency": 31,
+        "voltage": 30,
+        "weather": 31,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 67,
+      "fc": 1.0,
+      "fi": 0.20304568527918782,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 31,
+        "frequency": 32,
+        "voltage": 34,
+        "weather": 25,
+        "reserve": 40
+      }
+    },
+    {
+      "tick": 68,
+      "fc": 1.0,
+      "fi": 0.20224719101123595,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 19,
+        "frequency": 22,
+        "voltage": 36,
+        "weather": 32,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 69,
+      "fc": 1.0,
+      "fi": 0.18947368421052632,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 28,
+        "frequency": 31,
+        "voltage": 33,
+        "weather": 36,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 70,
+      "fc": 1.0,
+      "fi": 0.1774193548387097,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 33,
+        "frequency": 30,
+        "voltage": 33,
+        "weather": 27,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 71,
+      "fc": 1.0,
+      "fi": 0.18947368421052632,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 20,
+        "frequency": 33,
+        "voltage": 36,
+        "weather": 33,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 72,
+      "fc": 1.0,
+      "fi": 0.18932038834951456,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 37,
+        "generation": 38,
+        "frequency": 32,
+        "voltage": 31,
+        "weather": 29,
+        "reserve": 39
+      }
+    },
+    {
+      "tick": 73,
+      "fc": 1.0,
+      "fi": 0.18556701030927836,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 33,
+        "frequency": 30,
+        "voltage": 32,
+        "weather": 32,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 74,
+      "fc": 1.0,
+      "fi": 0.20903954802259886,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 19,
+        "frequency": 31,
+        "voltage": 28,
+        "weather": 29,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 75,
+      "fc": 1.0,
+      "fi": 0.18128654970760233,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 26,
+        "frequency": 23,
+        "voltage": 30,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 76,
+      "fc": 1.0,
+      "fi": 0.19,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "emergency_disconnect",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 38,
+        "frequency": 30,
+        "voltage": 33,
+        "weather": 31,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 77,
+      "fc": 1.0,
+      "fi": 0.17647058823529413,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 33,
+        "frequency": 35,
+        "voltage": 36,
+        "weather": 33,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 78,
+      "fc": 1.0,
+      "fi": 0.19553072625698323,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 19,
+        "frequency": 26,
+        "voltage": 35,
+        "weather": 32,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 79,
+      "fc": 1.0,
+      "fi": 0.19047619047619047,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 36,
+        "generation": 31,
+        "frequency": 27,
+        "voltage": 33,
+        "weather": 30,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 80,
+      "fc": 1.0,
+      "fi": 0.20670391061452514,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 19,
+        "frequency": 26,
+        "voltage": 37,
+        "weather": 32,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 81,
+      "fc": 1.0,
+      "fi": 0.17894736842105263,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 82,
+      "fc": 1.0,
+      "fi": 0.20454545454545456,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 19,
+        "frequency": 25,
+        "voltage": 36,
+        "weather": 32,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 83,
+      "fc": 1.0,
+      "fi": 0.20555555555555555,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 19,
+        "frequency": 25,
+        "voltage": 34,
+        "weather": 32,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 84,
+      "fc": 1.0,
+      "fi": 0.18181818181818182,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 33,
+        "frequency": 27,
+        "voltage": 34,
+        "weather": 33,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 85,
+      "fc": 1.0,
+      "fi": 0.21052631578947367,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 19,
+        "frequency": 24,
+        "voltage": 36,
+        "weather": 27,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 86,
+      "fc": 1.0,
+      "fi": 0.17346938775510204,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 33,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 32,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 87,
+      "fc": 1.0,
+      "fi": 0.19473684210526315,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 30,
+        "frequency": 29,
+        "voltage": 37,
+        "weather": 30,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 88,
+      "fc": 1.0,
+      "fi": 0.19680851063829788,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 29,
+        "frequency": 28,
+        "voltage": 37,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 89,
+      "fc": 1.0,
+      "fi": 0.18324607329842932,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 30,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 90,
+      "fc": 1.0,
+      "fi": 0.18556701030927836,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 36,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 91,
+      "fc": 1.0,
+      "fi": 0.18324607329842932,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 33,
+        "frequency": 26,
+        "voltage": 34,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 92,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 19,
+        "frequency": 25,
+        "voltage": 34,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 93,
+      "fc": 1.0,
+      "fi": 0.17435897435897435,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 31,
+        "frequency": 33,
+        "voltage": 31,
+        "weather": 33,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 94,
+      "fc": 1.0,
+      "fi": 0.1864406779661017,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 25,
+        "frequency": 26,
+        "voltage": 31,
+        "weather": 30,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 95,
+      "fc": 1.0,
+      "fi": 0.185,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 37,
+        "frequency": 28,
+        "voltage": 34,
+        "weather": 33,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 96,
+      "fc": 1.0,
+      "fi": 0.17894736842105263,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 29,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 97,
+      "fc": 1.0,
+      "fi": 0.1925133689839572,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 36,
+        "weather": 31,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 98,
+      "fc": 1.0,
+      "fi": 0.1881720430107527,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 30,
+        "frequency": 30,
+        "voltage": 31,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 99,
+      "fc": 1.0,
+      "fi": 0.1895734597156398,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 37,
+        "frequency": 28,
+        "voltage": 36,
+        "weather": 35,
+        "reserve": 40
+      }
+    },
+    {
+      "tick": 100,
+      "fc": 1.0,
+      "fi": 0.18407960199004975,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 37,
+        "frequency": 30,
+        "voltage": 37,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 101,
+      "fc": 1.0,
+      "fi": 0.19791666666666666,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 30,
+        "frequency": 21,
+        "voltage": 36,
+        "weather": 38,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 102,
+      "fc": 1.0,
+      "fi": 0.18617021276595744,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 33,
+        "frequency": 30,
+        "voltage": 35,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 103,
+      "fc": 1.0,
+      "fi": 0.20967741935483872,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 19,
+        "frequency": 31,
+        "voltage": 31,
+        "weather": 39,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 104,
+      "fc": 1.0,
+      "fi": 0.2033898305084746,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 26,
+        "frequency": 19,
+        "voltage": 36,
+        "weather": 31,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 105,
+      "fc": 1.0,
+      "fi": 0.18947368421052632,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 106,
+      "fc": 1.0,
+      "fi": 0.20540540540540542,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 26,
+        "frequency": 21,
+        "voltage": 36,
+        "weather": 38,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 107,
+      "fc": 1.0,
+      "fi": 0.19786096256684493,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 25,
+        "frequency": 31,
+        "voltage": 30,
+        "weather": 32,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 108,
+      "fc": 1.0,
+      "fi": 0.1853932584269663,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 20,
+        "frequency": 28,
+        "voltage": 33,
+        "weather": 32,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 109,
+      "fc": 1.0,
+      "fi": 0.1896551724137931,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 25,
+        "frequency": 23,
+        "voltage": 33,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 110,
+      "fc": 1.0,
+      "fi": 0.2087912087912088,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 18,
+        "frequency": 26,
+        "voltage": 33,
+        "weather": 38,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 111,
+      "fc": 1.0,
+      "fi": 0.2032967032967033,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 25,
+        "frequency": 24,
+        "voltage": 37,
+        "weather": 29,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 112,
+      "fc": 1.0,
+      "fi": 0.18,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 35,
+        "frequency": 29,
+        "voltage": 36,
+        "weather": 35,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 113,
+      "fc": 1.0,
+      "fi": 0.18681318681318682,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 34,
+        "frequency": 22,
+        "voltage": 32,
+        "weather": 34,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 114,
+      "fc": 1.0,
+      "fi": 0.19248826291079812,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "emergency_disconnect",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 40,
+        "weather": 36,
+        "reserve": 41
+      }
+    },
+    {
+      "tick": 115,
+      "fc": 1.0,
+      "fi": 0.19786096256684493,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 27,
+        "frequency": 27,
+        "voltage": 34,
+        "weather": 31,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 116,
+      "fc": 1.0,
+      "fi": 0.20588235294117646,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 24,
+        "frequency": 19,
+        "voltage": 35,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 117,
+      "fc": 1.0,
+      "fi": 0.19170984455958548,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 28,
+        "voltage": 34,
+        "weather": 31,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 118,
+      "fc": 1.0,
+      "fi": 0.20512820512820512,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 26,
+        "frequency": 29,
+        "voltage": 33,
+        "weather": 36,
+        "reserve": 40
+      }
+    },
+    {
+      "tick": 119,
+      "fc": 1.0,
+      "fi": 0.18085106382978725,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 120,
+      "fc": 1.0,
+      "fi": 0.20320855614973263,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 38,
+        "frequency": 28,
+        "voltage": 28,
+        "weather": 28,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 121,
+      "fc": 1.0,
+      "fi": 0.1875,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "deploy_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 30,
+        "frequency": 23,
+        "voltage": 30,
+        "weather": 30,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 122,
+      "fc": 1.0,
+      "fi": 0.20320855614973263,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 38,
+        "frequency": 28,
+        "voltage": 28,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 123,
+      "fc": 1.0,
+      "fi": 0.1893491124260355,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "hold_steady",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 19,
+        "frequency": 27,
+        "voltage": 32,
+        "weather": 32,
+        "reserve": 28
+      }
+    },
+    {
+      "tick": 124,
+      "fc": 1.0,
+      "fi": 0.1693121693121693,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 32,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 125,
+      "fc": 1.0,
+      "fi": 0.22613065326633167,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 27,
+        "frequency": 28,
+        "voltage": 32,
+        "weather": 36,
+        "reserve": 45
+      }
+    },
+    {
+      "tick": 126,
+      "fc": 1.0,
+      "fi": 0.18085106382978725,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 127,
+      "fc": 1.0,
+      "fi": 0.19631901840490798,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "hold_steady",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 19,
+        "frequency": 26,
+        "voltage": 31,
+        "weather": 24,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 128,
+      "fc": 1.0,
+      "fi": 0.1962025316455696,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 25,
+        "generation": 19,
+        "frequency": 27,
+        "voltage": 26,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 129,
+      "fc": 1.0,
+      "fi": 0.17679558011049723,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 30,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 130,
+      "fc": 1.0,
+      "fi": 0.1927710843373494,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 30,
+        "generation": 19,
+        "frequency": 30,
+        "voltage": 24,
+        "weather": 31,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 131,
+      "fc": 1.0,
+      "fi": 0.22413793103448276,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 21,
+        "frequency": 20,
+        "voltage": 36,
+        "weather": 39,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 132,
+      "fc": 1.0,
+      "fi": 0.20348837209302326,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 27,
+        "generation": 21,
+        "frequency": 29,
+        "voltage": 35,
+        "weather": 30,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 133,
+      "fc": 1.0,
+      "fi": 0.1871345029239766,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 21,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 134,
+      "fc": 1.0,
+      "fi": 0.1912568306010929,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "hold_steady",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 27,
+        "generation": 33,
+        "frequency": 24,
+        "voltage": 29,
+        "weather": 35,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 135,
+      "fc": 1.0,
+      "fi": 0.1896551724137931,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 136,
+      "fc": 1.0,
+      "fi": 0.18857142857142858,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 21,
+        "frequency": 30,
+        "voltage": 33,
+        "weather": 29,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 137,
+      "fc": 1.0,
+      "fi": 0.1797752808988764,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 138,
+      "fc": 1.0,
+      "fi": 0.1896551724137931,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 139,
+      "fc": 1.0,
+      "fi": 0.19428571428571428,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 140,
+      "fc": 1.0,
+      "fi": 0.19428571428571428,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 27,
+        "frequency": 26,
+        "voltage": 34,
+        "weather": 23,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 141,
+      "fc": 1.0,
+      "fi": 0.2033898305084746,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 31,
+        "generation": 21,
+        "frequency": 28,
+        "voltage": 35,
+        "weather": 26,
+        "reserve": 36
+      }
+    },
+    {
+      "tick": 142,
+      "fc": 1.0,
+      "fi": 0.20833333333333334,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 26,
+        "frequency": 30,
+        "voltage": 22,
+        "weather": 27,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 143,
+      "fc": 1.0,
+      "fi": 0.18435754189944134,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 144,
+      "fc": 1.0,
+      "fi": 0.1896551724137931,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 145,
+      "fc": 1.0,
+      "fi": 0.1907514450867052,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 21,
+        "frequency": 30,
+        "voltage": 33,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 146,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 147,
+      "fc": 1.0,
+      "fi": 0.19186046511627908,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 21,
+        "frequency": 29,
+        "voltage": 33,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 148,
+      "fc": 1.0,
+      "fi": 0.18435754189944134,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 149,
+      "fc": 1.0,
+      "fi": 0.18435754189944134,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 150,
+      "fc": 1.0,
+      "fi": 0.1834319526627219,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 27,
+        "generation": 21,
+        "frequency": 30,
+        "voltage": 30,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 151,
+      "fc": 1.0,
+      "fi": 0.18857142857142858,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 28,
+        "generation": 21,
+        "frequency": 30,
+        "voltage": 33,
+        "weather": 33,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 152,
+      "fc": 1.0,
+      "fi": 0.17989417989417988,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 153,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 27,
+        "generation": 21,
+        "frequency": 30,
+        "voltage": 31,
+        "weather": 35,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 154,
+      "fc": 1.0,
+      "fi": 0.18652849740932642,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 32,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 155,
+      "fc": 1.0,
+      "fi": 0.20320855614973263,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 23,
+        "frequency": 26,
+        "voltage": 38,
+        "weather": 34,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 156,
+      "fc": 1.0,
+      "fi": 0.18652849740932642,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 32,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 157,
+      "fc": 1.0,
+      "fi": 0.19047619047619047,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 30,
+        "reserve": 29
+      }
+    },
+    {
+      "tick": 158,
+      "fc": 1.0,
+      "fi": 0.18085106382978725,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 34,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 34,
+        "weather": 30,
+        "reserve": 29
+      }
+    },
+    {
+      "tick": 159,
+      "fc": 1.0,
+      "fi": 0.18562874251497005,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 27,
+        "generation": 21,
+        "frequency": 30,
+        "voltage": 28,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 160,
+      "fc": 1.0,
+      "fi": 0.18848167539267016,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 161,
+      "fc": 1.0,
+      "fi": 0.1875,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 162,
+      "fc": 1.0,
+      "fi": 0.18592964824120603,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "emergency_disconnect",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 37,
+        "frequency": 32,
+        "voltage": 35,
+        "weather": 30,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 163,
+      "fc": 1.0,
+      "fi": 0.1919191919191919,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 30,
+        "reserve": 38
+      }
+    },
+    {
+      "tick": 164,
+      "fc": 1.0,
+      "fi": 0.18848167539267016,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 36,
+        "weather": 30,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 165,
+      "fc": 1.0,
+      "fi": 0.18848167539267016,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 36,
+        "weather": 30,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 166,
+      "fc": 1.0,
+      "fi": 0.20710059171597633,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 25,
+        "frequency": 24,
+        "voltage": 35,
+        "weather": 23,
+        "reserve": 33
+      }
+    },
+    {
+      "tick": 167,
+      "fc": 1.0,
+      "fi": 0.1813186813186813,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 31,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 168,
+      "fc": 1.0,
+      "fi": 0.1837837837837838,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 31,
+        "weather": 26,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 169,
+      "fc": 1.0,
+      "fi": 0.1774193548387097,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 30,
+        "voltage": 31,
+        "weather": 31,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 170,
+      "fc": 1.0,
+      "fi": 0.18232044198895028,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 31,
+        "weather": 32,
+        "reserve": 28
+      }
+    },
+    {
+      "tick": 171,
+      "fc": 1.0,
+      "fi": 0.19170984455958548,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 31,
+        "frequency": 29,
+        "voltage": 37,
+        "weather": 34,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 172,
+      "fc": 1.0,
+      "fi": 0.19072164948453607,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 32,
+        "generation": 37,
+        "frequency": 29,
+        "voltage": 37,
+        "weather": 29,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 173,
+      "fc": 1.0,
+      "fi": 0.1853932584269663,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 31,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 174,
+      "fc": 1.0,
+      "fi": 0.20218579234972678,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 26,
+        "voltage": 30,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 175,
+      "fc": 1.0,
+      "fi": 0.1813186813186813,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 30,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 176,
+      "fc": 1.0,
+      "fi": 0.1977401129943503,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 32,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 177,
+      "fc": 1.0,
+      "fi": 0.21022727272727273,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 37
+      }
+    },
+    {
+      "tick": 178,
+      "fc": 1.0,
+      "fi": 0.19411764705882353,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 179,
+      "fc": 1.0,
+      "fi": 0.1935483870967742,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "request_import",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 29,
+        "generation": 25,
+        "frequency": 24,
+        "voltage": 24,
+        "weather": 23,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 180,
+      "fc": 1.0,
+      "fi": 0.1875,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 181,
+      "fc": 1.0,
+      "fi": 0.20441988950276244,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 182,
+      "fc": 1.0,
+      "fi": 0.20114942528735633,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 26,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 183,
+      "fc": 1.0,
+      "fi": 0.20441988950276244,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 184,
+      "fc": 1.0,
+      "fi": 0.18857142857142858,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 185,
+      "fc": 1.0,
+      "fi": 0.20670391061452514,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 26,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 29
+      }
+    },
+    {
+      "tick": 186,
+      "fc": 1.0,
+      "fi": 0.20114942528735633,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 187,
+      "fc": 1.0,
+      "fi": 0.19653179190751446,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 188,
+      "fc": 1.0,
+      "fi": 0.20114942528735633,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 35,
+        "generation": 32,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 189,
+      "fc": 1.0,
+      "fi": 0.19540229885057472,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 25,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 190,
+      "fc": 1.0,
+      "fi": 0.1864406779661017,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 31
+      }
+    },
+    {
+      "tick": 191,
+      "fc": 1.0,
+      "fi": 0.20114942528735633,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 192,
+      "fc": 1.0,
+      "fi": 0.18857142857142858,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 29
+      }
+    },
+    {
+      "tick": 193,
+      "fc": 1.0,
+      "fi": 0.19653179190751446,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 34
+      }
+    },
+    {
+      "tick": 194,
+      "fc": 1.0,
+      "fi": 0.1952662721893491,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 195,
+      "fc": 1.0,
+      "fi": 0.19148936170212766,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 36,
+        "weather": 28,
+        "reserve": 32
+      }
+    },
+    {
+      "tick": 196,
+      "fc": 1.0,
+      "fi": 0.19148936170212766,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 36,
+        "weather": 25,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 197,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 32,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 198,
+      "fc": 1.0,
+      "fi": 0.2,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 25,
+        "reserve": 35
+      }
+    },
+    {
+      "tick": 199,
+      "fc": 1.0,
+      "fi": 0.21142857142857144,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "curtail_renewable",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 37,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 24,
+        "reserve": 30
+      }
+    },
+    {
+      "tick": 200,
+      "fc": 1.0,
+      "fi": 0.18857142857142858,
+      "da": 1.0,
+      "adr": 1.0,
+      "action": "charge_battery",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "token_counts": {
+        "load": 33,
+        "generation": 31,
+        "frequency": 28,
+        "voltage": 23,
+        "weather": 31,
+        "reserve": 29
+      }
+    }
+  ],
+  "summary": {
+    "mean_fc": 1.0,
+    "mean_da": 0.225,
+    "mean_adr": 1.0,
+    "mean_fi": 0.1931,
+    "fc_first_quarter": 1.0,
+    "fc_last_quarter": 1.0,
+    "intervention_recovery": {},
+    "directional_validation": {
+      "is_directional": false,
+      "early_factor_late_coverage": 1.0,
+      "late_factor_late_coverage": 1.0,
+      "coverage_gap": 0.0,
+      "verdict": "uniform_degradation"
+    }
+  }
+}

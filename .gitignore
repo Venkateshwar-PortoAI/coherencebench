@@ -8,8 +8,9 @@ __pycache__/
 dist/
 *.egg-info/
 
-# Results (raw API responses)
-results/*
+# Results — raw LLM responses are gitignored, analyzed summaries are tracked
+results/**/raw_results.jsonl
+!results/**/analyzed_results.json
 !results/.gitkeep
 
 # Data files are committed (NOT gitignored)
