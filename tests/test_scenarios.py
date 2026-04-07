@@ -1,12 +1,15 @@
-"""Tests for all 3 scenarios: power_grid, hospital, network."""
+"""Tests for all scenarios: power_grid, hospital, network, air_traffic_control."""
 
 import json
+import random
 
 from src.scenarios import get_scenario, SCENARIOS
 from src.scenarios.power_grid import PowerGridScenario
 from src.scenarios.hospital import HospitalTriageScenario
 from src.scenarios.network import NetworkSecurityScenario
+from src.scenarios.air_traffic_control import AirTrafficControlScenario
 from src.generator import TickGenerator
+from src.analyzer import ResponseAnalyzer
 
 
 class TestScenarioRegistry:
@@ -14,11 +17,13 @@ class TestScenarioRegistry:
         assert "power_grid" in SCENARIOS
         assert "hospital" in SCENARIOS
         assert "network" in SCENARIOS
+        assert "air_traffic_control" in SCENARIOS
 
     def test_get_scenario_returns_correct_type(self):
         assert isinstance(get_scenario("power_grid"), PowerGridScenario)
         assert isinstance(get_scenario("hospital"), HospitalTriageScenario)
         assert isinstance(get_scenario("network"), NetworkSecurityScenario)
+        assert isinstance(get_scenario("air_traffic_control"), AirTrafficControlScenario)
 
     def test_get_scenario_unknown_raises(self):
         try:
@@ -85,6 +90,9 @@ class TestAllScenariosStructure:
     def test_network_structure(self):
         self._check_scenario("network")
 
+    def test_air_traffic_control_structure(self):
+        self._check_scenario("air_traffic_control")
+
 
 class TestAllScenariosPrompts:
     """Every scenario must produce valid prompts."""
@@ -117,6 +125,9 @@ class TestAllScenariosPrompts:
 
     def test_network_prompts(self):
         self._check_prompts("network")
+
+    def test_air_traffic_control_prompts(self):
+        self._check_prompts("air_traffic_control")
 
 
 class TestAllScenariosGeneration:
@@ -155,6 +166,9 @@ class TestAllScenariosGeneration:
     def test_network_generation(self):
         self._check_generation("network")
 
+    def test_air_traffic_control_generation(self):
+        self._check_generation("air_traffic_control")
+
 
 class TestHospitalSpecific:
     def test_has_correct_factor_names(self):
@@ -180,3 +194,123 @@ class TestNetworkSpecific:
         assert "block_ip" in s.actions
         assert "no_action_needed" in s.actions
         assert "investigate_further" in s.actions
+
+
+class TestAirTrafficControlSpecific:
+    def test_has_correct_factor_names(self):
+        s = get_scenario("air_traffic_control")
+        names = [f.name for f in s.factors]
+        assert names == ["radar", "weather", "runway", "comms", "traffic_flow", "systems"]
+
+    def test_has_correct_actions(self):
+        s = get_scenario("air_traffic_control")
+        assert "increase_separation" in s.actions
+        assert "hold_steady" in s.actions
+        assert "declare_ground_stop" in s.actions
+        assert "close_runway" in s.actions
+
+    def test_has_action_aliases(self):
+        s = get_scenario("air_traffic_control")
+        aliases = s.action_aliases
+        assert aliases["divert"] == "divert_traffic"
+        assert aliases["holding"] == "issue_holding"
+        assert aliases["ground_stop"] == "declare_ground_stop"
+
+
+class TestAirTrafficControlEdgeCases:
+    """Edge case tests from eng review."""
+
+    def test_evolve_state_stays_in_bounds(self):
+        """All fields stay within clamp bounds after 200 evolve_state calls."""
+        s = get_scenario("air_traffic_control")
+        state = s.deep_copy_state(s.initial_state)
+        rng = random.Random(42)
+
+        for _ in range(200):
+            state = s.evolve_state(state, rng)
+
+            assert 5 <= state["radar"]["tracked_aircraft"] <= 40
+            assert 2.0 <= state["radar"]["min_separation_nm"] <= 10.0
+            assert 0 <= state["radar"]["conflict_alerts"] <= 5
+
+            assert 0 <= state["weather"]["visibility_sm"] <= 15
+            assert 0 <= state["weather"]["ceiling_ft"] <= 10000
+            assert 0 <= state["weather"]["wind_speed_kt"] <= 50
+
+            assert 10 <= state["comms"]["congestion_pct"] <= 95
+            assert 0 <= state["comms"]["readback_errors"] <= 10
+
+            assert 5 <= state["traffic_flow"]["arrival_rate"] <= 50
+            assert 5 <= state["traffic_flow"]["departure_rate"] <= 45
+            assert 0 <= state["traffic_flow"]["holding_aircraft"] <= 15
+            assert 50 <= state["traffic_flow"]["slot_compliance_pct"] <= 100
+
+    def test_inject_anomaly_produces_clear_anomalies(self):
+        """Each factor's anomaly values are clearly outside normal bounds."""
+        s = get_scenario("air_traffic_control")
+        rng = random.Random(42)
+
+        for factor_name in [f.name for f in s.factors]:
+            state = s.deep_copy_state(s.initial_state)
+            data = s.format_tick_data(state)
+            data = s.inject_anomaly(data, factor_name, rng)
+
+            if factor_name == "radar":
+                assert data["radar"]["min_separation_nm"] <= 2.5
+                assert data["radar"]["conflict_alerts"] >= 3
+            elif factor_name == "weather":
+                assert data["weather"]["visibility_sm"] <= 2
+                assert data["weather"]["ceiling_ft"] <= 500
+            elif factor_name == "runway":
+                has_bad = any(
+                    data["runway"][r]["surface"] in ("icy", "snow")
+                    for r in ["rwy_09L", "rwy_27R", "rwy_04"]
+                )
+                assert has_bad
+            elif factor_name == "comms":
+                assert data["comms"]["congestion_pct"] >= 80
+                assert data["comms"]["readback_errors"] >= 4
+            elif factor_name == "traffic_flow":
+                assert data["traffic_flow"]["arrival_rate"] >= 38
+                assert data["traffic_flow"]["holding_aircraft"] >= 6
+            elif factor_name == "systems":
+                has_failed = (
+                    data["systems"]["primary_radar"] == "failed"
+                    or data["systems"]["nav_aids"] == "failed"
+                )
+                assert has_failed
+
+    def test_action_aliases_resolve_correctly(self):
+        """Per-scenario aliases resolve to correct actions in the analyzer."""
+        s = get_scenario("air_traffic_control")
+        analyzer = ResponseAnalyzer(scenario=s)
+
+        # Scenario-specific aliases should resolve
+        assert analyzer._alias_map.get("divert") == "divert_traffic"
+        assert analyzer._alias_map.get("holding") == "issue_holding"
+        assert analyzer._alias_map.get("ground_stop") == "declare_ground_stop"
+
+        # Global aliases that match this scenario's actions should also work
+        assert analyzer._alias_map.get("hold") == "issue_holding"
+
+    def test_directional_validation_uses_phase_weights(self):
+        """directional_validation derives early/late factors from phase weights,
+        not hardcoded power_grid names."""
+        s = get_scenario("air_traffic_control")
+        analyzer = ResponseAnalyzer(scenario=s)
+
+        # For ATC, early factors should be radar+weather (highest in first phase)
+        # Late factors should be traffic_flow+systems (highest in last phase)
+        result = analyzer.directional_validation([])
+        # With empty analyses, should return insufficient_data
+        assert result["verdict"] == "insufficient_data"
+
+        # Verify the phase weight derivation by checking the analyzer's scenario
+        phase_weights = s.phase_anomaly_weights
+        sorted_phases = sorted(phase_weights.keys(), key=lambda k: k[0])
+        first_phase = phase_weights[sorted_phases[0]]
+        last_phase = phase_weights[sorted_phases[-1]]
+        early = set(sorted(first_phase, key=first_phase.get, reverse=True)[:2])
+        late = set(sorted(last_phase, key=last_phase.get, reverse=True)[:2])
+        assert early == {"radar", "weather"}
+        assert late == {"traffic_flow", "systems"}

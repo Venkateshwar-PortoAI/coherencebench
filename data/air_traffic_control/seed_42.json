@@ -1,0 +1,3035 @@
+{
+  "scenario": "air_traffic_control",
+  "seed": 42,
+  "num_ticks": 200,
+  "factors": {
+    "radar": {
+      "display_name": "Radar (Aircraft Separation)",
+      "description": "Aircraft positions, separation distances in NM, conflict alerts"
+    },
+    "weather": {
+      "display_name": "Weather (Conditions & Forecast)",
+      "description": "Visibility in SM, ceiling in ft, wind speed/direction, turbulence, wind shear"
+    },
+    "runway": {
+      "display_name": "Runway (Operations & Surface)",
+      "description": "Runway occupancy status, surface conditions (dry/wet/icy), braking action"
+    },
+    "comms": {
+      "display_name": "Comms (Frequency & Coordination)",
+      "description": "Frequency congestion level, pilot readback errors, ATIS currency in minutes"
+    },
+    "traffic_flow": {
+      "display_name": "Traffic Flow (Arrivals & Departures)",
+      "description": "Arrival rate, departure rate, holding aircraft count, slot compliance %"
+    },
+    "systems": {
+      "display_name": "Systems (Equipment Health)",
+      "description": "Primary radar status, nav aid status, backup power, ATIS broadcast status"
+    }
+  },
+  "actions": [
+    "increase_separation",
+    "issue_holding",
+    "divert_traffic",
+    "close_runway",
+    "reduce_arrival_rate",
+    "switch_runway_config",
+    "issue_weather_advisory",
+    "activate_backup_systems",
+    "hold_steady",
+    "declare_ground_stop"
+  ],
+  "system_prompt": "You are an autonomous air traffic control tower operator. Every tick, you receive updates from 6 subsystems: Radar (aircraft separation and conflicts), Weather (visibility, ceiling, wind, turbulence), Runway (operations and surface conditions), Comms (frequency congestion and coordination), Traffic Flow (arrival/departure rates and holding), and Systems (equipment health and backups).\n\nYour job is to analyze ALL 6 factors every tick and recommend an action.\n\nAvailable actions (choose exactly one):\n- increase_separation: Widen spacing between aircraft\n- issue_holding: Put aircraft in holding patterns\n- divert_traffic: Divert aircraft to alternate airports\n- close_runway: Close a runway for safety\n- reduce_arrival_rate: Slow incoming traffic flow\n- switch_runway_config: Change active runway configuration\n- issue_weather_advisory: Issue weather advisory to pilots\n- activate_backup_systems: Switch to backup equipment\n- hold_steady: Maintain current operations, no intervention needed\n- declare_ground_stop: Halt all departures and arrivals\n\nYou MUST respond in this exact format:\nANALYSIS:\n- Radar: [your analysis of current radar/separation state]\n- Weather: [your analysis of current weather conditions]\n- Runway: [your analysis of current runway state]\n- Comms: [your analysis of current communications state]\n- Traffic Flow: [your analysis of current traffic flow state]\n- Systems: [your analysis of current equipment health]\nACTION: [one action from the list above]\nREASON: [1-2 sentences explaining why, referencing the specific factors that informed your decision]\n\nIMPORTANT: You must analyze ALL 6 factors every tick. Do not skip any factor. Each factor line must contain substantive analysis, not just 'stable' or 'unchanged'.",
+  "ticks": [
+    {
+      "tick_number": 1,
+      "prompt": "TICK 1:\n\nF1 (Radar):        16 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 4914ft. Wind 263/11kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 30%. Readback errors: 0. ATIS age: 5min (current).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 21/hr. Holding: 0. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 2,
+      "prompt": "TICK 2:\n\nF1 (Radar):        15 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 4793ft. Wind 263/10kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 29%. Readback errors: 1. ATIS age: 7min (current).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 22/hr. Holding: 0. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 3,
+      "prompt": "TICK 3:\n\nF1 (Radar):        15 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 4787ft. Wind 267/10kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 27%. Readback errors: 1. ATIS age: 7min (current).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 21/hr. Holding: 0. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 4,
+      "prompt": "TICK 4:\n\nF1 (Radar):        13 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 4620ft. Wind 275/9kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 27%. Readback errors: 1. ATIS age: 8min (current).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 20/hr. Holding: 0. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 5,
+      "prompt": "TICK 5:\n\nF1 (Radar):        11 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 0.\nF2 (Weather):      Vis 7SM, Ceiling 4741ft. Wind 278/8kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 27%. Readback errors: 2. ATIS age: 10min (current).\nF5 (Traffic Flow): Arrivals 49/hr, Departures 18/hr. Holding: 10. Slot compliance: 55%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 6,
+      "prompt": "TICK 6:\n\nF1 (Radar):        13 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 4800ft. Wind 274/10kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 30%. Readback errors: 3. ATIS age: 10min (current).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 18/hr. Holding: 1. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 7,
+      "prompt": "TICK 7:\n\nF1 (Radar):        14 aircraft tracked. Min separation: 2.2NM. Conflict alerts: 3.\nF2 (Weather):      Vis 0SM, Ceiling 134ft. Wind 281/11kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking poor), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 28%. Readback errors: 4. ATIS age: 11min (current).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 19/hr. Holding: 1. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather",
+          "runway",
+          "systems"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 8,
+      "prompt": "TICK 8:\n\nF1 (Radar):        15 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 1.\nF2 (Weather):      Vis 1SM, Ceiling 472ft. Wind 286/33kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 25%. Readback errors: 3. ATIS age: 14min (current).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 20/hr. Holding: 7. Slot compliance: 51%.\nF6 (Systems):      Radar: FAILED. Nav aids: OPERATIONAL. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "weather",
+          "systems"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 9,
+      "prompt": "TICK 9:\n\nF1 (Radar):        16 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 6.\nF2 (Weather):      Vis 7SM, Ceiling 4595ft. Wind 293/14kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 22%. Readback errors: 2. ATIS age: 15min (current).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 21/hr. Holding: 3. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 10,
+      "prompt": "TICK 10:\n\nF1 (Radar):        15 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 1.\nF2 (Weather):      Vis 2SM, Ceiling 141ft. Wind 284/48kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking nil), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 23%. Readback errors: 3. ATIS age: 16min (aging).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 23/hr. Holding: 2. Slot compliance: 98%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "runway"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 11,
+      "prompt": "TICK 11:\n\nF1 (Radar):        14 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 1.\nF2 (Weather):      Vis 7SM, Ceiling 4821ft. Wind 288/16kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 23%. Readback errors: 4. ATIS age: 16min (aging).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 25/hr. Holding: 2. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 12,
+      "prompt": "TICK 12:\n\nF1 (Radar):        16 aircraft tracked. Min separation: 1.6NM. Conflict alerts: 6.\nF2 (Weather):      Vis 6SM, Ceiling 4962ft. Wind 287/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 22%. Readback errors: 3. ATIS age: 16min (aging).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 24/hr. Holding: 2. Slot compliance: 98%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 13,
+      "prompt": "TICK 13:\n\nF1 (Radar):        16 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 2.\nF2 (Weather):      Vis 1SM, Ceiling 207ft. Wind 282/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 19%. Readback errors: 2. ATIS age: 16min (aging).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 26/hr. Holding: 1. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 14,
+      "prompt": "TICK 14:\n\nF1 (Radar):        14 aircraft tracked. Min separation: 2.3NM. Conflict alerts: 4.\nF2 (Weather):      Vis 0SM, Ceiling 112ft. Wind 279/17kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 19%. Readback errors: 1. ATIS age: 17min (aging).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 27/hr. Holding: 1. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 15,
+      "prompt": "TICK 15:\n\nF1 (Radar):        15 aircraft tracked. Min separation: 2.2NM. Conflict alerts: 5.\nF2 (Weather):      Vis 5SM, Ceiling 5184ft. Wind 281/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 0. ATIS age: 19min (aging).\nF5 (Traffic Flow): Arrivals 44/hr, Departures 29/hr. Holding: 15. Slot compliance: 53%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 16,
+      "prompt": "TICK 16:\n\nF1 (Radar):        17 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 1.\nF2 (Weather):      Vis 6SM, Ceiling 5207ft. Wind 287/17kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 21min (aging).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 27/hr. Holding: 1. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 17,
+      "prompt": "TICK 17:\n\nF1 (Radar):        16 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 1.\nF2 (Weather):      Vis 7SM, Ceiling 5390ft. Wind 296/16kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 17%. Readback errors: 0. ATIS age: 22min (aging).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 29/hr. Holding: 1. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 18,
+      "prompt": "TICK 18:\n\nF1 (Radar):        18 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 4.\nF2 (Weather):      Vis 8SM, Ceiling 5348ft. Wind 292/15kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (snow, braking poor)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 25min (aging).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 31/hr. Holding: 1. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "runway"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 19,
+      "prompt": "TICK 19:\n\nF1 (Radar):        20 aircraft tracked. Min separation: 4.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 5216ft. Wind 298/16kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 1. ATIS age: 28min (aging).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 32/hr. Holding: 1. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 20,
+      "prompt": "TICK 20:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 2.3NM. Conflict alerts: 6.\nF2 (Weather):      Vis 7SM, Ceiling 5155ft. Wind 298/16kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 1. ATIS age: 29min (aging).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 33/hr. Holding: 2. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 21,
+      "prompt": "TICK 21:\n\nF1 (Radar):        22 aircraft tracked. Min separation: 3.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 7SM, Ceiling 5340ft. Wind 301/17kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 1. ATIS age: 30min (aging).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 34/hr. Holding: 3. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 22,
+      "prompt": "TICK 22:\n\nF1 (Radar):        23 aircraft tracked. Min separation: 3.8NM. Conflict alerts: 0.\nF2 (Weather):      Vis 0SM, Ceiling 483ft. Wind 295/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking nil), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 15%. Readback errors: 1. ATIS age: 33min (STALE).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 34/hr. Holding: 4. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "weather"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 23,
+      "prompt": "TICK 23:\n\nF1 (Radar):        23 aircraft tracked. Min separation: 3.6NM. Conflict alerts: 0.\nF2 (Weather):      Vis 7SM, Ceiling 5289ft. Wind 292/16kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 13%. Readback errors: 1. ATIS age: 33min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 33/hr. Holding: 5. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 24,
+      "prompt": "TICK 24:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 2.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 8SM, Ceiling 5435ft. Wind 294/17kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 1. ATIS age: 33min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 35/hr. Holding: 4. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 25,
+      "prompt": "TICK 25:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 1.5NM. Conflict alerts: 5.\nF2 (Weather):      Vis 9SM, Ceiling 5313ft. Wind 289/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 19%. Readback errors: 2. ATIS age: 36min (STALE).\nF5 (Traffic Flow): Arrivals 27/hr, Departures 36/hr. Holding: 4. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 26,
+      "prompt": "TICK 26:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 3.6NM. Conflict alerts: 0.\nF2 (Weather):      Vis 1SM, Ceiling 342ft. Wind 298/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 2. ATIS age: 39min (STALE).\nF5 (Traffic Flow): Arrivals 28/hr, Departures 38/hr. Holding: 4. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 27,
+      "prompt": "TICK 27:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 3.6NM. Conflict alerts: 1.\nF2 (Weather):      Vis 0SM, Ceiling 462ft. Wind 296/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking poor), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 15%. Readback errors: 1. ATIS age: 40min (STALE).\nF5 (Traffic Flow): Arrivals 27/hr, Departures 37/hr. Holding: 5. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "runway"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 28,
+      "prompt": "TICK 28:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 2.5NM. Conflict alerts: 3.\nF2 (Weather):      Vis 10SM, Ceiling 5452ft. Wind 289/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (snow, braking poor)\nF4 (Comms):        Congestion 15%. Readback errors: 1. ATIS age: 41min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 37/hr. Holding: 6. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "runway"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 29,
+      "prompt": "TICK 29:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 1.5NM. Conflict alerts: 6.\nF2 (Weather):      Vis 2SM, Ceiling 404ft. Wind 288/31kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 12%. Readback errors: 1. ATIS age: 42min (STALE).\nF5 (Traffic Flow): Arrivals 49/hr, Departures 35/hr. Holding: 13. Slot compliance: 52%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather",
+          "traffic_flow"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 30,
+      "prompt": "TICK 30:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 2.0NM. Conflict alerts: 3.\nF2 (Weather):      Vis 2SM, Ceiling 120ft. Wind 281/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 15%. Readback errors: 1. ATIS age: 42min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 34/hr. Holding: 6. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 31,
+      "prompt": "TICK 31:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 3.8NM. Conflict alerts: 1.\nF2 (Weather):      Vis 10SM, Ceiling 5371ft. Wind 289/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (snow, braking nil), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 14%. Readback errors: 2. ATIS age: 42min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 35/hr. Holding: 7. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 32,
+      "prompt": "TICK 32:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 3.7NM. Conflict alerts: 1.\nF2 (Weather):      Vis 11SM, Ceiling 5189ft. Wind 281/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 14%. Readback errors: 3. ATIS age: 42min (STALE).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 36/hr. Holding: 8. Slot compliance: 91%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 33,
+      "prompt": "TICK 33:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 3.9NM. Conflict alerts: 1.\nF2 (Weather):      Vis 10SM, Ceiling 5003ft. Wind 278/27kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 3. ATIS age: 42min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 34/hr. Holding: 8. Slot compliance: 91%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 34,
+      "prompt": "TICK 34:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 4.2NM. Conflict alerts: 2.\nF2 (Weather):      Vis 1SM, Ceiling 264ft. Wind 276/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 4. ATIS age: 44min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 34/hr. Holding: 8. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 35,
+      "prompt": "TICK 35:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 1.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 11SM, Ceiling 4694ft. Wind 281/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (snow, braking poor), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 16%. Readback errors: 4. ATIS age: 47min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 33/hr. Holding: 8. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "runway"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 36,
+      "prompt": "TICK 36:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 3.\nF2 (Weather):      Vis 0SM, Ceiling 250ft. Wind 288/43kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 4. ATIS age: 47min (STALE).\nF5 (Traffic Flow): Arrivals 38/hr, Departures 31/hr. Holding: 6. Slot compliance: 60%.\nF6 (Systems):      Radar: FAILED. Nav aids: OPERATIONAL. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "weather",
+          "systems"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 37,
+      "prompt": "TICK 37:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.2NM. Conflict alerts: 4.\nF2 (Weather):      Vis 11SM, Ceiling 4773ft. Wind 293/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 4. ATIS age: 49min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 32/hr. Holding: 7. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 38,
+      "prompt": "TICK 38:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.0NM. Conflict alerts: 4.\nF2 (Weather):      Vis 11SM, Ceiling 4627ft. Wind 295/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 3. ATIS age: 52min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 30/hr. Holding: 6. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 39,
+      "prompt": "TICK 39:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.1NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 4476ft. Wind 294/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 2. ATIS age: 54min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 31/hr. Holding: 6. Slot compliance: 98%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 40,
+      "prompt": "TICK 40:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 4.\nF2 (Weather):      Vis 13SM, Ceiling 4449ft. Wind 298/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 2. ATIS age: 56min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 32/hr. Holding: 5. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 41,
+      "prompt": "TICK 41:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 2.4NM. Conflict alerts: 6.\nF2 (Weather):      Vis 14SM, Ceiling 4416ft. Wind 295/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (icy, braking nil)\nF4 (Comms):        Congestion 16%. Readback errors: 2. ATIS age: 59min (STALE).\nF5 (Traffic Flow): Arrivals 16/hr, Departures 31/hr. Holding: 4. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "runway"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 42,
+      "prompt": "TICK 42:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 14SM, Ceiling 4359ft. Wind 296/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (snow, braking poor), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 31/hr. Holding: 3. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 43,
+      "prompt": "TICK 43:\n\nF1 (Radar):        24 aircraft tracked. Min separation: 2.2NM. Conflict alerts: 3.\nF2 (Weather):      Vis 0SM, Ceiling 107ft. Wind 292/37kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 38/hr, Departures 30/hr. Holding: 8. Slot compliance: 63%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather",
+          "traffic_flow"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 44,
+      "prompt": "TICK 44:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 1.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 13SM, Ceiling 4579ft. Wind 298/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 28/hr. Holding: 2. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 45,
+      "prompt": "TICK 45:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 5.\nF2 (Weather):      Vis 1SM, Ceiling 134ft. Wind 307/32kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 21%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 29/hr. Holding: 2. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 46,
+      "prompt": "TICK 46:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 1.8NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 4695ft. Wind 315/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 21%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 29/hr. Holding: 2. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 47,
+      "prompt": "TICK 47:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 5.\nF2 (Weather):      Vis 1SM, Ceiling 314ft. Wind 305/35kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 29/hr. Holding: 2. Slot compliance: 91%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 48,
+      "prompt": "TICK 48:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 1.5NM. Conflict alerts: 6.\nF2 (Weather):      Vis 14SM, Ceiling 4683ft. Wind 299/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 31/hr. Holding: 3. Slot compliance: 91%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 49,
+      "prompt": "TICK 49:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 5.\nF2 (Weather):      Vis 14SM, Ceiling 4591ft. Wind 297/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 33/hr. Holding: 3. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 50,
+      "prompt": "TICK 50:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 2.0NM. Conflict alerts: 4.\nF2 (Weather):      Vis 1SM, Ceiling 481ft. Wind 296/40kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 20%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 31/hr. Holding: 4. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "weather",
+          "radar"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 51,
+      "prompt": "TICK 51:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 13SM, Ceiling 4606ft. Wind 294/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 22%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 32/hr. Holding: 5. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 52,
+      "prompt": "TICK 52:\n\nF1 (Radar):        32 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 5.\nF2 (Weather):      Vis 2SM, Ceiling 177ft. Wind 300/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 21%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 34/hr. Holding: 6. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 53,
+      "prompt": "TICK 53:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 5.\nF2 (Weather):      Vis 15SM, Ceiling 4277ft. Wind 310/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 89%. Readback errors: 6. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 34/hr. Holding: 6. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 54,
+      "prompt": "TICK 54:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 5.\nF2 (Weather):      Vis 14SM, Ceiling 4375ft. Wind 311/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 36/hr. Holding: 7. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 55,
+      "prompt": "TICK 55:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 1.7NM. Conflict alerts: 6.\nF2 (Weather):      Vis 14SM, Ceiling 4333ft. Wind 307/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (snow, braking nil), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 34/hr. Holding: 6. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "runway"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 56,
+      "prompt": "TICK 56:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 5.\nF2 (Weather):      Vis 14SM, Ceiling 4518ft. Wind 304/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 35/hr. Holding: 7. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 57,
+      "prompt": "TICK 57:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 5.\nF2 (Weather):      Vis 0SM, Ceiling 297ft. Wind 297/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 34/hr. Holding: 8. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 58,
+      "prompt": "TICK 58:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 4.\nF2 (Weather):      Vis 14SM, Ceiling 4814ft. Wind 291/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 81%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 36/hr. Holding: 7. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 59,
+      "prompt": "TICK 59:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 2.1NM. Conflict alerts: 6.\nF2 (Weather):      Vis 14SM, Ceiling 4646ft. Wind 296/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 36/hr. Holding: 7. Slot compliance: 97%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "runway"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "close_runway",
+          "increase_separation",
+          "issue_holding",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 60,
+      "prompt": "TICK 60:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 4.\nF2 (Weather):      Vis 14SM, Ceiling 4480ft. Wind 293/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 94%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 36/hr. Holding: 7. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 61,
+      "prompt": "TICK 61:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 4.\nF2 (Weather):      Vis 13SM, Ceiling 4441ft. Wind 299/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 34/hr. Holding: 7. Slot compliance: 99%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 62,
+      "prompt": "TICK 62:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 3.\nF2 (Weather):      Vis 13SM, Ceiling 4283ft. Wind 291/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 34/hr. Holding: 7. Slot compliance: 98%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 63,
+      "prompt": "TICK 63:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 5.\nF2 (Weather):      Vis 13SM, Ceiling 4345ft. Wind 281/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 34/hr. Holding: 7. Slot compliance: 98%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 64,
+      "prompt": "TICK 64:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 4.\nF2 (Weather):      Vis 1SM, Ceiling 188ft. Wind 286/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (icy, braking poor), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 16/hr, Departures 36/hr. Holding: 7. Slot compliance: 100%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "weather"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 65,
+      "prompt": "TICK 65:\n\nF1 (Radar):        32 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 4.\nF2 (Weather):      Vis 13SM, Ceiling 4498ft. Wind 293/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 35/hr. Holding: 6. Slot compliance: 98%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 66,
+      "prompt": "TICK 66:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 4.\nF2 (Weather):      Vis 0SM, Ceiling 365ft. Wind 299/35kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 36/hr. Holding: 6. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 67,
+      "prompt": "TICK 67:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 4.\nF2 (Weather):      Vis 14SM, Ceiling 4731ft. Wind 291/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 35/hr. Holding: 15. Slot compliance: 58%.\nF6 (Systems):      Radar: FAILED. Nav aids: OPERATIONAL. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 68,
+      "prompt": "TICK 68:\n\nF1 (Radar):        32 aircraft tracked. Min separation: 2.5NM. Conflict alerts: 4.\nF2 (Weather):      Vis 14SM, Ceiling 4852ft. Wind 290/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 33/hr. Holding: 5. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 69,
+      "prompt": "TICK 69:\n\nF1 (Radar):        32 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 6.\nF2 (Weather):      Vis 14SM, Ceiling 4775ft. Wind 283/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 32/hr. Holding: 5. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 70,
+      "prompt": "TICK 70:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 2.\nF2 (Weather):      Vis 13SM, Ceiling 4600ft. Wind 288/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 94%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 33/hr. Holding: 5. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 71,
+      "prompt": "TICK 71:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 2.2NM. Conflict alerts: 6.\nF2 (Weather):      Vis 2SM, Ceiling 333ft. Wind 282/46kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 32/hr. Holding: 6. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 72,
+      "prompt": "TICK 72:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 3.\nF2 (Weather):      Vis 15SM, Ceiling 4890ft. Wind 290/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 6. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 30/hr. Holding: 15. Slot compliance: 57%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 73,
+      "prompt": "TICK 73:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 3.\nF2 (Weather):      Vis 15SM, Ceiling 5012ft. Wind 292/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 31/hr. Holding: 6. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 74,
+      "prompt": "TICK 74:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 4.\nF2 (Weather):      Vis 15SM, Ceiling 5151ft. Wind 298/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 20%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 33/hr. Holding: 7. Slot compliance: 90%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 75,
+      "prompt": "TICK 75:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 4.\nF2 (Weather):      Vis 15SM, Ceiling 5320ft. Wind 297/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 20%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 31/hr. Holding: 7. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 76,
+      "prompt": "TICK 76:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 5.\nF2 (Weather):      Vis 15SM, Ceiling 5420ft. Wind 294/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (icy, braking nil)\nF4 (Comms):        Congestion 18%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 31/hr. Holding: 8. Slot compliance: 89%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 77,
+      "prompt": "TICK 77:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 4.\nF2 (Weather):      Vis 14SM, Ceiling 5553ft. Wind 291/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (snow, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 16%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 16/hr, Departures 32/hr. Holding: 9. Slot compliance: 87%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 78,
+      "prompt": "TICK 78:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 4.\nF2 (Weather):      Vis 0SM, Ceiling 305ft. Wind 291/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (snow, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 95%. Readback errors: 6. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 16/hr, Departures 34/hr. Holding: 9. Slot compliance: 85%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "weather",
+          "comms"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 79,
+      "prompt": "TICK 79:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 4.3NM. Conflict alerts: 4.\nF2 (Weather):      Vis 13SM, Ceiling 5479ft. Wind 291/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 87%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 14/hr, Departures 35/hr. Holding: 9. Slot compliance: 83%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 80,
+      "prompt": "TICK 80:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 4.3NM. Conflict alerts: 4.\nF2 (Weather):      Vis 1SM, Ceiling 366ft. Wind 294/36kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 16/hr, Departures 33/hr. Holding: 10. Slot compliance: 84%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 81,
+      "prompt": "TICK 81:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 4.\nF2 (Weather):      Vis 13SM, Ceiling 5621ft. Wind 300/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 95%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 33/hr. Holding: 9. Slot compliance: 86%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 82,
+      "prompt": "TICK 82:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 4.\nF2 (Weather):      Vis 14SM, Ceiling 5794ft. Wind 301/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 93%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 44/hr, Departures 32/hr. Holding: 9. Slot compliance: 57%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 83,
+      "prompt": "TICK 83:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 1.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 13SM, Ceiling 5965ft. Wind 292/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 30/hr. Holding: 8. Slot compliance: 83%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 84,
+      "prompt": "TICK 84:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 5.\nF2 (Weather):      Vis 13SM, Ceiling 6060ft. Wind 292/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 30/hr. Holding: 7. Slot compliance: 84%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 85,
+      "prompt": "TICK 85:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 5.\nF2 (Weather):      Vis 14SM, Ceiling 6073ft. Wind 286/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 84%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 41/hr, Departures 31/hr. Holding: 10. Slot compliance: 56%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 86,
+      "prompt": "TICK 86:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 5.\nF2 (Weather):      Vis 13SM, Ceiling 6147ft. Wind 277/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 95%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 33/hr. Holding: 6. Slot compliance: 85%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 87,
+      "prompt": "TICK 87:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 5.\nF2 (Weather):      Vis 12SM, Ceiling 6229ft. Wind 276/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 47/hr, Departures 31/hr. Holding: 15. Slot compliance: 63%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 88,
+      "prompt": "TICK 88:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 5.\nF2 (Weather):      Vis 11SM, Ceiling 6223ft. Wind 273/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 30/hr. Holding: 7. Slot compliance: 86%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: OPERATIONAL. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 89,
+      "prompt": "TICK 89:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 4.\nF2 (Weather):      Vis 10SM, Ceiling 6234ft. Wind 283/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 28/hr. Holding: 6. Slot compliance: 87%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 90,
+      "prompt": "TICK 90:\n\nF1 (Radar):        24 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6110ft. Wind 279/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (snow, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 20%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 29/hr. Holding: 7. Slot compliance: 88%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "systems"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "close_runway",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 91,
+      "prompt": "TICK 91:\n\nF1 (Radar):        22 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 3.\nF2 (Weather):      Vis 10SM, Ceiling 6165ft. Wind 289/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 86%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 28/hr. Holding: 8. Slot compliance: 87%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 92,
+      "prompt": "TICK 92:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 1SM, Ceiling 115ft. Wind 297/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 39/hr, Departures 26/hr. Holding: 11. Slot compliance: 62%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "weather"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 93,
+      "prompt": "TICK 93:\n\nF1 (Radar):        22 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 10SM, Ceiling 6110ft. Wind 292/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 88%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 24/hr. Holding: 8. Slot compliance: 82%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 94,
+      "prompt": "TICK 94:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 3.\nF2 (Weather):      Vis 10SM, Ceiling 6195ft. Wind 298/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 16%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 40/hr, Departures 22/hr. Holding: 10. Slot compliance: 59%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 95,
+      "prompt": "TICK 95:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 2.\nF2 (Weather):      Vis 9SM, Ceiling 6217ft. Wind 301/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 20/hr. Holding: 8. Slot compliance: 81%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 96,
+      "prompt": "TICK 96:\n\nF1 (Radar):        23 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 2.\nF2 (Weather):      Vis 10SM, Ceiling 6372ft. Wind 306/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 94%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 21/hr. Holding: 8. Slot compliance: 84%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "systems"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 97,
+      "prompt": "TICK 97:\n\nF1 (Radar):        23 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 1.\nF2 (Weather):      Vis 10SM, Ceiling 6516ft. Wind 300/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 22/hr. Holding: 9. Slot compliance: 85%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 98,
+      "prompt": "TICK 98:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 6709ft. Wind 301/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 20/hr. Holding: 8. Slot compliance: 82%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 99,
+      "prompt": "TICK 99:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 6521ft. Wind 294/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 83%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 20/hr. Holding: 9. Slot compliance: 85%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems",
+          "comms"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 100,
+      "prompt": "TICK 100:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 6684ft. Wind 284/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 19/hr. Holding: 9. Slot compliance: 86%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 101,
+      "prompt": "TICK 101:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 6486ft. Wind 280/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 19/hr. Holding: 9. Slot compliance: 86%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 102,
+      "prompt": "TICK 102:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 6588ft. Wind 274/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 21/hr. Holding: 9. Slot compliance: 87%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 103,
+      "prompt": "TICK 103:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 1.7NM. Conflict alerts: 6.\nF2 (Weather):      Vis 2SM, Ceiling 480ft. Wind 264/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 22/hr. Holding: 10. Slot compliance: 89%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "weather"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 104,
+      "prompt": "TICK 104:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 11SM, Ceiling 6273ft. Wind 271/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (snow, braking nil), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 16%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 40/hr, Departures 20/hr. Holding: 15. Slot compliance: 54%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "traffic_flow"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_holding",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 105,
+      "prompt": "TICK 105:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 12SM, Ceiling 6252ft. Wind 269/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (snow, braking nil), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 18/hr. Holding: 10. Slot compliance: 91%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 106,
+      "prompt": "TICK 106:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 2.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 13SM, Ceiling 6264ft. Wind 273/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 49/hr, Departures 19/hr. Holding: 13. Slot compliance: 61%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 107,
+      "prompt": "TICK 107:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 2.2NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 6317ft. Wind 273/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 89%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 17/hr. Holding: 10. Slot compliance: 92%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "comms"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 108,
+      "prompt": "TICK 108:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 0.\nF2 (Weather):      Vis 12SM, Ceiling 6159ft. Wind 283/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (icy, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 15/hr. Holding: 9. Slot compliance: 90%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 109,
+      "prompt": "TICK 109:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 0.\nF2 (Weather):      Vis 13SM, Ceiling 6011ft. Wind 283/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 21%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 17/hr. Holding: 8. Slot compliance: 91%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 110,
+      "prompt": "TICK 110:\n\nF1 (Radar):        24 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 0.\nF2 (Weather):      Vis 12SM, Ceiling 6112ft. Wind 284/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 20%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 19/hr. Holding: 6. Slot compliance: 57%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 111,
+      "prompt": "TICK 111:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 0.\nF2 (Weather):      Vis 12SM, Ceiling 6238ft. Wind 276/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (snow, braking nil), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 93%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 20/hr. Holding: 8. Slot compliance: 95%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "comms",
+          "systems"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "close_runway",
+          "issue_holding",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 112,
+      "prompt": "TICK 112:\n\nF1 (Radar):        23 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 1.\nF2 (Weather):      Vis 1SM, Ceiling 441ft. Wind 268/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (icy, braking poor)\nF4 (Comms):        Congestion 22%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 22/hr. Holding: 7. Slot compliance: 94%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "runway"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 113,
+      "prompt": "TICK 113:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 12SM, Ceiling 6170ft. Wind 274/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 88%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 20/hr. Holding: 7. Slot compliance: 65%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 114,
+      "prompt": "TICK 114:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 1.\nF2 (Weather):      Vis 11SM, Ceiling 6158ft. Wind 272/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 3. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 18/hr. Holding: 7. Slot compliance: 94%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 115,
+      "prompt": "TICK 115:\n\nF1 (Radar):        22 aircraft tracked. Min separation: 4.6NM. Conflict alerts: 1.\nF2 (Weather):      Vis 11SM, Ceiling 6326ft. Wind 270/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 20%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 47/hr, Departures 20/hr. Holding: 10. Slot compliance: 57%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 116,
+      "prompt": "TICK 116:\n\nF1 (Radar):        23 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 1.\nF2 (Weather):      Vis 10SM, Ceiling 6501ft. Wind 267/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 21%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 18/hr. Holding: 7. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 117,
+      "prompt": "TICK 117:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 4.2NM. Conflict alerts: 1.\nF2 (Weather):      Vis 11SM, Ceiling 6512ft. Wind 271/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 20/hr. Holding: 6. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 118,
+      "prompt": "TICK 118:\n\nF1 (Radar):        22 aircraft tracked. Min separation: 4.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 10SM, Ceiling 6381ft. Wind 264/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 43/hr, Departures 21/hr. Holding: 8. Slot compliance: 52%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 119,
+      "prompt": "TICK 119:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 2.4NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6206ft. Wind 262/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 88%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 22/hr. Holding: 5. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "comms"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 120,
+      "prompt": "TICK 120:\n\nF1 (Radar):        19 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 1SM, Ceiling 209ft. Wind 254/27kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 44/hr, Departures 24/hr. Holding: 12. Slot compliance: 55%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "weather",
+          "systems"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 121,
+      "prompt": "TICK 121:\n\nF1 (Radar):        17 aircraft tracked. Min separation: 2.1NM. Conflict alerts: 5.\nF2 (Weather):      Vis 11SM, Ceiling 6364ft. Wind 259/27kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 23/hr. Holding: 6. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 122,
+      "prompt": "TICK 122:\n\nF1 (Radar):        18 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 11SM, Ceiling 6469ft. Wind 249/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 22/hr. Holding: 6. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 123,
+      "prompt": "TICK 123:\n\nF1 (Radar):        19 aircraft tracked. Min separation: 1.7NM. Conflict alerts: 4.\nF2 (Weather):      Vis 10SM, Ceiling 6390ft. Wind 249/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 43/hr, Departures 21/hr. Holding: 8. Slot compliance: 60%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "traffic_flow"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 124,
+      "prompt": "TICK 124:\n\nF1 (Radar):        17 aircraft tracked. Min separation: 4.3NM. Conflict alerts: 1.\nF2 (Weather):      Vis 11SM, Ceiling 6262ft. Wind 255/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 21/hr. Holding: 7. Slot compliance: 96%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 125,
+      "prompt": "TICK 125:\n\nF1 (Radar):        19 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 1.\nF2 (Weather):      Vis 12SM, Ceiling 6363ft. Wind 257/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 19%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 19/hr. Holding: 7. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 126,
+      "prompt": "TICK 126:\n\nF1 (Radar):        19 aircraft tracked. Min separation: 4.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 13SM, Ceiling 6506ft. Wind 261/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 20/hr. Holding: 8. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 127,
+      "prompt": "TICK 127:\n\nF1 (Radar):        21 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 0.\nF2 (Weather):      Vis 12SM, Ceiling 6537ft. Wind 252/23kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 95%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 19/hr. Holding: 7. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems",
+          "comms"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 128,
+      "prompt": "TICK 128:\n\nF1 (Radar):        20 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 0.\nF2 (Weather):      Vis 11SM, Ceiling 6364ft. Wind 252/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 19/hr. Holding: 7. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 129,
+      "prompt": "TICK 129:\n\nF1 (Radar):        22 aircraft tracked. Min separation: 4.5NM. Conflict alerts: 0.\nF2 (Weather):      Vis 10SM, Ceiling 6269ft. Wind 262/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 16%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 24/hr, Departures 19/hr. Holding: 6. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 130,
+      "prompt": "TICK 130:\n\nF1 (Radar):        24 aircraft tracked. Min separation: 4.2NM. Conflict alerts: 0.\nF2 (Weather):      Vis 0SM, Ceiling 161ft. Wind 269/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 20/hr. Holding: 6. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 131,
+      "prompt": "TICK 131:\n\nF1 (Radar):        25 aircraft tracked. Min separation: 4.0NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 6309ft. Wind 260/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 93%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 18/hr. Holding: 5. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 132,
+      "prompt": "TICK 132:\n\nF1 (Radar):        26 aircraft tracked. Min separation: 3.8NM. Conflict alerts: 1.\nF2 (Weather):      Vis 9SM, Ceiling 6407ft. Wind 253/17kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 43/hr, Departures 19/hr. Holding: 9. Slot compliance: 51%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 133,
+      "prompt": "TICK 133:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 1.9NM. Conflict alerts: 3.\nF2 (Weather):      Vis 8SM, Ceiling 6379ft. Wind 252/17kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 20/hr. Holding: 6. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 134,
+      "prompt": "TICK 134:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 2.2NM. Conflict alerts: 5.\nF2 (Weather):      Vis 8SM, Ceiling 6542ft. Wind 254/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 43/hr, Departures 18/hr. Holding: 13. Slot compliance: 62%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 135,
+      "prompt": "TICK 135:\n\nF1 (Radar):        27 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 6592ft. Wind 258/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 16/hr. Holding: 6. Slot compliance: 93%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 136,
+      "prompt": "TICK 136:\n\nF1 (Radar):        29 aircraft tracked. Min separation: 4.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 6459ft. Wind 267/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 91%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 16/hr. Holding: 7. Slot compliance: 92%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 137,
+      "prompt": "TICK 137:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.2NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 6314ft. Wind 259/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 15/hr. Holding: 7. Slot compliance: 89%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 138,
+      "prompt": "TICK 138:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 4.4NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 6491ft. Wind 267/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 12%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 17/hr. Holding: 7. Slot compliance: 92%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 139,
+      "prompt": "TICK 139:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 4.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 10SM, Ceiling 6336ft. Wind 268/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 17/hr. Holding: 12. Slot compliance: 59%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 140,
+      "prompt": "TICK 140:\n\nF1 (Radar):        28 aircraft tracked. Min separation: 2.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 9SM, Ceiling 6238ft. Wind 271/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 18/hr. Holding: 8. Slot compliance: 97%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "systems"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 141,
+      "prompt": "TICK 141:\n\nF1 (Radar):        30 aircraft tracked. Min separation: 1.8NM. Conflict alerts: 5.\nF2 (Weather):      Vis 9SM, Ceiling 6257ft. Wind 273/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 84%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 44/hr, Departures 16/hr. Holding: 14. Slot compliance: 59%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow",
+          "radar"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 142,
+      "prompt": "TICK 142:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 2.1NM. Conflict alerts: 3.\nF2 (Weather):      Vis 10SM, Ceiling 6229ft. Wind 267/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 15/hr. Holding: 8. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar"
+        ],
+        "correct_action": "increase_separation",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 143,
+      "prompt": "TICK 143:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 0.\nF2 (Weather):      Vis 11SM, Ceiling 6039ft. Wind 260/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 2. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 15/hr. Holding: 9. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 144,
+      "prompt": "TICK 144:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 0SM, Ceiling 499ft. Wind 256/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (icy, braking nil)\nF4 (Comms):        Congestion 87%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 13/hr. Holding: 10. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "runway",
+          "comms"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 145,
+      "prompt": "TICK 145:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 0.\nF2 (Weather):      Vis 10SM, Ceiling 5829ft. Wind 255/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (snow, braking nil), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 49/hr, Departures 12/hr. Holding: 13. Slot compliance: 63%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "traffic_flow"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "issue_holding",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 146,
+      "prompt": "TICK 146:\n\nF1 (Radar):        32 aircraft tracked. Min separation: 4.8NM. Conflict alerts: 0.\nF2 (Weather):      Vis 2SM, Ceiling 395ft. Wind 263/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 10/hr. Holding: 10. Slot compliance: 96%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 147,
+      "prompt": "TICK 147:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 0.\nF2 (Weather):      Vis 10SM, Ceiling 5749ft. Wind 256/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 88%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 12/hr. Holding: 9. Slot compliance: 93%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "systems"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 148,
+      "prompt": "TICK 148:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 0.\nF2 (Weather):      Vis 2SM, Ceiling 387ft. Wind 260/44kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 38/hr, Departures 10/hr. Holding: 7. Slot compliance: 59%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "weather"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 149,
+      "prompt": "TICK 149:\n\nF1 (Radar):        31 aircraft tracked. Min separation: 5.4NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 5675ft. Wind 269/24kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 19/hr, Departures 10/hr. Holding: 8. Slot compliance: 96%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 150,
+      "prompt": "TICK 150:\n\nF1 (Radar):        32 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 1.\nF2 (Weather):      Vis 8SM, Ceiling 5571ft. Wind 271/22kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 93%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 12/hr. Holding: 7. Slot compliance: 99%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 151,
+      "prompt": "TICK 151:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 1.\nF2 (Weather):      Vis 9SM, Ceiling 5667ft. Wind 265/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 14/hr. Holding: 7. Slot compliance: 98%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 152,
+      "prompt": "TICK 152:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 2.\nF2 (Weather):      Vis 10SM, Ceiling 5578ft. Wind 261/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 12%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 16/hr. Holding: 7. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 153,
+      "prompt": "TICK 153:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.9NM. Conflict alerts: 2.\nF2 (Weather):      Vis 9SM, Ceiling 5645ft. Wind 251/18kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 15/hr. Holding: 6. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 154,
+      "prompt": "TICK 154:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 6.0NM. Conflict alerts: 3.\nF2 (Weather):      Vis 9SM, Ceiling 5566ft. Wind 250/20kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 15/hr. Holding: 6. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 155,
+      "prompt": "TICK 155:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 3.\nF2 (Weather):      Vis 9SM, Ceiling 5595ft. Wind 242/19kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 90%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 17/hr. Holding: 6. Slot compliance: 98%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems",
+          "comms"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 156,
+      "prompt": "TICK 156:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 3.\nF2 (Weather):      Vis 0SM, Ceiling 485ft. Wind 241/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 19/hr. Holding: 5. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 157,
+      "prompt": "TICK 157:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 2.\nF2 (Weather):      Vis 9SM, Ceiling 5563ft. Wind 245/21kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 12%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 18/hr, Departures 17/hr. Holding: 6. Slot compliance: 99%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 158,
+      "prompt": "TICK 158:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 1.\nF2 (Weather):      Vis 1SM, Ceiling 385ft. Wind 252/37kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 93%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 45/hr, Departures 19/hr. Holding: 12. Slot compliance: 63%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "weather",
+          "comms",
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "issue_weather_advisory",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 159,
+      "prompt": "TICK 159:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 9SM, Ceiling 5561ft. Wind 244/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 50/hr, Departures 19/hr. Holding: 14. Slot compliance: 59%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 160,
+      "prompt": "TICK 160:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.6NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 5644ft. Wind 238/27kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 81%. Readback errors: 8. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 18/hr. Holding: 7. Slot compliance: 100%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 161,
+      "prompt": "TICK 161:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 5787ft. Wind 236/25kt (steady). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 50/hr, Departures 16/hr. Holding: 11. Slot compliance: 63%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 162,
+      "prompt": "TICK 162:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 1.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 2SM, Ceiling 138ft. Wind 234/26kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 40/hr, Departures 16/hr. Holding: 14. Slot compliance: 56%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "traffic_flow",
+          "weather"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 163,
+      "prompt": "TICK 163:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 1.\nF2 (Weather):      Vis 8SM, Ceiling 5958ft. Wind 230/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (icy, braking poor)\nF4 (Comms):        Congestion 11%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 45/hr, Departures 17/hr. Holding: 8. Slot compliance: 55%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway",
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "close_runway",
+          "issue_holding",
+          "reduce_arrival_rate",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 164,
+      "prompt": "TICK 164:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 0.\nF2 (Weather):      Vis 7SM, Ceiling 6147ft. Wind 227/29kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 17/hr, Departures 18/hr. Holding: 9. Slot compliance: 97%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 165,
+      "prompt": "TICK 165:\n\nF1 (Radar):        38 aircraft tracked. Min separation: 5.6NM. Conflict alerts: 0.\nF2 (Weather):      Vis 7SM, Ceiling 6247ft. Wind 233/27kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 39/hr, Departures 19/hr. Holding: 9. Slot compliance: 63%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 166,
+      "prompt": "TICK 166:\n\nF1 (Radar):        38 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 0.\nF2 (Weather):      Vis 8SM, Ceiling 6292ft. Wind 229/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 21/hr. Holding: 8. Slot compliance: 96%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 167,
+      "prompt": "TICK 167:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 0.\nF2 (Weather):      Vis 7SM, Ceiling 6202ft. Wind 238/29kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 46/hr, Departures 20/hr. Holding: 12. Slot compliance: 54%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 168,
+      "prompt": "TICK 168:\n\nF1 (Radar):        39 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 1.\nF2 (Weather):      Vis 8SM, Ceiling 6021ft. Wind 244/31kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 22/hr. Holding: 9. Slot compliance: 93%.\nF6 (Systems):      Radar: DEGRADED. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 169,
+      "prompt": "TICK 169:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 5.6NM. Conflict alerts: 1.\nF2 (Weather):      Vis 8SM, Ceiling 6065ft. Wind 236/30kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 90%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 43/hr, Departures 24/hr. Holding: 7. Slot compliance: 54%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 170,
+      "prompt": "TICK 170:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 2.\nF2 (Weather):      Vis 8SM, Ceiling 6154ft. Wind 245/30kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 12%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 50/hr, Departures 24/hr. Holding: 8. Slot compliance: 53%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 171,
+      "prompt": "TICK 171:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 5.4NM. Conflict alerts: 2.\nF2 (Weather):      Vis 9SM, Ceiling 6268ft. Wind 240/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 25/hr. Holding: 8. Slot compliance: 90%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 172,
+      "prompt": "TICK 172:\n\nF1 (Radar):        39 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 2.\nF2 (Weather):      Vis 8SM, Ceiling 6171ft. Wind 239/30kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 17%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 49/hr, Departures 25/hr. Holding: 7. Slot compliance: 52%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "systems"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 173,
+      "prompt": "TICK 173:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 2.\nF2 (Weather):      Vis 8SM, Ceiling 6112ft. Wind 248/29kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 27/hr. Holding: 7. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 174,
+      "prompt": "TICK 174:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 6.0NM. Conflict alerts: 3.\nF2 (Weather):      Vis 8SM, Ceiling 6306ft. Wind 248/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 15%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 27/hr. Holding: 6. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 175,
+      "prompt": "TICK 175:\n\nF1 (Radar):        39 aircraft tracked. Min separation: 5.9NM. Conflict alerts: 3.\nF2 (Weather):      Vis 9SM, Ceiling 6489ft. Wind 240/28kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 26/hr. Holding: 7. Slot compliance: 95%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 176,
+      "prompt": "TICK 176:\n\nF1 (Radar):        37 aircraft tracked. Min separation: 6.2NM. Conflict alerts: 3.\nF2 (Weather):      Vis 1SM, Ceiling 376ft. Wind 231/41kt (gusting). Turbulence: severe.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (wet, braking fair), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 14%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 38/hr, Departures 28/hr. Holding: 14. Slot compliance: 63%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow",
+          "weather"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 177,
+      "prompt": "TICK 177:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 6.2NM. Conflict alerts: 2.\nF2 (Weather):      Vis 11SM, Ceiling 6357ft. Wind 231/31kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 28/hr. Holding: 7. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 178,
+      "prompt": "TICK 178:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 6.4NM. Conflict alerts: 2.\nF2 (Weather):      Vis 11SM, Ceiling 6249ft. Wind 225/33kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 1. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 29/hr. Holding: 8. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 179,
+      "prompt": "TICK 179:\n\nF1 (Radar):        38 aircraft tracked. Min separation: 6.4NM. Conflict alerts: 2.\nF2 (Weather):      Vis 11SM, Ceiling 6202ft. Wind 232/33kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 30/hr. Holding: 7. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 180,
+      "prompt": "TICK 180:\n\nF1 (Radar):        40 aircraft tracked. Min separation: 6.2NM. Conflict alerts: 3.\nF2 (Weather):      Vis 12SM, Ceiling 6334ft. Wind 227/35kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 12%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 31/hr. Holding: 7. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 181,
+      "prompt": "TICK 181:\n\nF1 (Radar):        38 aircraft tracked. Min separation: 5.9NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6294ft. Wind 237/35kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 11%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 33/hr. Holding: 8. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 182,
+      "prompt": "TICK 182:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 3.\nF2 (Weather):      Vis 12SM, Ceiling 6121ft. Wind 239/33kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 95%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 33/hr. Holding: 8. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 183,
+      "prompt": "TICK 183:\n\nF1 (Radar):        38 aircraft tracked. Min separation: 6.0NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 5990ft. Wind 234/35kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (dry, braking good), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 88%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 34/hr. Holding: 8. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems",
+          "comms"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 184,
+      "prompt": "TICK 184:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 6.0NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 5936ft. Wind 241/36kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 28/hr, Departures 33/hr. Holding: 7. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 185,
+      "prompt": "TICK 185:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 4.\nF2 (Weather):      Vis 13SM, Ceiling 6127ft. Wind 239/38kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 85%. Readback errors: 4. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 42/hr, Departures 32/hr. Holding: 10. Slot compliance: 54%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 186,
+      "prompt": "TICK 186:\n\nF1 (Radar):        37 aircraft tracked. Min separation: 5.8NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 6004ft. Wind 244/36kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 10%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 25/hr, Departures 32/hr. Holding: 6. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 187,
+      "prompt": "TICK 187:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.6NM. Conflict alerts: 4.\nF2 (Weather):      Vis 12SM, Ceiling 6198ft. Wind 241/37kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (wet, braking fair)\nF4 (Comms):        Congestion 13%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 38/hr, Departures 33/hr. Holding: 9. Slot compliance: 53%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 188,
+      "prompt": "TICK 188:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 5.7NM. Conflict alerts: 4.\nF2 (Weather):      Vis 11SM, Ceiling 6083ft. Wind 249/37kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 83%. Readback errors: 5. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 26/hr, Departures 31/hr. Holding: 6. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "systems"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 189,
+      "prompt": "TICK 189:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.6NM. Conflict alerts: 5.\nF2 (Weather):      Vis 12SM, Ceiling 6270ft. Wind 253/37kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 46/hr, Departures 32/hr. Holding: 8. Slot compliance: 52%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "traffic_flow"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 190,
+      "prompt": "TICK 190:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 2.1NM. Conflict alerts: 5.\nF2 (Weather):      Vis 0SM, Ceiling 166ft. Wind 257/31kt (gusting). Turbulence: moderate.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 17%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 43/hr, Departures 30/hr. Holding: 12. Slot compliance: 60%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "radar",
+          "traffic_flow",
+          "weather"
+        ],
+        "correct_action": "issue_holding",
+        "acceptable_actions": [
+          "increase_separation",
+          "issue_holding",
+          "issue_weather_advisory",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 191,
+      "prompt": "TICK 191:\n\nF1 (Radar):        33 aircraft tracked. Min separation: 5.4NM. Conflict alerts: 4.\nF2 (Weather):      Vis 11SM, Ceiling 6439ft. Wind 262/38kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 29/hr. Holding: 9. Slot compliance: 95%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 192,
+      "prompt": "TICK 192:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 12SM, Ceiling 6275ft. Wind 254/38kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 21/hr, Departures 28/hr. Holding: 9. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 193,
+      "prompt": "TICK 193:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.5NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6356ft. Wind 260/39kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 23/hr, Departures 28/hr. Holding: 9. Slot compliance: 96%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 194,
+      "prompt": "TICK 194:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.4NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6359ft. Wind 251/37kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 17%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 27/hr. Holding: 9. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: FAILED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 195,
+      "prompt": "TICK 195:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 5.2NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6457ft. Wind 248/36kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 28/hr. Holding: 9. Slot compliance: 93%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 196,
+      "prompt": "TICK 196:\n\nF1 (Radar):        34 aircraft tracked. Min separation: 5.4NM. Conflict alerts: 3.\nF2 (Weather):      Vis 11SM, Ceiling 6479ft. Wind 241/37kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (icy, braking poor)\nF4 (Comms):        Congestion 19%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 28/hr. Holding: 8. Slot compliance: 92%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "runway"
+        ],
+        "correct_action": "close_runway",
+        "acceptable_actions": [
+          "close_runway",
+          "switch_runway_config"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 197,
+      "prompt": "TICK 197:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.3NM. Conflict alerts: 3.\nF2 (Weather):      Vis 10SM, Ceiling 6346ft. Wind 233/37kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 95%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 48/hr, Departures 29/hr. Holding: 15. Slot compliance: 56%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms",
+          "traffic_flow"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": true
+      }
+    },
+    {
+      "tick_number": 198,
+      "prompt": "TICK 198:\n\nF1 (Radar):        37 aircraft tracked. Min separation: 5.1NM. Conflict alerts: 2.\nF2 (Weather):      Vis 10SM, Ceiling 6543ft. Wind 233/38kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 18%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 28/hr. Holding: 8. Slot compliance: 94%.\nF6 (Systems):      Radar: FAILED. Nav aids: DEGRADED. Backup power: ACTIVE. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "systems"
+        ],
+        "correct_action": "activate_backup_systems",
+        "acceptable_actions": [
+          "activate_backup_systems",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 199,
+      "prompt": "TICK 199:\n\nF1 (Radar):        36 aircraft tracked. Min separation: 4.9NM. Conflict alerts: 2.\nF2 (Weather):      Vis 9SM, Ceiling 6730ft. Wind 226/36kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 16%. Readback errors: 0. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 22/hr, Departures 26/hr. Holding: 8. Slot compliance: 94%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [],
+        "correct_action": "hold_steady",
+        "acceptable_actions": [
+          "hold_steady"
+        ],
+        "is_multi_factor": false
+      }
+    },
+    {
+      "tick_number": 200,
+      "prompt": "TICK 200:\n\nF1 (Radar):        35 aircraft tracked. Min separation: 5.0NM. Conflict alerts: 1.\nF2 (Weather):      Vis 9SM, Ceiling 6828ft. Wind 217/38kt (gusting). Turbulence: none.\nF3 (Runway):       09L: ACTIVE (wet, braking fair), 27R: ACTIVE (dry, braking good), 04: STANDBY (dry, braking good)\nF4 (Comms):        Congestion 87%. Readback errors: 7. ATIS age: 60min (STALE).\nF5 (Traffic Flow): Arrivals 20/hr, Departures 27/hr. Holding: 7. Slot compliance: 91%.\nF6 (Systems):      Radar: OPERATIONAL. Nav aids: DEGRADED. Backup power: STANDBY. ATIS: CURRENT.\n\nBased on ALL six factors, what action do you recommend?",
+      "ground_truth": {
+        "anomalous_factors": [
+          "comms"
+        ],
+        "correct_action": "reduce_arrival_rate",
+        "acceptable_actions": [
+          "issue_holding",
+          "reduce_arrival_rate"
+        ],
+        "is_multi_factor": false
+      }
+    }
+  ]
+}
