@@ -1,0 +1,19 @@
+# Run A: Baseline — continuous session, no intervention (Hospital)
+name: run_a_baseline_hospital
+description: >
+  Baseline run for Hospital scenario. 200-tick continuous session with no interventions,
+  no context resets, and no checklists. Measures natural FC degradation.
+
+num_ticks: 200
+seeds: [42, 137, 256, 389, 501, 617, 733, 842, 951, 1024]
+
+providers:
+  - claude
+  - gpt4o
+  - gemini
+  - llama
+
+scenario: hospital
+context_reset_interval: null
+intervention_ticks: []
+force_checklist: false
