@@ -1,22 +1,17 @@
 """LLM provider registry."""
 
+from importlib import import_module
+
 from .base import LLMProvider
-from .anthropic import AnthropicProvider
-from .openai import OpenAIProvider
-from .google import GoogleProvider
-from .together import TogetherProvider
-from .claude_cli import ClaudeCliProvider
-from .codex_cli import CodexCliProvider
-from .ollama import OllamaProvider
 
 PROVIDERS = {
-    "claude": AnthropicProvider,
-    "claude-cli": ClaudeCliProvider,
-    "codex": CodexCliProvider,
-    "gpt4o": OpenAIProvider,
-    "gemini": GoogleProvider,
-    "llama": TogetherProvider,
-    "ollama": OllamaProvider,
+    "claude": (".anthropic", "AnthropicProvider"),
+    "claude-cli": (".claude_cli", "ClaudeCliProvider"),
+    "codex": (".codex_cli", "CodexCliProvider"),
+    "gpt4o": (".openai", "OpenAIProvider"),
+    "gemini": (".google", "GoogleProvider"),
+    "llama": (".together", "TogetherProvider"),
+    "ollama": (".ollama", "OllamaProvider"),
 }
 
 
@@ -32,4 +27,7 @@ def get_provider(name: str, **kwargs) -> LLMProvider:
     """
     if name not in PROVIDERS:
         raise ValueError(f"Unknown provider: {name}. Available: {list(PROVIDERS.keys())}")
-    return PROVIDERS[name](**kwargs)
+    module_name, class_name = PROVIDERS[name]
+    module = import_module(module_name, package=__name__)
+    provider_class = getattr(module, class_name)
+    return provider_class(**kwargs)

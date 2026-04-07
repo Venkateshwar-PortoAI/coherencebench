@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Benchmark runner: feeds ticks to LLM and logs responses.
 
 FIX 3: Context budget management -- truncates oldest messages when over budget.
@@ -6,7 +8,9 @@ FIX 7: Context reset with state re-injection -- injects state summary on reset.
 
 import json
 import logging
+import time
 from pathlib import Path
+from typing import Callable
 
 from .generator import TickGenerator
 from .scenarios import get_scenario
@@ -51,6 +55,7 @@ class BenchmarkRunner:
         force_checklist: bool = False,
         context_budget_ratio: float = 0.8,
         scenario: str | BaseScenario = "power_grid",
+        progress_callback: Callable[[dict], None] | None = None,
     ):
         self.provider = provider
         self.num_ticks = num_ticks
@@ -60,12 +65,22 @@ class BenchmarkRunner:
         self.intervention_ticks = intervention_ticks or []
         self.force_checklist = force_checklist
         self.context_budget_ratio = context_budget_ratio
+        self.progress_callback = progress_callback
 
         if isinstance(scenario, str):
             self.scenario = get_scenario(scenario)
         else:
             self.scenario = scenario
         self.generator = TickGenerator(seed=seed, num_ticks=num_ticks, scenario=self.scenario)
+
+    def _emit_progress(self, event: dict) -> None:
+        if self.progress_callback is None:
+            return
+
+        try:
+            self.progress_callback(event)
+        except Exception:
+            logger.exception("Progress callback failed for event %s", event.get("event"))
 
     def _estimate_message_tokens(self, messages: list[dict], system_prompt: str) -> int:
         """FIX 3: Estimate total tokens in the conversation."""
@@ -122,10 +137,22 @@ class BenchmarkRunner:
         results_file = self.output_dir / "raw_results.jsonl"
 
         last_tick_data = None
+        self._emit_progress(
+            {
+                "event": "run_started",
+                "num_ticks": self.num_ticks,
+                "seed": self.seed,
+                "provider_name": self.provider.name(),
+                "scenario_name": type(self.scenario).__name__,
+                "results_file": str(results_file),
+            }
+        )
 
         with open(results_file, "w") as f:
             for i, tick in enumerate(ticks):
                 tick_num = tick["tick_number"]
+                cycle_index = i + 1
+                context_reset_applied = False
 
                 # FIX 7: Context reset with state re-injection
                 if (
@@ -133,6 +160,7 @@ class BenchmarkRunner:
                     and i > 0
                     and i % self.context_reset_interval == 0
                 ):
+                    context_reset_applied = True
                     if last_tick_data is not None:
                         state_summary = self.scenario.format_state_summary(
                             last_tick_data, tick_num - 1
@@ -159,9 +187,19 @@ class BenchmarkRunner:
                     else:
                         messages = []
                     self.provider.reset()
+                    self._emit_progress(
+                        {
+                            "event": "context_reset",
+                            "tick_number": tick_num,
+                            "cycle_index": cycle_index,
+                            "total_ticks": self.num_ticks,
+                            "restored_from_tick": tick_num - 1,
+                        }
+                    )
 
                 # Intervention if this tick is flagged
-                if tick_num in self.intervention_ticks:
+                intervention_applied = tick_num in self.intervention_ticks
+                if intervention_applied:
                     messages.append({"role": "user", "content": _intervention_prompt(self.scenario)})
                     n = len(self.scenario.factors)
                     messages.append({
@@ -170,6 +208,14 @@ class BenchmarkRunner:
                             f"Understood. I will analyze all {n} factors thoroughly from now on."
                         ),
                     })
+                    self._emit_progress(
+                        {
+                            "event": "intervention",
+                            "tick_number": tick_num,
+                            "cycle_index": cycle_index,
+                            "total_ticks": self.num_ticks,
+                        }
+                    )
 
                 # Format tick prompt
                 user_msg = self.scenario.format_tick(tick_num, tick["data"])
@@ -182,7 +228,9 @@ class BenchmarkRunner:
                 context_truncated = len(messages) < pre_truncate_len
 
                 # Send to LLM
+                turn_started_at = time.monotonic()
                 response = self.provider.send_turn(system_prompt, messages, user_msg)
+                duration_seconds = time.monotonic() - turn_started_at
 
                 # Append to conversation history
                 messages.append({"role": "user", "content": user_msg})
@@ -202,4 +250,29 @@ class BenchmarkRunner:
                 f.write(json.dumps(result) + "\n")
                 f.flush()
 
+                self._emit_progress(
+                    {
+                        "event": "tick_completed",
+                        "tick_number": tick_num,
+                        "cycle_index": cycle_index,
+                        "total_ticks": self.num_ticks,
+                        "response": response,
+                        "ground_truth": tick["ground_truth"],
+                        "context_truncated": context_truncated,
+                        "context_reset": context_reset_applied,
+                        "intervention": intervention_applied,
+                        "duration_seconds": duration_seconds,
+                    }
+                )
+
+        self._emit_progress(
+            {
+                "event": "run_completed",
+                "num_ticks": self.num_ticks,
+                "seed": self.seed,
+                "provider_name": self.provider.name(),
+                "scenario_name": type(self.scenario).__name__,
+                "results_file": str(results_file),
+            }
+        )
         return results
