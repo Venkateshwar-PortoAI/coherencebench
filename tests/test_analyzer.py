@@ -80,7 +80,7 @@ def test_analyzer_handles_malformed_response():
 # --- FIX 1: Behavior-based metrics ---
 
 def test_analyze_tick_computes_anomaly_detection_rate():
-    """FIX 1: Primary metric is whether agent catches anomalies per factor."""
+    """ADR measures whether agent substantively mentions anomalous factors."""
     analyzer = ResponseAnalyzer()
     ground_truth = {
         "anomalous_factors": ["load", "generation"],
@@ -93,7 +93,7 @@ def test_analyze_tick_computes_anomaly_detection_rate():
 
 
 def test_analyze_tick_fixated_misses_anomalies():
-    """FIX 1: Fixated response should miss anomalies in non-load factors."""
+    """Fixated response should miss anomalies in non-load factors."""
     analyzer = ResponseAnalyzer()
     ground_truth = {
         "anomalous_factors": ["load", "weather"],

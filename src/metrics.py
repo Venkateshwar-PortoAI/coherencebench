@@ -1,10 +1,10 @@
 """Core metrics for CoherenceBench.
 
-FIX 8: All 5 metrics implemented end-to-end:
-  FC  - Factor Coverage
-  FI  - Fixation Index
-  DA  - Decision Accuracy
-  ADR - Anomaly Detection Rate (FIX 1: behavior-based PRIMARY metric)
+5 metrics implemented end-to-end:
+  DA  - Decision Accuracy (PRIMARY — did the agent choose the right action?)
+  ADR - Anomaly Mention Rate (did the agent substantively discuss anomalous factors?)
+  FC  - Factor Coverage (format metric — did the agent mention all factors?)
+  FI  - Fixation Index (format metric — how concentrated is the agent's attention?)
   IR  - Intervention Recovery
 """
 
@@ -51,10 +51,12 @@ def anomaly_detection_rate(
     factors_substantively_mentioned: list[str],
     anomalous_factors: list[str],
 ) -> float:
-    """ADR: fraction of anomalous factors that the agent substantively analyzed.
+    """ADR (Anomaly Mention Rate): fraction of anomalous factors that the agent
+    substantively mentioned (8+ non-dismissive words under the factor heading).
 
-    FIX 1: This is the PRIMARY metric. It measures whether the agent's analysis
-    demonstrates awareness of anomalies in each factor, not just format compliance.
+    Note: this is a proxy for anomaly awareness, not a validated detection measure.
+    A model gets credit for writing substantively about the right factor, even if
+    the analysis content is wrong. Use alongside DA for a complete picture.
 
     If no anomalies exist, returns 1.0 (nothing to miss).
     """

@@ -56,7 +56,7 @@ Report the following metrics, averaged across all seeds:
 | **DA** | Decision Accuracy | Fraction of ticks where the agent chose an acceptable action |
 | **DA@40** | DA in first 40 ticks | DA restricted to ticks 1-40 |
 | **DA@last** | DA in final 40 ticks | DA restricted to ticks 161-200 |
-| **DFG** | Directional Fixation Gap | DA@40 minus DA@last (positive = degradation) |
+| **DFG** | DA Drift (First-to-last Gap) | DA@40 minus DA@last (positive = accuracy degraded) |
 | **Collapses?** | Whether DA degrades by >15pp | YES if DA@40 - DA@last > 0.15 |
 
 Optional but encouraged:
@@ -65,7 +65,7 @@ Optional but encouraged:
 |--------|-------------|
 | **FC** | Factor Coverage (fraction of 6 factors substantively analyzed) |
 | **FI** | Fixation Index (token share of the most-discussed factor) |
-| **ADR** | Anomaly Detection Rate (fraction of anomalous factors correctly identified) |
+| **ADR** | Anomaly Mention Rate (fraction of anomalous factors substantively discussed; proxy, not validated detection) |
 
 ## 5. Interpreting Results
 
@@ -74,8 +74,8 @@ Optional but encouraged:
 - **Collapses? is the headline finding.** A model that collapses (DA drops >15pp from
   start to end) is exhibiting attention collapse -- the core phenomenon CoherenceBench
   measures.
-- **DFG direction matters.** Positive DFG means the model was better early than late
-  (typical collapse pattern). Negative DFG means the model improved over time (rare).
+- **DFG direction matters.** Positive DFG means accuracy was higher early than late
+  (typical degradation pattern). Negative DFG means the model improved over time (rare).
 - **FC can mask DA.** A model can maintain FC = 1.0 (mentions all 6 factors every tick)
   while its DA collapses. This is the "invisible collapse" that CoherenceBench detects.
 

@@ -1,9 +1,8 @@
 """Parses LLM responses and extracts factor analysis + actions.
 
-FIX 1: Primary metric is behavior-based (anomaly detection per factor),
-       not format-based (word counts). Word counts are secondary diagnostics.
-FIX 6: Directional validation gate -- checks if factor coverage drops
-       MORE for factors where anomalies shifted AWAY from vs. TOWARD.
+DA (Decision Accuracy) is the primary metric -- did the agent choose a correct action?
+ADR (Anomaly Mention Rate) is a secondary proxy -- did the agent write substantively
+about anomalous factors? FC and FI are format diagnostics.
 """
 
 import logging
@@ -81,10 +80,10 @@ class TickAnalysis:
     factors_substantive: list[str]
     word_counts: dict[str, int]
     reason: str
-    # FIX 1: Behavior-based metrics (PRIMARY)
-    anomaly_detection_rate: float
+    # Primary metric
     decision_accuracy: float
-    # Format-based metrics (secondary diagnostic)
+    # Secondary metrics
+    anomaly_detection_rate: float
     factor_coverage: float
     fixation_index: float
 
@@ -168,10 +167,7 @@ class ResponseAnalyzer:
         response: str,
         ground_truth: dict,
     ) -> TickAnalysis:
-        """Full analysis of a single tick response.
-
-        FIX 1: Computes behavior-based metrics as PRIMARY.
-        """
+        """Full analysis of a single tick response."""
         parsed = self.parse_response(response)
         anomalous = ground_truth.get("anomalous_factors", [])
         correct_action = ground_truth.get("correct_action", "hold_steady")
@@ -193,8 +189,8 @@ class ResponseAnalyzer:
             factors_substantive=parsed["factors_substantive"],
             word_counts=parsed["word_counts"],
             reason=parsed["reason"],
-            anomaly_detection_rate=metrics["anomaly_detection_rate"],
             decision_accuracy=metrics["decision_accuracy"],
+            anomaly_detection_rate=metrics["anomaly_detection_rate"],
             factor_coverage=metrics["factor_coverage"],
             fixation_index=metrics["fixation_index"],
         )

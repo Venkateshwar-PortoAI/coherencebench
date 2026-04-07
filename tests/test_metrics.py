@@ -76,7 +76,7 @@ def test_decision_accuracy_whitespace():
     assert decision_accuracy("  shed_load  ", "shed_load") == 1.0
 
 
-# --- ADR: Anomaly Detection Rate (FIX 1 primary metric) ---
+# --- ADR: Anomaly Mention Rate ---
 
 def test_anomaly_detection_rate_full():
     mentioned = ["load", "weather"]

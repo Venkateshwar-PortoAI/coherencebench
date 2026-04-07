@@ -28,10 +28,10 @@ Agents maintain near-perfect format compliance throughout a run -- they keep wri
 
 **DA** = Decision Accuracy (% of ticks where the agent chose a correct action).
 **DA@40** = DA in the first 40 ticks. **DA@last** = DA in the final 40 ticks.
-**DFG** = Directional Fixation Gap (positive = fixates on early-phase factors).
+**DFG** = DA Drift, First-to-last Gap (DA@40 minus DA@last; positive = accuracy degraded over time).
 **Collapses?** = Does DA degrade by >15pp from start to end?
 
-**Baselines tell the story.** The "most-common action" baseline (always pick `deploy_battery`) achieves 54.8% DA because that action appears in many acceptable_actions lists. Random guessing gets 24.1%. Claude Haiku starts above random at 58% but collapses to 22% -- **below random baseline** -- by tick 200. GPT-5.4 stays flat at ~30%, roughly matching random. Both maintain perfect format compliance (FC = 1.00) the entire time -- the collapse is invisible without behavioral metrics.
+**Baselines tell the story.** The "most-common action" baseline (always pick `deploy_battery`) achieves 54.8% DA because that action appears in many acceptable_actions lists -- this reveals that the current scoring is too permissive, and tightening acceptable action sets is a v0.2 priority. Random guessing gets 24.1%. Claude Haiku starts above random at 58% but collapses to 22% -- **below random baseline** -- by tick 200. GPT-5.4 stays flat at ~30%, roughly matching random. Both maintain perfect format compliance (FC = 1.00) the entire time -- the collapse is invisible without behavioral metrics.
 
 **Add your model.** See [EVALUATION.md](EVALUATION.md) for the standard protocol, then submit a PR with your results.
 
@@ -210,9 +210,9 @@ Anomalies are injected on a schedule that shifts over time: early anomalies conc
 | Metric | What It Measures | Type |
 |--------|-----------------|------|
 | **FC** (Factor Coverage) | Fraction of 6 subsystems substantively analyzed | Format quality |
-| **FI** (Fixation Index) | Fraction of tokens devoted to the top subsystem | Attention balance |
-| **DA** (Decision Accuracy) | Whether the correct action was chosen (0 or 1) | Decision quality |
-| **ADR** (Anomaly Detection Rate) | Fraction of anomalous subsystems actually detected | Behavioral quality |
+| **FI** (Fixation Index) | Fraction of words devoted to the top subsystem | Attention balance |
+| **DA** (Decision Accuracy) | Whether the correct action was chosen (0 or 1) | **Primary metric** |
+| **ADR** (Anomaly Mention Rate) | Fraction of anomalous subsystems substantively discussed (proxy) | Secondary |
 | **IR** (Intervention Recovery) | Ticks before coverage drops post-intervention | Mitigation durability |
 
 **DA is the primary metric.** It measures whether the agent makes the correct decision given current conditions, not just whether it writes about all factors. A model with high FC but low DA is experiencing invisible collapse.
@@ -221,7 +221,7 @@ Anomalies are injected on a schedule that shifts over time: early anomalies conc
 
 Results are saved as JSON in `results/`. Each run produces per-tick metrics. Key things to look for:
 
-- **FC stays high while ADR drops**: The agent is writing about all subsystems but not actually detecting the anomalies in them. This is the core "coherence collapse" signal.
+- **FC stays high while DA drops**: The agent keeps writing about all subsystems but makes worse decisions. This is the core "coherence collapse" signal.
 - **FI increases over time**: The agent is devoting more and more of its response to a single subsystem, indicating attention narrowing.
 - **DA drops in late ticks**: Decision quality degrades as the anomaly distribution shifts away from where the agent learned to focus.
 - **IR is short**: Intervention reminders produce only temporary recovery before the agent reverts to its fixation pattern.
