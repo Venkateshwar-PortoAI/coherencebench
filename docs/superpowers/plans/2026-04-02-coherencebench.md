@@ -2238,7 +2238,7 @@ git commit -m "feat: benchmark configs (5 run types) and CLI scripts"
 \title{CoherenceBench: Measuring Attention Collapse \\ in Long-Running Autonomous Agents}
 
 \author{
-  Venkateshwar Jambula \\
+  Venkateshwar Reddy Jambula \\
   PranaAlpha Labs \\
   Bengaluru, India \\
   \texttt{venkateshwar.jambula@gmail.com} \\

@@ -301,7 +301,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add scenarios, providers, and 
 
 ```bibtex
 @software{coherencebench2026,
-  author       = {Venkateshwar Rao Sudarshan},
+  author       = {Venkateshwar Reddy Jambula},
   title        = {{CoherenceBench}: Measuring Attention Collapse in
                   Long-Running Autonomous Agents},
   year         = {2026},
