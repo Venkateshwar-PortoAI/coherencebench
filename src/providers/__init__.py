@@ -7,6 +7,7 @@ from .google import GoogleProvider
 from .together import TogetherProvider
 from .claude_cli import ClaudeCliProvider
 from .codex_cli import CodexCliProvider
+from .ollama import OllamaProvider
 
 PROVIDERS = {
     "claude": AnthropicProvider,
@@ -15,6 +16,7 @@ PROVIDERS = {
     "gpt4o": OpenAIProvider,
     "gemini": GoogleProvider,
     "llama": TogetherProvider,
+    "ollama": OllamaProvider,
 }
 
 
