@@ -8,7 +8,7 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
 </p>
 
-CoherenceBench measures how LLM agents degrade over extended interactions. Agents monitor 6 subsystems across 200 decisions in simulated control-room scenarios. The key finding: agents maintain perfect format compliance while their decision accuracy quietly collapses below random.
+CoherenceBench measures how LLM agents degrade over extended interactions. Agents monitor 6 subsystems across 200 decisions in simulated control-room scenarios. The key finding: agents maintain perfect format compliance while their decision accuracy collapses below random.
 
 > **Status:** Early research release (2 models evaluated). We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
 
@@ -38,21 +38,35 @@ graph LR
 
 Each tick, the agent receives sensor readings from 6 subsystems and must pick one of 10 actions. Anomalies shift across subsystems over 5 phases, creating an attention trap: agents that fixate on where problems *were* miss where problems *are now*.
 
-## Leaderboard (Power Grid Scenario)
+## Results
+
+### Leaderboard (Power Grid)
 
 | Agent | DA | DA@40 | DA@last | DFG | Collapses? |
 |-------|-----|-------|---------|-----|------------|
 | Most-common action (baseline) | 54.8% | 45.5% | 70.0% | -24.5% | NO |
-| Claude Haiku 4.5 | 33% | 58% | 22% | +3% | **YES** (-36pp) |
-| GPT-5.4 (Codex) | 28% | 30% | 30% | +1% | NO |
-| Random uniform (baseline) | 24.1% | 22.7% | 25.2% | -2.5% | NO |
-| Majority / always hold_steady (baseline) | 24.9% | 26.0% | 21.5% | +4.5% | NO |
+| Claude Haiku 4.5 | 26.0% | 30.0% | 2.5% | +27.5% | **YES** (-27pp) |
+| GPT-5.4 (Codex, 4-seed avg) | 13.6% | 15.0% | 12.5% | +2.5% | NO |
+| Majority / always hold_steady | 24.9% | 26.0% | 21.5% | +4.5% | NO |
+| Random uniform | 24.1% | 22.7% | 25.2% | -2.5% | NO |
 
-**DA** = Decision Accuracy. **DA@40** = DA in first 40 ticks. **DA@last** = DA in final 40 ticks. **DFG** = DA@40 minus DA@last (positive = degraded).
+> **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
+> **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
 
-Claude Haiku starts at 58% but collapses to 22% (below random) by tick 200. GPT-5.4 stays flat at ~30%. Both maintain perfect format compliance the entire time. The collapse is invisible without behavioral metrics.
+### Cross-Scenario Comparison
+
+| Agent | Scenario | DA | DA@40 | DA@last | DFG |
+|-------|----------|-----|-------|---------|-----|
+| Claude Haiku 4.5 | Power Grid | 26.0% | 30.0% | 2.5% | +27.5% |
+| Claude Haiku 4.5 | Air Traffic Control | 23.5% | 40.0% | 0.0% | +40.0% |
+
+Haiku collapses on both scenarios. On ATC, it fabricated a "facility permanently closed" narrative by tick 160 and stopped analyzing entirely.
+
+### Decision Accuracy Over Time
 
 ![Decision Accuracy Over Time](assets/da_over_time.png)
+
+Per-tick results are published in `results/*/analyzed_results.json`. Raw LLM responses can be regenerated with the same seed.
 
 **[Add your model](EVALUATION.md)** -- submit a PR with your results.
 
@@ -79,12 +93,14 @@ python scripts/run_single.py --config configs/run_a_baseline.yaml --provider cla
 
 4 scenarios across different domains. Each has 6 subsystems, 10 actions, and phase-shifted anomalies.
 
-| Scenario | Domain | Split | Subsystems |
-|----------|--------|-------|------------|
-| `power_grid` | Electricity grid | Development | Load, Generation, Frequency, Voltage, Weather, Reserve |
-| `hospital` | Hospital triage | Development | Vitals, Labs, Imaging, Medications, History, Capacity |
-| `air_traffic_control` | ATC tower | Development | Radar, Weather, Runway, Comms, Traffic Flow, Systems |
-| `network` | Network security SOC | **Evaluation** | Traffic, Auth, Endpoints, Firewall, Logs, Threats |
+| Scenario | Domain | Subsystems |
+|----------|--------|------------|
+| `power_grid` | Electricity grid | Load, Generation, Frequency, Voltage, Weather, Reserve |
+| `hospital` | Hospital triage | Vitals, Labs, Imaging, Medications, History, Capacity |
+| `air_traffic_control` | ATC tower | Radar, Weather, Runway, Comms, Traffic Flow, Systems |
+| `network` | Network security SOC | Traffic, Auth, Endpoints, Firewall, Logs, Threats |
+
+The first three are the **development set** (use freely). `network` is the **held-out evaluation set** (ground truth stripped, submit for server-side scoring via [EVALUATION.md](EVALUATION.md)).
 
 ```bash
 # Run a different scenario
@@ -95,12 +111,12 @@ python scripts/run_single.py --config configs/run_a_baseline.yaml --provider cla
 
 | Metric | What It Measures |
 |--------|-----------------|
-| **DA** (Decision Accuracy) | Did the agent choose a correct action? (primary metric) |
+| **DA** (Decision Accuracy) | Did the agent choose a correct action? **(primary)** |
 | **FC** (Factor Coverage) | How many of 6 subsystems were substantively analyzed? |
 | **FI** (Fixation Index) | How much attention goes to a single subsystem? |
 | **ADR** (Anomaly Mention Rate) | Did the agent discuss the anomalous subsystems? |
 
-**DA is the primary metric.** High FC + low DA = invisible collapse. The agent writes about all subsystems but picks the wrong action.
+High FC + low DA = invisible collapse. The agent writes about all subsystems but picks the wrong action.
 
 ## Experimental Conditions
 
@@ -111,11 +127,6 @@ python scripts/run_single.py --config configs/run_a_baseline.yaml --provider cla
 | C | Context Reset | Does clearing context every 40 ticks help? |
 | D | Checklist | Does a mandatory checklist prevent collapse? |
 | E | Cross-Model | Same test across all providers |
-
-## Train/Eval Split
-
-- **`power_grid`**, **`hospital`**, **`air_traffic_control`** are the public development set. Use freely.
-- **`network`** is the held-out evaluation set. Ground truth is stripped. Submit results for server-side scoring via [EVALUATION.md](EVALUATION.md).
 
 ## Supported Models
 
@@ -136,9 +147,9 @@ Implement `LLMProvider` in `src/providers/base.py`, register in `src/providers/_
 ```
 coherencebench/
   configs/           # YAML run configurations (A-E)
-  data/              # Pre-generated tick data (JSON, deterministic)
-  results/           # Benchmark output (gitignored)
-  scripts/           # CLI entry points
+  data/              # Pre-generated tick data (deterministic, JSON)
+  results/           # Per-tick analyzed metrics (JSON, tracked in git)
+  scripts/           # CLI: run_single.py, run_benchmark.py, compute_baselines.py
   src/
     analyzer.py      # Response parsing + metrics
     generator.py     # Tick data with planted anomalies
