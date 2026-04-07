@@ -84,7 +84,6 @@ class AirTrafficControlScenario(BaseScenario):
     def action_aliases(self) -> dict[str, str]:
         return {
             "separate": "increase_separation",
-            "hold": "issue_holding",
             "holding": "issue_holding",
             "divert": "divert_traffic",
             "close": "close_runway",
@@ -416,7 +415,6 @@ class AirTrafficControlScenario(BaseScenario):
         elif factor == "systems":
             component = rng.choice(["primary_radar", "nav_aids"])
             data["systems"][component] = "failed"
-            data["systems"]["backup_power"] = "active"
         return data
 
     def format_tick_data(self, state: dict) -> dict:
@@ -437,6 +435,9 @@ class AirTrafficControlScenario(BaseScenario):
             atis_status = "aging"
         else:
             atis_status = "current"
+
+        # Derive atis_broadcast from age to avoid contradictory state
+        atis_broadcast = "stale" if atis_age > 30 else state["systems"]["atis_broadcast"]
 
         return {
             "radar": {
@@ -473,6 +474,6 @@ class AirTrafficControlScenario(BaseScenario):
                 "primary_radar": state["systems"]["primary_radar"],
                 "nav_aids": state["systems"]["nav_aids"],
                 "backup_power": state["systems"]["backup_power"],
-                "atis_broadcast": state["systems"]["atis_broadcast"],
+                "atis_broadcast": atis_broadcast,
             },
         }

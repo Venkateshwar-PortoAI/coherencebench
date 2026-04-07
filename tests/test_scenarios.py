@@ -279,6 +279,9 @@ class TestAirTrafficControlEdgeCases:
                     or data["systems"]["nav_aids"] == "failed"
                 )
                 assert has_failed
+                # backup_power should NOT be set to active by the anomaly
+                # (the correct action is to activate it, so it should still be standby)
+                assert data["systems"]["backup_power"] != "active"
 
     def test_action_aliases_resolve_correctly(self):
         """Per-scenario aliases resolve to correct actions in the analyzer."""
@@ -290,8 +293,8 @@ class TestAirTrafficControlEdgeCases:
         assert analyzer._alias_map.get("holding") == "issue_holding"
         assert analyzer._alias_map.get("ground_stop") == "declare_ground_stop"
 
-        # Global aliases that match this scenario's actions should also work
-        assert analyzer._alias_map.get("hold") == "issue_holding"
+        # Scenario-specific alias should work
+        assert analyzer._alias_map.get("backup") == "activate_backup_systems"
 
     def test_directional_validation_uses_phase_weights(self):
         """directional_validation derives early/late factors from phase weights,
