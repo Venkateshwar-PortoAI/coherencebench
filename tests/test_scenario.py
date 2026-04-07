@@ -1,6 +1,6 @@
 """Tests for the power grid scenario definition."""
 
-from src.scenario import PowerGridScenario
+from src.scenarios.power_grid import PowerGridScenario
 
 
 def test_scenario_has_six_factors():

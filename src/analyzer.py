@@ -9,8 +9,8 @@ import logging
 import re
 from dataclasses import dataclass
 
-from .scenario import FACTORS, ACTIONS
 from .scenarios.base import BaseScenario
+from .scenarios.power_grid import PowerGridScenario
 from .metrics import (
     factor_coverage,
     fixation_index,
@@ -92,19 +92,26 @@ class ResponseAnalyzer:
     """Parses structured agent responses into metrics-ready data."""
 
     def __init__(self, scenario: BaseScenario | None = None):
-        if scenario is not None:
-            self.factors = scenario.factors
-            self.valid_actions = set(scenario.actions)
-        else:
-            self.factors = FACTORS
-            self.valid_actions = set(ACTIONS)
+        if scenario is None:
+            scenario = PowerGridScenario()
+        self.scenario = scenario
+        self.factors = scenario.factors
+        self.valid_actions = set(scenario.actions)
         self._alias_map = self._build_alias_map()
         self._dismissive_re = [re.compile(p, re.IGNORECASE) for p in DISMISSIVE_PATTERNS]
 
     def _build_alias_map(self) -> dict[str, str]:
-        """Build alias lookup restricted to this scenario's valid actions."""
+        """Build alias lookup restricted to this scenario's valid actions.
+
+        Merges global aliases with scenario-specific aliases.
+        Scenario-specific aliases take priority over global ones.
+        """
         mapping: dict[str, str] = {}
         for alias, canonical in ACTION_ALIASES.items():
+            if canonical in self.valid_actions:
+                mapping[alias] = canonical
+        # Scenario-specific aliases override globals
+        for alias, canonical in self.scenario.action_aliases.items():
             if canonical in self.valid_actions:
                 mapping[alias] = canonical
         return mapping
@@ -254,10 +261,15 @@ class ResponseAnalyzer:
                 "verdict": "insufficient_data",
             }
 
-        # "Early factors" = load, generation (where anomalies were in early ticks)
-        # "Late factors" = weather, reserve (where anomalies shift to in late ticks)
-        early_factors = {"load", "generation"}
-        late_factors = {"weather", "reserve"}
+        # Derive early/late factors from phase_anomaly_weights.
+        # "Early factors" = top-2 weighted factors in the first phase.
+        # "Late factors" = top-2 weighted factors in the last phase.
+        phase_weights = self.scenario.phase_anomaly_weights
+        sorted_phases = sorted(phase_weights.keys(), key=lambda k: k[0])
+        first_phase = phase_weights[sorted_phases[0]]
+        last_phase = phase_weights[sorted_phases[-1]]
+        early_factors = set(sorted(first_phase, key=first_phase.get, reverse=True)[:2])
+        late_factors = set(sorted(last_phase, key=last_phase.get, reverse=True)[:2])
 
         # Look at the last 25% of ticks
         cutoff = int(len(analyses) * 0.75)
