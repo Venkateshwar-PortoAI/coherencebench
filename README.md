@@ -36,28 +36,6 @@ graph LR
     style M fill:#9f9,stroke:#333
 ```
 
-```mermaid
-graph TB
-    subgraph Early["Early Ticks (1-40)"]
-        E1["Anomalies in Subsystems 1-2<br/>Agent learns these patterns"]
-    end
-
-    subgraph Late["Late Ticks (160-200)"]
-        L1["Anomalies shift to Subsystems 5-6<br/>Agent still fixates on 1-2"]
-    end
-
-    subgraph Result["The Coherence Collapse"]
-        R1["Format Compliance: 100% ✓<br/>(still writes about all 6)"]
-        R2["Decision Accuracy: ▼ below random<br/>(picks wrong actions)"]
-    end
-
-    Early --> Late
-    Late --> Result
-
-    style R1 fill:#9f9,stroke:#333
-    style R2 fill:#f99,stroke:#333
-```
-
 ## Key Finding
 
 Agents maintain near-perfect format compliance throughout a run -- they keep writing structured responses that mention all required subsystems -- while their actual decision accuracy quietly collapses. An agent can look like it is performing well (high format scores) while missing critical anomalies that shift to new subsystems over time. CoherenceBench separates "looks correct" from "is correct" by measuring behavioral metrics independently from format metrics.
