@@ -370,8 +370,11 @@ class AirTrafficControlScenario(BaseScenario):
         # Comms
         s["comms"]["congestion_pct"] = max(10, min(95, s["comms"]["congestion_pct"] + rng.randint(-3, 3)))
         s["comms"]["readback_errors"] = max(0, min(10, s["comms"]["readback_errors"] + rng.choice([-1, 0, 0, 0, 1])))
-        # ATIS age with noise (prevents deterministic clock)
-        s["comms"]["atis_age_min"] = max(0, min(60, s["comms"]["atis_age_min"] + rng.randint(0, 3)))
+        # ATIS age: usually increases, occasionally resets (new broadcast issued)
+        if rng.random() < 0.1:
+            s["comms"]["atis_age_min"] = rng.randint(0, 5)  # fresh ATIS broadcast
+        else:
+            s["comms"]["atis_age_min"] = max(0, min(60, s["comms"]["atis_age_min"] + rng.randint(0, 3)))
 
         # Traffic flow
         s["traffic_flow"]["arrival_rate"] = max(5, min(50, s["traffic_flow"]["arrival_rate"] + rng.randint(-2, 2)))

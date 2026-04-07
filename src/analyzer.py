@@ -234,11 +234,12 @@ class ResponseAnalyzer:
         return intervention_recovery(fc_values, idx)
 
     def directional_validation(self, analyses: list[TickAnalysis]) -> dict:
-        """FIX 6: Directional validation gate for Phase 1 demonstrator.
+        """Directional validation gate.
 
-        Checks whether factor coverage drops MORE for factors where anomalies
-        shifted AWAY from (load/generation in late ticks) than factors where
-        anomalies shifted TOWARD (weather/reserve in late ticks).
+        Derives early/late factors from the scenario's phase_anomaly_weights
+        (top-2 weighted factors in first vs last phase). Checks whether factor
+        coverage drops MORE for early-phase factors than late-phase factors
+        in the final 25% of ticks.
 
         Uniform drop = laziness (model just gets worse overall).
         Directional drop = real fixation (model fixates on early-phase factors).
@@ -246,9 +247,9 @@ class ResponseAnalyzer:
         Returns:
             {
                 "is_directional": bool,
-                "early_factor_late_coverage": float,  # FC for load/gen in late ticks
-                "late_factor_late_coverage": float,    # FC for weather/reserve in late ticks
-                "coverage_gap": float,                 # difference (should be positive for fixation)
+                "early_factor_late_coverage": float,
+                "late_factor_late_coverage": float,
+                "coverage_gap": float,
                 "verdict": str,
             }
         """
