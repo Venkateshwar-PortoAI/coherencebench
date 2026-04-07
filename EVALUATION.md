@@ -12,7 +12,8 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
 cp .env.example .env
-# Add your API keys (Anthropic, OpenAI, Google, Together -- whichever you need)
+# Add your API keys (Anthropic, OpenAI, Google, Together -- whichever you need).
+# The benchmark scripts load `.env` automatically.
 ```
 
 ## 2. Standard Run Configuration

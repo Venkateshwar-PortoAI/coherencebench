@@ -17,9 +17,11 @@ from collections import Counter
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+load_dotenv()
 
 from src.providers import get_provider
 from src.runner import BenchmarkRunner

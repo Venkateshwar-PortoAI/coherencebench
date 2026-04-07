@@ -8,9 +8,9 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
 </p>
 
-CoherenceBench measures how LLM agents degrade over extended interactions. Agents monitor 6 subsystems across 200 decisions in simulated control-room scenarios. The key finding: agents maintain perfect format compliance while their decision accuracy collapses below random.
+CoherenceBench is a benchmark for sustained multi-factor decision coherence in long-running agent loops. A model monitors 6 subsystems across 200 sequential decisions in simulated control-room scenarios, while the benchmark measures whether decision quality degrades as anomalies shift across factors over time.
 
-> **Status:** Early research release (2 models evaluated). We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
+> **Status:** Early research release with preliminary reference runs. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
 
 ## How It Works
 
@@ -36,11 +36,13 @@ graph LR
     style M fill:#9f9,stroke:#333
 ```
 
-Each tick, the agent receives sensor readings from 6 subsystems and must pick one of 10 actions. Anomalies shift across subsystems over 5 phases, creating an attention trap: agents that fixate on where problems *were* miss where problems *are now*.
+Each tick, the agent receives sensor readings from 6 subsystems and must pick one of 10 actions. Anomalies shift across subsystems over 5 phases, creating an attention trap: models that stay fluent but stop tracking the right factors can still look coherent while choosing worse actions.
 
 ## Results
 
-### Leaderboard (Power Grid)
+These are early reference results, not a final leaderboard. The benchmark is designed so that models can preserve fluent, well-structured output while their decision quality still degrades over long horizons.
+
+### Reference Results (Power Grid)
 
 | Agent | DA | DA@40 | DA@last | DFG | Collapses? |
 |-------|-----|-------|---------|-----|------------|
@@ -60,13 +62,13 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 | Claude Haiku 4.5 | Power Grid | 26.0% | 30.0% | 2.5% | +27.5% |
 | Claude Haiku 4.5 | Air Traffic Control | 23.5% | 40.0% | 0.0% | +40.0% |
 
-Haiku collapses on both scenarios. On ATC, it fabricated a "facility permanently closed" narrative by tick 160 and stopped analyzing entirely.
+In these reference runs, Haiku degraded on both scenarios. On ATC, it fabricated a "facility permanently closed" narrative by tick 160 and stopped analyzing entirely.
 
 ### Decision Accuracy Over Time
 
 ![Decision Accuracy Over Time](assets/da_over_time.png)
 
-Per-tick results are published in `results/*/analyzed_results.json`. Raw LLM responses can be regenerated with the same seed.
+Per-run outputs are written to `results/*/`, including `summary.json`, `failure_cases.jsonl`, `raw_results.jsonl`, and `analyzed_results.json`.
 
 **[Add your model](EVALUATION.md)** -- submit a PR with your results.
 
@@ -80,14 +82,93 @@ pip install -e ".[dev]"
 
 # Set up API keys
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your API keys (loaded automatically by the scripts)
 
 # Estimate cost before running
 python scripts/run_single.py --config configs/run_a_baseline.yaml --provider claude --seed 42 --dry-run
 
-# Run the benchmark
+# Run one benchmark seed
 python scripts/run_single.py --config configs/run_a_baseline.yaml --provider claude --seed 42
 ```
+
+That single command is the main onboarding flow:
+
+1. Run one seed.
+2. Inspect `summary.json` for the scorecard.
+3. Inspect `failure_cases.jsonl` for concrete mistakes.
+4. Run more seeds or more providers if you want stable comparisons.
+
+### Typical Usage
+
+Run one seed for a quick inspection:
+
+```bash
+python scripts/run_single.py \
+  --config configs/run_a_baseline.yaml \
+  --provider codex \
+  --seed 42
+```
+
+Run 5 seeds for one provider:
+
+```bash
+for seed in 42 123 456 789 1001; do
+  python scripts/run_single.py \
+    --config configs/run_a_baseline.yaml \
+    --provider codex \
+    --seed "$seed"
+done
+```
+
+Run a batch benchmark across selected providers:
+
+```bash
+python scripts/run_benchmark.py \
+  --configs configs/run_a_baseline.yaml \
+  --providers codex claude
+```
+
+Override a specific model string for one provider:
+
+```bash
+python scripts/run_single.py \
+  --config configs/run_a_baseline.yaml \
+  --provider gpt4o \
+  --model gpt-5 \
+  --seed 42
+```
+
+## Outputs
+
+Each run writes results to:
+
+```text
+results/<config>/<provider>/seed_<N>/
+```
+
+Key artifacts:
+
+| File | Purpose |
+|------|---------|
+| `summary.json` | Compact scorecard for the run |
+| `failure_cases.jsonl` | Ticks where the model missed, partially covered, or otherwise failed |
+| `raw_results.jsonl` | Raw per-tick model responses and ground truth references |
+| `analyzed_results.json` | Full per-tick analysis plus aggregate metrics |
+
+The main public-facing report is `summary.json`. The main debugging artifact is `failure_cases.jsonl`.
+
+## What This Benchmark Measures
+
+CoherenceBench is not a general reasoning benchmark. It is a controlled benchmark for one specific failure mode:
+
+- can a model sustain correct multi-factor decisions over a long sequential run?
+
+The benchmark separates:
+
+- **Outcome quality** via `DA`, `DA@40`, `DA@last`, and `DFG`
+- **Behavior diagnostics** via `FC`, `FI`, and `ADR`
+
+That distinction matters because a model can preserve fluent, structured analysis while still choosing the wrong action.
 
 ## Scenarios
 
@@ -100,7 +181,7 @@ python scripts/run_single.py --config configs/run_a_baseline.yaml --provider cla
 | `air_traffic_control` | ATC tower | Radar, Weather, Runway, Comms, Traffic Flow, Systems |
 | `network` | Network security SOC | Traffic, Auth, Endpoints, Firewall, Logs, Threats |
 
-The first three are the **development set** (use freely). `network` is the **held-out evaluation set** (ground truth stripped, submit for server-side scoring via [EVALUATION.md](EVALUATION.md)).
+The first three are the main public scenarios. `network` is packaged separately under `data/eval/network/` with held-out ground truth and should be treated as an evaluation-only scenario unless you are extending the scoring flow yourself.
 
 ```bash
 # Run a different scenario
@@ -118,6 +199,16 @@ python scripts/run_single.py --config configs/run_a_baseline.yaml --provider cla
 
 High FC + low DA = invisible collapse. The agent writes about all subsystems but picks the wrong action.
 
+For public reporting, the headline metrics are:
+
+| Metric | Meaning |
+|--------|---------|
+| **DA** | Overall decision accuracy |
+| **DA@40** | Accuracy in the first 40 ticks |
+| **DA@last** | Accuracy in the final 40 ticks |
+| **DFG** | `DA@40 - DA@last` |
+| **Collapses?** | Whether `DFG > 0.15` |
+
 ## Experimental Conditions
 
 | Run | Condition | What It Tests |
@@ -130,13 +221,14 @@ High FC + low DA = invisible collapse. The agent writes about all subsystems but
 
 ## Supported Models
 
-| Provider | Model | Via |
-|----------|-------|----|
-| **Claude** | Haiku 4.5 | Anthropic API |
-| **GPT-4o** | GPT-4o | OpenAI API |
-| **Gemini** | 1.5 Pro | Google AI API |
-| **Llama** | 3.1 405B | Together API |
-| **Claude CLI** | Sonnet 4 | Claude Code CLI |
+| Provider Flag | Default Model | Via |
+|---------------|---------------|-----|
+| `claude` | `claude-haiku-4-5-20251001` | Anthropic API |
+| `gpt4o` | `gpt-4o` | OpenAI API |
+| `gemini` | `gemini-2.0-flash` | Google GenAI API |
+| `llama` | `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` | Together API |
+| `claude-cli` | `sonnet` | Claude Code CLI |
+| `codex` | `gpt-5.4` | Codex CLI |
 
 ### Adding Your Own Model
 
@@ -148,7 +240,7 @@ Implement `LLMProvider` in `src/providers/base.py`, register in `src/providers/_
 coherencebench/
   configs/           # YAML run configurations (A-E)
   data/              # Pre-generated tick data (deterministic, JSON)
-  results/           # Per-tick analyzed metrics (JSON, tracked in git)
+  results/           # Run outputs and scorecards
   scripts/           # CLI: run_single.py, run_benchmark.py, compute_baselines.py
   src/
     analyzer.py      # Response parsing + metrics
@@ -158,12 +250,13 @@ coherencebench/
     visualizer.py    # Plotting
     providers/       # LLM API adapters
     scenarios/       # Scenario definitions (base + 4 domains)
-  tests/             # 94 tests
+  tests/             # Test suite
 ```
 
 ## Limitations
 
-- **Single-turn decisions.** No multi-step planning or stateful reasoning across ticks.
+- **Controlled session loop.** The benchmark primarily measures foundation-model behavior inside this harness, not arbitrary external agent stacks.
+- **Single-turn decisions.** No multi-step planning or tool-using sub-policies within a tick.
 - **Synthetic environments.** Simplified simulations, not real-world monitoring.
 - **Binary scoring.** No partial credit for reasonable but non-matching actions.
 - **Limited model coverage.** 2 models so far. Community submissions welcome.

@@ -22,6 +22,7 @@ import time
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 logging.basicConfig(
     level=logging.INFO,
@@ -32,6 +33,7 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 logging.getLogger("httpcore").setLevel(logging.WARNING)
 logging.getLogger("anthropic").setLevel(logging.WARNING)
 logging.getLogger("anthropic._base_client").setLevel(logging.WARNING)
+load_dotenv()
 
 DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent.parent / "configs"
 RESULTS_DIR = Path(__file__).resolve().parent.parent / "results"
