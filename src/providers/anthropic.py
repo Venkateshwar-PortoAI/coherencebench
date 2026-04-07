@@ -45,11 +45,19 @@ class AnthropicProvider(LLMProvider):
     def name(self) -> str:
         return f"Claude ({self.model})"
 
-    def _refresh_token(self) -> None:
-        """Re-fetch OAuth token from keychain if auth fails."""
+    def _refresh_token(self) -> bool:
+        """Re-fetch OAuth token from keychain if auth fails.
+
+        Returns True if a new token was found, False otherwise.
+        Waits briefly before fetching to allow token rotation to complete.
+        """
+        import time
+        time.sleep(2)
         token = _get_claude_code_token()
         if token:
             self.client = anthropic.Anthropic(api_key=token)
+            return True
+        return False
 
     @retry(
         stop=stop_after_attempt(3),
@@ -68,14 +76,22 @@ class AnthropicProvider(LLMProvider):
             )
             return response.content[0].text
         except anthropic.AuthenticationError:
-            self._refresh_token()
-            response = self.client.messages.create(
-                model=self.model,
-                max_tokens=1024,
-                system=system_prompt,
-                messages=all_messages,
-            )
-            return response.content[0].text
+            # Token rotated. Try refreshing up to 3 times with increasing waits.
+            for attempt in range(3):
+                if self._refresh_token():
+                    try:
+                        response = self.client.messages.create(
+                            model=self.model,
+                            max_tokens=1024,
+                            system=system_prompt,
+                            messages=all_messages,
+                        )
+                        return response.content[0].text
+                    except anthropic.AuthenticationError:
+                        import time
+                        time.sleep(5 * (attempt + 1))
+                        continue
+            raise
 
     def reset(self) -> None:
         pass

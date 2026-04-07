@@ -82,6 +82,15 @@ class BaseScenario(ABC):
         ...
 
     @property
+    def action_aliases(self) -> dict[str, str]:
+        """Scenario-specific action aliases for the analyzer.
+
+        Maps shorthand strings to canonical action names for this scenario.
+        Merged with global aliases at runtime; scenario-specific takes priority.
+        """
+        return {}
+
+    @property
     def default_action(self) -> str:
         """The action to take when no anomaly is present (e.g. 'hold_steady')."""
         # Subclasses may override; default heuristic picks a noop-style action
