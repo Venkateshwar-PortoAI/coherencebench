@@ -12,6 +12,8 @@ PROVIDERS = {
     "gemini": (".google", "GoogleProvider"),
     "llama": (".together", "TogetherProvider"),
     "ollama": (".ollama", "OllamaProvider"),
+    "openrouter": (".openrouter", "OpenRouterProvider"),
+    "groq": (".groq", "GroqProvider"),
 }
 
 
