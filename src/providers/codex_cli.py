@@ -32,11 +32,25 @@ class CodexCliProvider(LLMProvider):
     def send_turn(self, system_prompt: str, messages: list[dict], user_message: str) -> str:
         self._turn_count += 1
 
-        # Build full prompt with conversation history
+        # Build prompt: system instructions + last few turns (not full history)
+        # to stay within CLI argument size limits (~250KB on macOS).
+        # The runner handles context truncation, but we further limit here
+        # to keep the CLI argument safe.
+        MAX_HISTORY_CHARS = 80_000
         parts = [
             f"SYSTEM INSTRUCTIONS:\n{system_prompt}\n\n---\n",
         ]
-        for msg in messages:
+        history_chars = 0
+        kept_messages = []
+        for msg in reversed(messages):
+            msg_len = len(msg["content"])
+            if history_chars + msg_len > MAX_HISTORY_CHARS:
+                break
+            kept_messages.append(msg)
+            history_chars += msg_len
+        kept_messages.reverse()
+
+        for msg in kept_messages:
             role = msg["role"].upper()
             parts.append(f"{role}: {msg['content']}\n")
         parts.append(f"USER: {user_message}")
