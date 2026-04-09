@@ -6,7 +6,9 @@ import uuid
 from .base import LLMProvider
 
 
-CLAUDE_BIN = "/Users/gokukilluavegeta/.local/bin/claude"
+import shutil
+
+CLAUDE_BIN = shutil.which("claude") or "claude"
 
 
 class ClaudeCliProvider(LLMProvider):

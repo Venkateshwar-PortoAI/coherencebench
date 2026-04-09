@@ -2,6 +2,7 @@
 
 import subprocess
 import re
+from pathlib import Path
 
 from .base import LLMProvider
 
@@ -55,7 +56,7 @@ class CodexCliProvider(LLMProvider):
             capture_output=True,
             text=True,
             timeout=120,
-            cwd="/Users/gokukilluavegeta/GitHub/coherencebench",
+            cwd=str(Path(__file__).resolve().parent.parent.parent),
         )
 
         if result.returncode != 0:
