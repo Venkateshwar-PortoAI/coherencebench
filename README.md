@@ -12,7 +12,9 @@ When an LLM monitors multiple things at once over a long session, does it keep t
 
 CoherenceBench tests this. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Problems shift across subsystems over 5 phases. The benchmark checks: does the model's decision track the shift, or does it get stuck? Models that get stuck still *write about* all 6 factors — they look coherent — but their actions stop matching the actual problem. That gap between what the model analyzes and what it decides is what CoherenceBench detects.
 
-> **Status:** v0.1.1 released. 4 scenarios, 11 providers, replay viewer. Fresh runs in progress after ground truth update. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
+> **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch Gemma 4 31B lose coherence over 200 ticks. No install needed.
+
+> **Status:** v0.1.1 released. 4 scenarios, 11 providers, replay viewer. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
 
 ## How It Works
 
@@ -48,10 +50,12 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 
 | Agent | Ticks | Seeds | DA | DA@40 | DA@last | DFG | Collapses? |
 |-------|-------|-------|-----|-------|---------|-----|------------|
-| *Awaiting fresh runs* | — | — | — | — | — | — | — |
+| Gemma 4 31B | 200 | 1 | 31.5% | 45.0% | 27.5% | +17.5% | **YES** |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
+>
+> Gemma 4 31B maintains FC=100% (writes about all 6 factors every tick) while DA degrades from 45% to 27.5%. **[Watch the collapse in the replay viewer.](https://venkateshwar-portoai.github.io/coherencebench/)**
 
 ### Contributing runs
 
