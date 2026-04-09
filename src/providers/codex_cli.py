@@ -36,7 +36,7 @@ class CodexCliProvider(LLMProvider):
         # to stay within CLI argument size limits (~250KB on macOS).
         # The runner handles context truncation, but we further limit here
         # to keep the CLI argument safe.
-        MAX_HISTORY_CHARS = 80_000
+        MAX_HISTORY_CHARS = 15_000
         parts = [
             f"SYSTEM INSTRUCTIONS:\n{system_prompt}\n\n---\n",
         ]
