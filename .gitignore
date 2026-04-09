@@ -26,3 +26,11 @@ funding.json
 .DS_Store
 .pytest_cache/
 .env.local
+
+# Local tool configs
+.mcp.json
+.context/
+notebooks/
+
+# Generated viewer files (docs/ has the canonical copies)
+results/**/viewer.html
