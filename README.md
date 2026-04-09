@@ -10,7 +10,9 @@
 
 CoherenceBench is a benchmark for sustained multi-factor decision coherence in long-running agent loops. A model monitors 6 subsystems across 200 sequential decisions in simulated control-room scenarios, while the benchmark measures whether decision quality degrades as anomalies shift across factors over time.
 
-> **Status:** Early research release with preliminary reference runs. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
+> **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch GPT-5.4 lose coherence over 200 ticks. No install needed.
+
+> **Status:** v0.1.0 released. 4 scenarios, 11 providers, replay viewer. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
 
 ## How It Works
 
@@ -49,20 +51,21 @@ These are early reference results, not a final leaderboard. All runs are reprodu
 | Most-common action (baseline) | 200 | — | 54.8% | 45.5% | 70.0% | -24.5% | NO |
 | Majority / always hold_steady | 200 | — | 24.9% | 26.0% | 21.5% | +4.5% | NO |
 | Random uniform | 200 | — | 24.1% | 22.7% | 25.2% | -2.5% | NO |
-| GPT-5.4 (Codex) | 200 | 3 complete | 13.6% | 15.0% | 12.5% | +2.5% | NO |
+| Llama 3.3 70B (Groq) | 14* | 1 | 71.4% | 71.4% | — | — | — |
+| GPT-5.4 (Codex) | 200 | 3 complete | 26.8% | 30.8% | 15.8% | +15.0% | YES |
 | Nemotron 3 Super 120B | 50* | 1 | 2.0% | 2.5% | 0.0% | +2.5% | — |
 | Claude Haiku 4.5 | 12* | 4 partial | — | — | — | — | — |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
 >
-> \* **Incomplete runs.** Nemotron stopped at tick 50 due to OpenRouter free-tier rate limit (50 req/day). Claude Haiku runs are partial (10-12 ticks each) due to API key expiration during early development. We include these as honest data points rather than omitting them. Full 200-tick runs with 5 seeds are needed for definitive conclusions. See `results/` for raw data.
+> \* **Incomplete runs.** Llama 3.3 70B stopped at tick 14 due to Groq free-tier daily token limit (100k TPD). Nemotron stopped at tick 50 due to OpenRouter free-tier rate limit (50 req/day). Claude Haiku runs are partial (10-12 ticks each) due to API key expiration during early development. We include these as honest data points rather than omitting them. Full 200-tick runs with 5 seeds are needed for definitive conclusions. See `results/` for raw data.
 
-### Early observations
+### Key findings
 
-- **Nemotron 120B** (50 ticks): FC=0.94 (near-perfect format) but DA=2% — the model writes thorough analysis of all 6 factors then picks `adjust_voltage` or `charge_battery` almost every tick regardless of the actual anomaly. This is a clear example of the format-behavior dissociation the benchmark is designed to detect.
-- **GPT-5.4** (3 complete seeds): Stable DA (~13%) with no temporal degradation (DFG=+2.5pp). Low accuracy but consistent.
-- **Claude Haiku** (partial): Insufficient data for conclusions. Full runs needed.
+- **GPT-5.4 shows coherence collapse.** Across 3 complete seeds, DA degrades from ~31% (first 40 ticks) to ~16% (last 40 ticks) while FC stays at 100%. The model keeps writing perfect analysis of all 6 factors but its decisions get worse. DFG ranges from +10pp to +20pp across seeds. **[See it happen in the replay viewer.](https://venkateshwar-portoai.github.io/coherencebench/)**
+- **Nemotron 120B: format-behavior dissociation.** FC=0.94 (near-perfect format) but DA=2%. The model writes thorough analysis then picks `adjust_voltage` or `charge_battery` almost every tick regardless of the actual anomaly. This is the clearest example of the dissociation the benchmark is designed to detect.
+- **Llama 3.3 70B: promising early signal.** DA=71.4% in 14 ticks (far above baselines). Full 200-tick run needed to see if it sustains or collapses.
 
 ### Decision Accuracy Over Time
 
@@ -76,6 +79,20 @@ We are actively seeking complete 200-tick runs across more models. If you have A
 
 **[Add your model](EVALUATION.md)** -- submit a PR with your results.
 
+## Replay Viewer
+
+The replay viewer lets you scrub through 200 ticks and watch coherence collapse happen. See the model's analysis, its chosen action, the correct action, and the anomaly heatmap tick by tick.
+
+**[Try the live demo](https://venkateshwar-portoai.github.io/coherencebench/)** (no install needed)
+
+Or generate a viewer from any run:
+
+```bash
+python -m src.cli view results/run_a_baseline/codex/seed_123/
+```
+
+This opens a self-contained HTML file in your browser with 5 panes: collapse curve, subsystem heatmap, tick scrubber, transcript panel, and score dashboard.
+
 ## Quick Start
 
 ```bash
@@ -86,19 +103,22 @@ pip install -e ".[dev]"
 
 # Set up API keys
 cp .env.example .env
-# Edit .env with your API keys (loaded automatically by the scripts)
+# Edit .env with your API keys
 
-# Estimate cost before running
-python scripts/run_single.py --config configs/run_a_baseline.yaml --provider claude --seed 42 --dry-run
+# Run a benchmark (Groq is free)
+python -m src.cli run --provider groq --scenario power_grid --seed 42
 
-# Run one benchmark seed
-python scripts/run_single.py --config configs/run_a_baseline.yaml --provider claude --seed 42
+# View results
+python -m src.cli view results/run_a_baseline/groq/seed_42/
+
+# Or use the scripts directly
+python scripts/run_single.py --config configs/run_a_baseline.yaml --provider groq --seed 42
 ```
 
-That single command is the main onboarding flow:
+The main flow:
 
 1. Run one seed.
-2. Inspect `summary.json` for the scorecard.
+2. Open the replay viewer to see the collapse curve.
 3. Inspect `failure_cases.jsonl` for concrete mistakes.
 4. Run more seeds or more providers if you want stable comparisons.
 
@@ -225,15 +245,18 @@ For public reporting, the headline metrics are:
 
 ## Supported Models
 
-| Provider Flag | Default Model | Via |
-|---------------|---------------|-----|
-| `claude` | `claude-haiku-4-5-20251001` | Anthropic API |
-| `gpt4o` | `gpt-4o` | OpenAI API |
-| `gemini` | `gemini-2.0-flash` | Google GenAI API |
-| `llama` | `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` | Together API |
-| `openrouter` | `nvidia/nemotron-3-super-120b-a12b:free` | OpenRouter (free-tier models) |
-| `claude-cli` | `sonnet` | Claude Code CLI |
-| `codex` | `gpt-5.4` | Codex CLI |
+| Provider Flag | Default Model | Via | Cost |
+|---------------|---------------|-----|------|
+| `groq` | `llama-3.3-70b-versatile` | Groq API | Free (rate-limited) |
+| `ollama` | `deepseek-r1:14b` | Local Ollama | Free (local GPU) |
+| `openrouter` | `nvidia/nemotron-3-super-120b-a12b:free` | OpenRouter | Free (50 req/day) |
+| `mlvoca` | `deepseek-r1:1.5b` | MLvoca API | Free (no key needed) |
+| `claude` | `claude-haiku-4-5-20251001` | Anthropic API | Paid |
+| `gpt4o` | `gpt-4o` | OpenAI API | Paid |
+| `gemini` | `gemini-2.0-flash` | Google GenAI API | Paid |
+| `llama` | `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` | Together API | Paid |
+| `codex` | `gpt-5.4` | Codex CLI | Paid |
+| `claude-cli` | `sonnet` | Claude Code CLI | Paid |
 
 ### Adding Your Own Model
 
@@ -245,17 +268,20 @@ Implement `LLMProvider` in `src/providers/base.py`, register in `src/providers/_
 coherencebench/
   configs/           # YAML run configurations (A-E)
   data/              # Pre-generated tick data (deterministic, JSON)
+  docs/              # GitHub Pages demo (replay viewer HTML)
   results/           # Run outputs and scorecards
-  scripts/           # CLI: run_single.py, run_benchmark.py, compute_baselines.py
+  scripts/           # run_single.py, run_benchmark.py, compute_baselines.py
   src/
+    cli.py           # CLI entry point (run, view, analyze)
     analyzer.py      # Response parsing + metrics
     generator.py     # Tick data with planted anomalies
-    metrics.py       # DA, FC, FI, ADR, IR
+    metrics.py       # DA, FC, FI, ADR, DFG
     runner.py        # Benchmark loop with context management
-    visualizer.py    # Plotting
-    providers/       # LLM API adapters
-    scenarios/       # Scenario definitions (base + 4 domains)
-  tests/             # Test suite
+    visualizer.py    # Matplotlib figures
+    viewer/          # Replay viewer (self-contained HTML generator)
+    providers/       # LLM API adapters (11 providers)
+    scenarios/       # Scenario definitions (4 domains)
+  tests/             # Test suite (101 tests)
 ```
 
 ## Limitations
