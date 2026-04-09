@@ -32,30 +32,30 @@ class CodexCliProvider(LLMProvider):
     def send_turn(self, system_prompt: str, messages: list[dict], user_message: str) -> str:
         self._turn_count += 1
 
-        if self._turn_count == 1:
-            # First turn: new session with system prompt baked in
-            prompt = (
-                f"SYSTEM INSTRUCTIONS (follow these for the entire session):\n"
-                f"{system_prompt}\n\n---\n\n{user_message}"
-            )
-            cmd = [
-                CODEX_BIN, "exec",
-                prompt,
-                "-s", "read-only",
-                "-c", f'model="{self._model}"',
-            ]
-        else:
-            # Resume the last session
-            cmd = [
-                CODEX_BIN, "exec", "resume", "--last",
-                user_message,
-            ]
+        # Build full prompt with conversation history
+        parts = [
+            f"SYSTEM INSTRUCTIONS:\n{system_prompt}\n\n---\n",
+        ]
+        for msg in messages:
+            role = msg["role"].upper()
+            parts.append(f"{role}: {msg['content']}\n")
+        parts.append(f"USER: {user_message}")
+
+        prompt = "\n".join(parts)
+
+        cmd = [
+            CODEX_BIN, "exec",
+            prompt,
+            "-s", "read-only",
+            "-c", f'model="{self._model}"',
+        ]
 
         result = subprocess.run(
             cmd,
+            input="",
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=300,
             cwd=str(Path(__file__).resolve().parent.parent.parent),
         )
 

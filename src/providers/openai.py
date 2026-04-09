@@ -21,8 +21,8 @@ class OpenAIProvider(LLMProvider):
         return f"GPT ({self.model})"
 
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=30),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=4, max=120),
         retry=retry_if_exception_type((openai.RateLimitError, openai.APIConnectionError, openai.InternalServerError)),
         reraise=True,
     )
