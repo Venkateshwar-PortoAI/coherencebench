@@ -14,7 +14,7 @@ CoherenceBench tests this. A model monitors 6 subsystems across 200 sequential d
 
 > **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch Gemma 4 31B lose coherence over 200 ticks. No install needed.
 
-> **Status:** v0.1.1 released. 4 scenarios, 11 providers, replay viewer. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
+> **Alpha release (v0.1).** This is early-stage research software under active development. The benchmark design, metrics, and ground truth may change between versions. We're sharing it now to get feedback and model submissions from the community. Results should be treated as preliminary. See [EVALUATION.md](EVALUATION.md).
 
 ## How It Works
 
