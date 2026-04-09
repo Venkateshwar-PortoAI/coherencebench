@@ -21,8 +21,8 @@ class GoogleProvider(LLMProvider):
         return f"Gemini ({self.model})"
 
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=30),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=4, max=120),
         retry=retry_if_exception_type((google_exceptions.ResourceExhausted, google_exceptions.ServiceUnavailable)),
         reraise=True,
     )
