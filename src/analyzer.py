@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Parses LLM responses and extracts factor analysis + actions.
 
 DA (Decision Accuracy) is the primary metric -- did the agent choose a correct action?
@@ -17,6 +19,7 @@ from .metrics import (
     decision_accuracy,
     anomaly_detection_rate,
     intervention_recovery,
+    decision_fade_gap,
     compute_all_metrics,
 )
 

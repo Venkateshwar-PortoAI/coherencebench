@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Generates synthetic tick data with planted anomalies.
 
 Scenario-agnostic: uses the scenario's anomaly maps, state evolution,

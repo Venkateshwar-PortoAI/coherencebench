@@ -40,35 +40,39 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 
 ## Results
 
-These are early reference results, not a final leaderboard. The benchmark is designed so that models can preserve fluent, well-structured output while their decision quality still degrades over long horizons.
+These are early reference results, not a final leaderboard. All runs are reproducible from the raw data in `results/`. Some runs are incomplete due to API rate limits or cost constraints — we document this honestly rather than exclude partial data.
 
 ### Reference Results (Power Grid)
 
-| Agent | DA | DA@40 | DA@last | DFG | Collapses? |
-|-------|-----|-------|---------|-----|------------|
-| Most-common action (baseline) | 54.8% | 45.5% | 70.0% | -24.5% | NO |
-| Claude Haiku 4.5 | 26.0% | 30.0% | 2.5% | +27.5% | **YES** (-27pp) |
-| GPT-5.4 (Codex, 4-seed avg) | 13.6% | 15.0% | 12.5% | +2.5% | NO |
-| Majority / always hold_steady | 24.9% | 26.0% | 21.5% | +4.5% | NO |
-| Random uniform | 24.1% | 22.7% | 25.2% | -2.5% | NO |
+| Agent | Ticks | Seeds | DA | DA@40 | DA@last | DFG | Collapses? |
+|-------|-------|-------|-----|-------|---------|-----|------------|
+| Most-common action (baseline) | 200 | — | 54.8% | 45.5% | 70.0% | -24.5% | NO |
+| Majority / always hold_steady | 200 | — | 24.9% | 26.0% | 21.5% | +4.5% | NO |
+| Random uniform | 200 | — | 24.1% | 22.7% | 25.2% | -2.5% | NO |
+| GPT-5.4 (Codex) | 200 | 3 complete | 13.6% | 15.0% | 12.5% | +2.5% | NO |
+| Nemotron 3 Super 120B | 50* | 1 | 2.0% | 2.5% | 0.0% | +2.5% | — |
+| Claude Haiku 4.5 | 12* | 4 partial | — | — | — | — | — |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
+>
+> \* **Incomplete runs.** Nemotron stopped at tick 50 due to OpenRouter free-tier rate limit (50 req/day). Claude Haiku runs are partial (10-12 ticks each) due to API key expiration during early development. We include these as honest data points rather than omitting them. Full 200-tick runs with 5 seeds are needed for definitive conclusions. See `results/` for raw data.
 
-### Cross-Scenario Comparison
+### Early observations
 
-| Agent | Scenario | DA | DA@40 | DA@last | DFG |
-|-------|----------|-----|-------|---------|-----|
-| Claude Haiku 4.5 | Power Grid | 26.0% | 30.0% | 2.5% | +27.5% |
-| Claude Haiku 4.5 | Air Traffic Control | 23.5% | 40.0% | 0.0% | +40.0% |
-
-In these reference runs, Haiku degraded on both scenarios. On ATC, it fabricated a "facility permanently closed" narrative by tick 160 and stopped analyzing entirely.
+- **Nemotron 120B** (50 ticks): FC=0.94 (near-perfect format) but DA=2% — the model writes thorough analysis of all 6 factors then picks `adjust_voltage` or `charge_battery` almost every tick regardless of the actual anomaly. This is a clear example of the format-behavior dissociation the benchmark is designed to detect.
+- **GPT-5.4** (3 complete seeds): Stable DA (~13%) with no temporal degradation (DFG=+2.5pp). Low accuracy but consistent.
+- **Claude Haiku** (partial): Insufficient data for conclusions. Full runs needed.
 
 ### Decision Accuracy Over Time
 
 ![Decision Accuracy Over Time](assets/da_over_time.png)
 
 Per-run outputs are written to `results/*/`, including `summary.json`, `failure_cases.jsonl`, `raw_results.jsonl`, and `analyzed_results.json`.
+
+### Contributing runs
+
+We are actively seeking complete 200-tick runs across more models. If you have API access, even a single seed helps. See [EVALUATION.md](EVALUATION.md) for the standard protocol.
 
 **[Add your model](EVALUATION.md)** -- submit a PR with your results.
 
@@ -227,6 +231,7 @@ For public reporting, the headline metrics are:
 | `gpt4o` | `gpt-4o` | OpenAI API |
 | `gemini` | `gemini-2.0-flash` | Google GenAI API |
 | `llama` | `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` | Together API |
+| `openrouter` | `nvidia/nemotron-3-super-120b-a12b:free` | OpenRouter (free-tier models) |
 | `claude-cli` | `sonnet` | Claude Code CLI |
 | `codex` | `gpt-5.4` | Codex CLI |
 
@@ -259,7 +264,7 @@ coherencebench/
 - **Single-turn decisions.** No multi-step planning or tool-using sub-policies within a tick.
 - **Synthetic environments.** Simplified simulations, not real-world monitoring.
 - **Binary scoring.** No partial credit for reasonable but non-matching actions.
-- **Limited model coverage.** 2 models so far. Community submissions welcome.
+- **Limited model coverage.** Early reference runs only. Most runs are partial due to API cost/rate constraints. Community submissions welcome.
 
 ## Related Work
 

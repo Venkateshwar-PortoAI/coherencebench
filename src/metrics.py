@@ -87,6 +87,31 @@ def intervention_recovery(fc_values: list[float], intervention_idx: int) -> int:
     return recovery_count
 
 
+def decision_fade_gap(
+    da_values: list[float], window: int = 40
+) -> dict[str, float]:
+    """DFG (Decision Fade Gap): measures DA degradation over time.
+
+    Compares average DA in the first `window` ticks vs the last `window` ticks.
+    Positive DFG means accuracy degraded (early was better than late).
+
+    Returns dict with da_first, da_last, and dfg.
+    """
+    if len(da_values) < window:
+        first = da_values
+        last = da_values
+    else:
+        first = da_values[:window]
+        last = da_values[-window:]
+    da_first = sum(first) / len(first) if first else 0.0
+    da_last = sum(last) / len(last) if last else 0.0
+    return {
+        "da_first_40": da_first,
+        "da_last_40": da_last,
+        "dfg": da_first - da_last,
+    }
+
+
 def compute_all_metrics(
     factors_substantive: list[str],
     word_counts: dict[str, int],

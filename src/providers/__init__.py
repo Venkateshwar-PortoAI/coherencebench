@@ -14,6 +14,7 @@ PROVIDERS = {
     "ollama": (".ollama", "OllamaProvider"),
     "openrouter": (".openrouter", "OpenRouterProvider"),
     "groq": (".groq", "GroqProvider"),
+    "mlvoca": (".mlvoca", "MLvocaProvider"),
 }
 
 

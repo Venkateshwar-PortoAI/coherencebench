@@ -45,6 +45,12 @@ Repository = "https://github.com/Venkateshwar-PortoAI/coherencebench.git"
 Documentation = "https://github.com/Venkateshwar-PortoAI/coherencebench/blob/main/README.md"
 "Bug Tracker" = "https://github.com/Venkateshwar-PortoAI/coherencebench/issues"
 
+[project.scripts]
+coherencebench = "src.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
 [build-system]
 requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
