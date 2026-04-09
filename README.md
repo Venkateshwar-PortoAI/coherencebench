@@ -12,9 +12,7 @@ When an LLM monitors multiple things at once over a long session, does it keep t
 
 CoherenceBench tests this. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Problems shift across subsystems over 5 phases. The benchmark checks: does the model's decision track the shift, or does it get stuck? Models that get stuck still *write about* all 6 factors — they look coherent — but their actions stop matching the actual problem. That gap between what the model analyzes and what it decides is what CoherenceBench detects.
 
-> **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch GPT-5.4 lose coherence over 200 ticks. No install needed.
-
-> **Status:** v0.1.0 released. 4 scenarios, 11 providers, replay viewer. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
+> **Status:** v0.1.1 released. 4 scenarios, 11 providers, replay viewer. Fresh runs in progress after ground truth update. We welcome model submissions. See [EVALUATION.md](EVALUATION.md).
 
 ## How It Works
 
@@ -44,36 +42,32 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 
 ## Results
 
-These are early reference results, not a final leaderboard. All runs are reproducible from the raw data in `results/`. Some runs are incomplete due to API rate limits or cost constraints — we document this honestly rather than exclude partial data.
+> **Ground truth was updated in v0.1.1** (multi-factor ticks increased from 14% to 33% with true integration rules). All previous results are invalidated. Fresh runs in progress.
 
 ### Reference Results (Power Grid)
 
 | Agent | Ticks | Seeds | DA | DA@40 | DA@last | DFG | Collapses? |
 |-------|-------|-------|-----|-------|---------|-----|------------|
-| Most-common action (baseline) | 200 | — | 54.8% | 45.5% | 70.0% | -24.5% | NO |
-| Majority / always hold_steady | 200 | — | 24.9% | 26.0% | 21.5% | +4.5% | NO |
-| Random uniform | 200 | — | 24.1% | 22.7% | 25.2% | -2.5% | NO |
-| Llama 3.3 70B (Groq) | 14* | 1 | 71.4% | 71.4% | — | — | — |
-| GPT-5.4 (Codex) | 200 | 3 complete | 26.8% | 30.8% | 15.8% | +15.0% | YES |
-| Nemotron 3 Super 120B | 50* | 1 | 2.0% | 2.5% | 0.0% | +2.5% | — |
-| Claude Haiku 4.5 | 12* | 4 partial | — | — | — | — | — |
+| *Awaiting fresh runs* | — | — | — | — | — | — | — |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
->
-> \* **Incomplete runs.** Llama 3.3 70B stopped at tick 14 due to Groq free-tier daily token limit (100k TPD). Nemotron stopped at tick 50 due to OpenRouter free-tier rate limit (50 req/day). Claude Haiku runs are partial (10-12 ticks each) due to API key expiration during early development. We include these as honest data points rather than omitting them. Full 200-tick runs with 5 seeds are needed for definitive conclusions. See `results/` for raw data.
 
-### Key findings
+### Contributing runs
 
-- **GPT-5.4 shows coherence collapse.** Across 3 complete seeds, DA degrades from ~31% (first 40 ticks) to ~16% (last 40 ticks) while FC stays at 100%. The model keeps writing perfect analysis of all 6 factors but its decisions get worse. DFG ranges from +10pp to +20pp across seeds. **[See it happen in the replay viewer.](https://venkateshwar-portoai.github.io/coherencebench/)**
-- **Nemotron 120B: format-behavior dissociation.** FC=0.94 (near-perfect format) but DA=2%. The model writes thorough analysis then picks `adjust_voltage` or `charge_battery` almost every tick regardless of the actual anomaly. This is the clearest example of the dissociation the benchmark is designed to detect.
-- **Llama 3.3 70B: promising early signal.** DA=71.4% in 14 ticks (far above baselines). Full 200-tick run needed to see if it sustains or collapses.
+We are actively seeking complete 200-tick runs. If you have API access, even a single seed helps. See [EVALUATION.md](EVALUATION.md) for the standard protocol.
 
-### Decision Accuracy Over Time
+```bash
+# Run with any provider
+python -m src.cli run --provider groq --scenario power_grid --seed 42
 
-![Decision Accuracy Over Time](assets/da_over_time.png)
+# View results
+python -m src.cli view results/run_a_baseline/groq/seed_42/
+```
 
-Per-run outputs are written to `results/*/`, including `summary.json`, `failure_cases.jsonl`, `raw_results.jsonl`, and `analyzed_results.json`.
+**[Add your model](EVALUATION.md)** — submit a PR with your results.
+
+Per-run outputs are written to `results/*/`, including `raw_results.jsonl` and `analyzed_results.json`.
 
 ### Contributing runs
 
@@ -85,9 +79,7 @@ We are actively seeking complete 200-tick runs across more models. If you have A
 
 The replay viewer lets you scrub through 200 ticks and watch coherence collapse happen. See the model's analysis, its chosen action, the correct action, and the anomaly heatmap tick by tick.
 
-**[Try the live demo](https://venkateshwar-portoai.github.io/coherencebench/)** (no install needed)
-
-Or generate a viewer from any run:
+Generate a viewer from any run:
 
 ```bash
 python -m src.cli view results/run_a_baseline/codex/seed_123/
