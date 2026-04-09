@@ -338,6 +338,7 @@ def run(
     scenario_name: str | None = None,
     progress_every: int = 10,
     model_name: str | None = None,
+    resume: bool = False,
 ):
     config = load_config(config_path)
 
@@ -382,7 +383,7 @@ def run(
     )
 
     logger.info("Running %d ticks...", config["num_ticks"])
-    raw_results = runner.run()
+    raw_results = runner.run(resume=resume)
 
     # Analyze
     analyses = progress_stats["analyses"]
@@ -537,6 +538,7 @@ def main():
         default=10,
         help="Emit rollup summary every N ticks while still logging each cycle (default: 10)",
     )
+    parser.add_argument("--resume", action="store_true", help="Resume from existing raw_results.jsonl checkpoint")
     args = parser.parse_args()
     run(
         args.config,
@@ -546,6 +548,7 @@ def main():
         args.scenario,
         args.progress_every,
         args.model,
+        args.resume,
     )
 
 

@@ -72,7 +72,7 @@ def cmd_run(args):
 
     import time
     start = time.time()
-    results = runner.run()
+    results = runner.run(resume=args.resume)
     elapsed = time.time() - start
     print(f"\nCompleted {len(results)} ticks in {elapsed:.1f}s ({elapsed/len(results):.1f}s/tick)")
 
@@ -194,6 +194,7 @@ def main():
     p_run.add_argument("--seed", type=int, default=42, help="Random seed")
     p_run.add_argument("--num-ticks", type=int, default=200, help="Number of ticks")
     p_run.add_argument("--model", default=None, help="Model override")
+    p_run.add_argument("--resume", action="store_true", help="Resume from checkpoint (existing raw_results.jsonl)")
     p_run.set_defaults(func=cmd_run)
 
     # view

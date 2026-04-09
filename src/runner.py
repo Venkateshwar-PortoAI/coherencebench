@@ -127,7 +127,7 @@ class BenchmarkRunner:
 
         return kept
 
-    def run(self) -> list[dict]:
+    def run(self, resume: bool = False) -> list[dict]:
         ticks = self.generator.generate()
         system_prompt = self.scenario.system_prompt()
         messages: list[dict] = []
@@ -135,6 +135,18 @@ class BenchmarkRunner:
 
         self.output_dir.mkdir(parents=True, exist_ok=True)
         results_file = self.output_dir / "raw_results.jsonl"
+
+        # Resume support: skip ticks already in raw_results.jsonl
+        skip_count = 0
+        if resume and results_file.exists():
+            with open(results_file) as rf:
+                for line in rf:
+                    line = line.strip()
+                    if line:
+                        results.append(json.loads(line))
+                        skip_count += 1
+            if skip_count > 0:
+                logger.info("Resuming from tick %d (found %d completed ticks)", skip_count + 1, skip_count)
 
         last_tick_data = None
         self._emit_progress(
@@ -145,11 +157,15 @@ class BenchmarkRunner:
                 "provider_name": self.provider.name(),
                 "scenario_name": type(self.scenario).__name__,
                 "results_file": str(results_file),
+                "resumed_from": skip_count,
             }
         )
 
-        with open(results_file, "w") as f:
+        file_mode = "a" if resume and skip_count > 0 else "w"
+        with open(results_file, file_mode) as f:
             for i, tick in enumerate(ticks):
+                if i < skip_count:
+                    continue
                 tick_num = tick["tick_number"]
                 cycle_index = i + 1
                 context_reset_applied = False
