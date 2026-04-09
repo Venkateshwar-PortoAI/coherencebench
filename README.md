@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="CoherenceBench — Measuring Attention Collapse in Long-Running Autonomous Agents" width="900"/>
+  <img src="assets/banner.png" alt="CoherenceBench — Measuring Decision Coherence Collapse in Long-Running Autonomous Agents" width="900"/>
 </p>
 
 <p align="center">
@@ -8,7 +8,7 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
 </p>
 
-CoherenceBench is a benchmark for sustained multi-factor decision coherence in long-running agent loops. A model monitors 6 subsystems across 200 sequential decisions in simulated control-room scenarios, while the benchmark measures whether decision quality degrades as anomalies shift across factors over time.
+CoherenceBench tests whether LLM agents keep paying attention to all relevant information over long sessions, or silently collapse to a biased subset. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Anomalies shift across subsystems over 5 phases. The benchmark measures whether the model's decisions track the shift (Decision Accuracy) or whether it keeps writing correct-looking analysis while ignoring the actual problem (Format Compliance stays high, DA drops).
 
 > **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch GPT-5.4 lose coherence over 200 ticks. No install needed.
 
@@ -183,16 +183,12 @@ The main public-facing report is `summary.json`. The main debugging artifact is 
 
 ## What This Benchmark Measures
 
-CoherenceBench is not a general reasoning benchmark. It is a controlled benchmark for one specific failure mode:
+CoherenceBench is not a general reasoning benchmark. It tests one specific failure mode: **does the model keep integrating all 6 subsystems into its decisions, or does it collapse to a biased subset over time?**
 
-- can a model sustain correct multi-factor decisions over a long sequential run?
+Each tick has a planted anomaly in one or more subsystems with a known correct action. The benchmark measures:
 
-The benchmark separates:
-
-- **Outcome quality** via `DA`, `DA@40`, `DA@last`, and `DFG`
-- **Behavior diagnostics** via `FC`, `FI`, and `ADR`
-
-That distinction matters because a model can preserve fluent, structured analysis while still choosing the wrong action.
+- **Did the model pick the right action?** (`DA`, `DA@40`, `DA@last`, `DFG`) — the primary metric. A model that stops tracking the shifting anomalies will pick wrong actions even while writing correct-looking analysis.
+- **Did the model mention all 6 subsystems?** (`FC`, `FI`, `ADR`) — format diagnostics. High FC + low DA = the model looks coherent but isn't. That's the format-behavior dissociation this benchmark is designed to detect.
 
 ## Scenarios
 
@@ -289,7 +285,8 @@ coherencebench/
 - **Controlled session loop.** The benchmark primarily measures foundation-model behavior inside this harness, not arbitrary external agent stacks.
 - **Single-turn decisions.** No multi-step planning or tool-using sub-policies within a tick.
 - **Synthetic environments.** Simplified simulations, not real-world monitoring.
-- **Binary scoring.** No partial credit for reasonable but non-matching actions.
+- **Stateless environment.** The model's actions don't affect the next tick's state. The benchmark tests whether the model tracks shifting anomalies, not whether it reasons about consequences of its own actions.
+- **Binary scoring.** No partial credit for reasonable but non-matching actions (each anomaly has 2 acceptable actions).
 - **Limited model coverage.** Early reference runs only. Most runs are partial due to API cost/rate constraints. Community submissions welcome.
 
 ## Related Work
@@ -303,8 +300,8 @@ coherencebench/
 ```bibtex
 @software{coherencebench2026,
   author       = {Venkateshwar Reddy Jambula},
-  title        = {{CoherenceBench}: Measuring Attention Collapse in
-                  Long-Running Autonomous Agents},
+  title        = {{CoherenceBench}: Measuring Decision Coherence Collapse
+                  in Long-Running Autonomous Agents},
   year         = {2026},
   publisher    = {GitHub},
   url          = {https://github.com/Venkateshwar-PortoAI/coherencebench},
