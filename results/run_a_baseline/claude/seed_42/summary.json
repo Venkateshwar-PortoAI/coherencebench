@@ -1,0 +1,59 @@
+{
+  "mean_fc": 0.6342,
+  "mean_da": 0.4,
+  "mean_adr": 0.6758,
+  "mean_fi": 0.1854,
+  "da_at_40": 0.7,
+  "da_last": 0.0,
+  "dfg": 0.7,
+  "collapses": true,
+  "fc_first_quarter": 1.0,
+  "fc_last_quarter": 0.0,
+  "fc_drop_q1_to_q4": 1.0,
+  "context_truncations": 3,
+  "context_resets": 0,
+  "interventions": 0,
+  "avg_turn_seconds": 8.05,
+  "intervention_recovery": {},
+  "directional_validation": {
+    "is_directional": false,
+    "early_factor_late_coverage": 0.0,
+    "late_factor_late_coverage": 0.0,
+    "coverage_gap": 0.0,
+    "verdict": "uniform_degradation"
+  },
+  "top_missed_factors": [
+    {
+      "name": "weather",
+      "count": 44
+    },
+    {
+      "name": "reserve",
+      "count": 40
+    },
+    {
+      "name": "generation",
+      "count": 10
+    }
+  ],
+  "common_wrong_actions": [
+    {
+      "name": "unknown",
+      "count": 61
+    },
+    {
+      "name": "emergency_disconnect",
+      "count": 28
+    },
+    {
+      "name": "hold_steady",
+      "count": 19
+    }
+  ],
+  "worst_window": {
+    "start_tick": 139,
+    "end_tick": 148,
+    "mean_da": 0.0
+  },
+  "failure_case_count": 127
+}

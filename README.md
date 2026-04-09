@@ -53,14 +53,18 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 | Most-common action (baseline) | 200 | — | 65.0% | 55.0% | 80.0% | -25.0% | NO |
 | Random uniform (baseline) | 200 | — | 30.3% | 28.3% | 31.6% | -3.3% | NO |
 | Always hold_steady (baseline) | 200 | — | 17.5% | 25.0% | 5.0% | +20.0% | YES* |
+| **Claude Haiku 4.5** | **200** | **1** | **40.0%** | **70.0%** | **0.0%** | **+70.0%** | **YES** |
 | **Gemma 4 31B** | **200** | **1** | **31.5%** | **45.0%** | **27.5%** | **+17.5%** | **YES** |
+| GPT-5.4 (Codex) | 56* | 1 | 42.9% | 47.5% | 45.0% | +2.5% | — |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
 >
-> \* `hold_steady` shows high DFG because the benchmark shifts anomalies to later phases — a static "do nothing" strategy happens to match early ticks but misses late ones. This is a baseline artifact, not real coherence collapse.
+> \* `hold_steady` shows high DFG because the benchmark shifts anomalies to later phases — a static "do nothing" strategy happens to match early ticks but misses late ones. This is a baseline artifact, not real coherence collapse. GPT-5.4 run is partial (56 ticks, Codex usage limit) — will resume.
 >
-> **Gemma 4 31B** starts above random (45% vs 28%) but degrades to near-random (27.5% vs 31.6%) while maintaining FC=100%. It begins by tracking anomalies, then stops. **[Watch the collapse in the replay viewer.](https://venkateshwar-portoai.github.io/coherencebench/)**
+> **Claude Haiku 4.5** shows catastrophic collapse: DA drops from 70% to 0% (DFG +70%). Starts as the best performer, then completely falls apart. [Watch it happen.](https://venkateshwar-portoai.github.io/coherencebench/claude-haiku.html)
+>
+> **Gemma 4 31B** shows gradual fade: DA drops from 45% to 27.5% while maintaining FC=100%. [Watch the collapse.](https://venkateshwar-portoai.github.io/coherencebench/)
 
 ### Contributing runs
 
