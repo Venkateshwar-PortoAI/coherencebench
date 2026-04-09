@@ -8,7 +8,9 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
 </p>
 
-CoherenceBench tests whether LLM agents keep paying attention to all relevant information over long sessions, or silently collapse to a biased subset. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Anomalies shift across subsystems over 5 phases. The benchmark measures whether the model's decisions track the shift (Decision Accuracy) or whether it keeps writing correct-looking analysis while ignoring the actual problem (Format Compliance stays high, DA drops).
+When an LLM monitors multiple things at once over a long session, does it keep considering ALL of them when making decisions? Or does it silently start ignoring some and decide based on just one or two?
+
+CoherenceBench answers this. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Problems shift across subsystems over time. The benchmark checks: does the model's decision reflect all 6 factors, or has it collapsed to a biased subset? Models that collapse still *write about* all 6 factors — they look coherent — but their actions only reflect 1 or 2. That gap between what the model says and what it does is what CoherenceBench detects.
 
 > **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch GPT-5.4 lose coherence over 200 ticks. No install needed.
 
