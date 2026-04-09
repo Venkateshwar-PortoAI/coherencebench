@@ -8,9 +8,9 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
 </p>
 
-When an LLM monitors multiple things at once over a long session, does it keep considering ALL of them when making decisions? Or does it silently start ignoring some and decide based on just one or two?
+When an LLM monitors multiple things at once over a long session, does it keep tracking which thing needs attention? Or does it lock onto early patterns and stop noticing when the situation changes?
 
-CoherenceBench answers this. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Problems shift across subsystems over time. The benchmark checks: does the model's decision reflect all 6 factors, or has it collapsed to a biased subset? Models that collapse still *write about* all 6 factors — they look coherent — but their actions only reflect 1 or 2. That gap between what the model says and what it does is what CoherenceBench detects.
+CoherenceBench tests this. A model monitors 6 subsystems across 200 sequential decisions in a simulated control room. Problems shift across subsystems over 5 phases. The benchmark checks: does the model's decision track the shift, or does it get stuck? Models that get stuck still *write about* all 6 factors — they look coherent — but their actions stop matching the actual problem. That gap between what the model analyzes and what it decides is what CoherenceBench detects.
 
 > **[Live Demo](https://venkateshwar-portoai.github.io/coherencebench/)** — Watch GPT-5.4 lose coherence over 200 ticks. No install needed.
 
@@ -185,12 +185,14 @@ The main public-facing report is `summary.json`. The main debugging artifact is 
 
 ## What This Benchmark Measures
 
-CoherenceBench is not a general reasoning benchmark. It tests one specific failure mode: **does the model keep integrating all 6 subsystems into its decisions, or does it collapse to a biased subset over time?**
+CoherenceBench is not a general reasoning benchmark. It tests one specific failure mode: **does the model keep tracking which subsystem is broken as the broken subsystem shifts over time?**
 
 Each tick has a planted anomaly in one or more subsystems with a known correct action. The benchmark measures:
 
-- **Did the model pick the right action?** (`DA`, `DA@40`, `DA@last`, `DFG`) — the primary metric. A model that stops tracking the shifting anomalies will pick wrong actions even while writing correct-looking analysis.
-- **Did the model mention all 6 subsystems?** (`FC`, `FI`, `ADR`) — format diagnostics. High FC + low DA = the model looks coherent but isn't. That's the format-behavior dissociation this benchmark is designed to detect.
+- **Did the model pick the right action?** (`DA`, `DA@40`, `DA@last`, `DFG`) — the primary metric. A model that fixates on early patterns (e.g. "load problems are common") will miss later anomalies when they shift to weather or reserve.
+- **Did the model mention all 6 subsystems?** (`FC`, `FI`, `ADR`) — format diagnostics. High FC + low DA = the model writes about all 6 but its decision only reflects 1 or 2. That's format-behavior dissociation.
+
+**Current scope and roadmap:** Most ticks (86%) have a single anomalous factor — the model needs to spot it and pick the matching action. Every 7th tick is a multi-factor tick where 2+ factors are anomalous and the correct action requires considering both. v0.2 will increase multi-factor ticks to test true multi-factor integration, where the correct action depends on the *combination* of values, not just one outlier.
 
 ## Scenarios
 
