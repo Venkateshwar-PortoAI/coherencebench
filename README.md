@@ -314,10 +314,24 @@ coherencebench/
 }
 ```
 
+## Contributing
+
+We're looking for:
+
+- **Model results** — Run the benchmark on your model and submit a PR. Even one seed on one scenario helps. See [EVALUATION.md](EVALUATION.md).
+- **Code contributions** — Bug fixes, new scenarios, provider integrations. See [CONTRIBUTING.md](CONTRIBUTING.md).
+- **Feedback** — Open an issue if the benchmark design, metrics, or framing could be improved.
+
+## Support This Work
+
+CoherenceBench is built by an independent researcher with no institutional backing. API credits and compute time are the main bottleneck for expanding model coverage.
+
+If this work is useful to you, consider [sponsoring on GitHub](https://github.com/sponsors/Venkateshwar-PortoAI) or contributing model runs.
+
 ## License
 
 [MIT](LICENSE)
 
 ---
 
-Built by [PranaAlpha Labs](https://pranaalpha.com)
+Built by [Venkateshwar Reddy Jambula](https://github.com/Venkateshwar-PortoAI) at [PranaAlpha Labs](https://pranaalpha.com)
