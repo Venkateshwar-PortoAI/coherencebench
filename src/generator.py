@@ -24,8 +24,7 @@ class TickGroundTruth:
 
 # Every Nth tick in certain ranges is forced to be a multi-factor tick.
 # Every Nth tick is a multi-factor tick requiring integration of 2+ factors.
-# v0.1: every 7th tick (~14%). v0.2 target: every 3rd tick (~33%).
-MULTI_FACTOR_INTERVAL = 7
+MULTI_FACTOR_INTERVAL = 3
 
 
 class TickGenerator:

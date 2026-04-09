@@ -126,13 +126,20 @@ class AirTrafficControlScenario(BaseScenario):
 
     @property
     def multi_factor_rules(self) -> list[tuple]:
+        # Each rule's action differs from BOTH single-factor actions.
         return [
-            (frozenset({"radar", "weather"}), "increase_separation", ["radar", "weather"]),
-            (frozenset({"runway", "weather"}), "close_runway", ["runway", "weather"]),
-            (frozenset({"traffic_flow", "comms"}), "reduce_arrival_rate", ["traffic_flow", "comms"]),
-            (frozenset({"radar", "traffic_flow"}), "issue_holding", ["radar", "traffic_flow"]),
-            (frozenset({"systems", "comms"}), "activate_backup_systems", ["systems", "comms"]),
-            (frozenset({"weather", "traffic_flow"}), "reduce_arrival_rate", ["weather", "traffic_flow"]),
+            # radar(increase_separation) + weather(issue_weather_advisory) → declare_ground_stop (blind AND stormy = stop all traffic)
+            (frozenset({"radar", "weather"}), "declare_ground_stop", ["radar", "weather"]),
+            # runway(close_runway) + weather(issue_weather_advisory) → divert_traffic (runway closed AND bad weather = divert)
+            (frozenset({"runway", "weather"}), "divert_traffic", ["runway", "weather"]),
+            # traffic_flow(issue_holding) + comms(reduce_arrival_rate) → declare_ground_stop (congested AND no comms = stop)
+            (frozenset({"traffic_flow", "comms"}), "declare_ground_stop", ["traffic_flow", "comms"]),
+            # radar(increase_separation) + traffic_flow(issue_holding) → divert_traffic (radar gaps AND congestion = send elsewhere)
+            (frozenset({"radar", "traffic_flow"}), "divert_traffic", ["radar", "traffic_flow"]),
+            # systems(activate_backup_systems) + comms(reduce_arrival_rate) → declare_ground_stop (systems down AND no comms = stop)
+            (frozenset({"systems", "comms"}), "declare_ground_stop", ["systems", "comms"]),
+            # weather(issue_weather_advisory) + traffic_flow(issue_holding) → divert_traffic (bad weather AND congested = divert)
+            (frozenset({"weather", "traffic_flow"}), "divert_traffic", ["weather", "traffic_flow"]),
         ]
 
     @property

@@ -75,13 +75,20 @@ class HospitalTriageScenario(BaseScenario):
 
     @property
     def multi_factor_rules(self) -> list[tuple]:
+        # Each rule's action differs from BOTH single-factor actions.
         return [
-            (frozenset({"vitals", "labs"}), "admit_icu", ["vitals", "labs"]),
-            (frozenset({"imaging", "history"}), "call_specialist", ["imaging", "history"]),
-            (frozenset({"medications", "labs"}), "adjust_medication", ["medications", "labs"]),
-            (frozenset({"vitals", "capacity"}), "monitor_closely", ["vitals", "capacity"]),
-            (frozenset({"labs", "imaging"}), "order_imaging", ["labs", "imaging"]),
-            (frozenset({"history", "medications"}), "call_specialist", ["history", "medications"]),
+            # vitals(admit_icu) + labs(order_labs) → start_medication (critical vitals WITH abnormal labs = treat immediately)
+            (frozenset({"vitals", "labs"}), "start_medication", ["vitals", "labs"]),
+            # imaging(order_imaging) + history(call_specialist) → admit_icu (suspicious imaging AND risky history = escalate)
+            (frozenset({"imaging", "history"}), "admit_icu", ["imaging", "history"]),
+            # medications(adjust_medication) + labs(order_labs) → call_specialist (drug-lab interaction = need expert)
+            (frozenset({"medications", "labs"}), "call_specialist", ["medications", "labs"]),
+            # vitals(admit_icu) + capacity(admit_ward) → discharge (crisis vitals BUT full capacity = discharge stable patients)
+            (frozenset({"vitals", "capacity"}), "discharge", ["vitals", "capacity"]),
+            # labs(order_labs) + imaging(order_imaging) → call_specialist (both diagnostics abnormal = need specialist read)
+            (frozenset({"labs", "imaging"}), "call_specialist", ["labs", "imaging"]),
+            # history(call_specialist) + medications(adjust_medication) → order_labs (complex history AND med changes = check labs)
+            (frozenset({"history", "medications"}), "order_labs", ["history", "medications"]),
         ]
 
     @property

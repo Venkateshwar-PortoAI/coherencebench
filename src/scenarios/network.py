@@ -78,13 +78,20 @@ class NetworkSecurityScenario(BaseScenario):
 
     @property
     def multi_factor_rules(self) -> list[tuple]:
+        # Each rule's action differs from BOTH single-factor actions.
         return [
-            (frozenset({"traffic", "auth"}), "block_ip", ["traffic", "auth"]),
-            (frozenset({"endpoints", "threats"}), "isolate_endpoint", ["endpoints", "threats"]),
-            (frozenset({"firewall", "logs"}), "update_firewall_rule", ["firewall", "logs"]),
-            (frozenset({"auth", "threats"}), "force_password_reset", ["auth", "threats"]),
-            (frozenset({"traffic", "firewall"}), "block_ip", ["traffic", "firewall"]),
-            (frozenset({"logs", "endpoints"}), "deploy_patch", ["logs", "endpoints"]),
+            # traffic(block_ip) + auth(force_password_reset) → isolate_endpoint (suspicious traffic AND compromised creds = contain the breach)
+            (frozenset({"traffic", "auth"}), "isolate_endpoint", ["traffic", "auth"]),
+            # endpoints(deploy_patch) + threats(escalate_alert) → quarantine_file (vulnerable endpoint AND active threat = quarantine now)
+            (frozenset({"endpoints", "threats"}), "quarantine_file", ["endpoints", "threats"]),
+            # firewall(update_firewall_rule) + logs(investigate_further) → escalate_alert (firewall bypass AND suspicious logs = escalate)
+            (frozenset({"firewall", "logs"}), "escalate_alert", ["firewall", "logs"]),
+            # auth(force_password_reset) + threats(escalate_alert) → isolate_endpoint (credential theft AND active threat = isolate)
+            (frozenset({"auth", "threats"}), "isolate_endpoint", ["auth", "threats"]),
+            # traffic(block_ip) + firewall(update_firewall_rule) → investigate_further (traffic anomaly AND firewall issue = investigate root cause)
+            (frozenset({"traffic", "firewall"}), "investigate_further", ["traffic", "firewall"]),
+            # logs(investigate_further) + endpoints(deploy_patch) → escalate_alert (suspicious logs AND vulnerable endpoints = escalate)
+            (frozenset({"logs", "endpoints"}), "escalate_alert", ["logs", "endpoints"]),
         ]
 
     @property

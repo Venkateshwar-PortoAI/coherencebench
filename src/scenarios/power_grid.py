@@ -75,13 +75,21 @@ class PowerGridScenario(BaseScenario):
 
     @property
     def multi_factor_rules(self) -> list[tuple]:
+        # Each rule's action differs from BOTH single-factor actions,
+        # so the model must consider both factors to get the right answer.
         return [
-            (frozenset({"load", "generation"}), "start_gas_turbine", ["load", "generation"]),
-            (frozenset({"weather", "reserve"}), "deploy_battery", ["weather", "reserve"]),
-            (frozenset({"frequency", "voltage"}), "ramp_plant", ["frequency", "voltage"]),
-            (frozenset({"load", "reserve"}), "deploy_battery", ["load", "reserve"]),
-            (frozenset({"generation", "frequency"}), "start_gas_turbine", ["generation", "frequency"]),
-            (frozenset({"weather", "generation"}), "curtail_renewable", ["weather", "generation"]),
+            # load(shed_load) + generation(start_gas_turbine) → emergency_disconnect (supply AND demand crisis)
+            (frozenset({"load", "generation"}), "emergency_disconnect", ["load", "generation"]),
+            # weather(curtail_renewable) + reserve(deploy_battery) → request_import (no renewables AND no backup)
+            (frozenset({"weather", "reserve"}), "request_import", ["weather", "reserve"]),
+            # frequency(ramp_plant) + voltage(adjust_voltage) → emergency_disconnect (grid unstable on both axes)
+            (frozenset({"frequency", "voltage"}), "emergency_disconnect", ["frequency", "voltage"]),
+            # load(shed_load) + reserve(deploy_battery) → request_import (high demand AND no backup)
+            (frozenset({"load", "reserve"}), "request_import", ["load", "reserve"]),
+            # generation(start_gas_turbine) + frequency(ramp_plant) → deploy_battery (immediate power needed)
+            (frozenset({"generation", "frequency"}), "deploy_battery", ["generation", "frequency"]),
+            # weather(curtail_renewable) + generation(start_gas_turbine) → request_import (no renewables AND plant down)
+            (frozenset({"weather", "generation"}), "request_import", ["weather", "generation"]),
         ]
 
     @property
