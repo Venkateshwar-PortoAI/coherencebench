@@ -50,12 +50,17 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 
 | Agent | Ticks | Seeds | DA | DA@40 | DA@last | DFG | Collapses? |
 |-------|-------|-------|-----|-------|---------|-----|------------|
-| Gemma 4 31B | 200 | 1 | 31.5% | 45.0% | 27.5% | +17.5% | **YES** |
+| Most-common action (baseline) | 200 | — | 65.0% | 55.0% | 80.0% | -25.0% | NO |
+| Random uniform (baseline) | 200 | — | 30.3% | 28.3% | 31.6% | -3.3% | NO |
+| Always hold_steady (baseline) | 200 | — | 17.5% | 25.0% | 5.0% | +20.0% | YES* |
+| **Gemma 4 31B** | **200** | **1** | **31.5%** | **45.0%** | **27.5%** | **+17.5%** | **YES** |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
 >
-> Gemma 4 31B maintains FC=100% (writes about all 6 factors every tick) while DA degrades from 45% to 27.5%. **[Watch the collapse in the replay viewer.](https://venkateshwar-portoai.github.io/coherencebench/)**
+> \* `hold_steady` shows high DFG because the benchmark shifts anomalies to later phases — a static "do nothing" strategy happens to match early ticks but misses late ones. This is a baseline artifact, not real coherence collapse.
+>
+> **Gemma 4 31B** starts above random (45% vs 28%) but degrades to near-random (27.5% vs 31.6%) while maintaining FC=100%. It begins by tracking anomalies, then stops. **[Watch the collapse in the replay viewer.](https://venkateshwar-portoai.github.io/coherencebench/)**
 
 ### Contributing runs
 
