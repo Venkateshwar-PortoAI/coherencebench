@@ -1,0 +1,3475 @@
+{
+  "config": "run_a_baseline",
+  "provider": "ollama",
+  "provider_label": "Ollama (deepseek-r1:14b)",
+  "seed": 42,
+  "num_ticks": 200,
+  "per_tick": [
+    {
+      "tick": 1,
+      "fc": 1.0,
+      "fi": 0.24242424242424243,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "adjust_voltage",
+      "factors_substantive": [
+        "load",
+        "generation",
+        "frequency",
+        "voltage",
+        "weather",
+        "reserve"
+      ],
+      "word_counts": {
+        "load": 24,
+        "generation": 16,
+        "frequency": 13,
+        "voltage": 16,
+        "weather": 11,
+        "reserve": 19
+      }
+    },
+    {
+      "tick": 2,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 1.0,
+      "adr": 0.0,
+      "action": "start_gas_turbine",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 3,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "hold_steady",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 4,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 1.0,
+      "adr": 0.0,
+      "action": "ramp_plant",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 5,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 6,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 7,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 8,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "hold_steady",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 9,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 10,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 11,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 12,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 13,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 14,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 15,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 16,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 17,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 18,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 19,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 20,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 21,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 22,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 23,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 24,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 25,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 26,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 27,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 28,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 29,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 30,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 31,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 32,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 33,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 34,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 35,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 36,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 37,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 38,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 39,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 40,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 41,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 42,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 43,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 44,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 45,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 46,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 47,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 48,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 49,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 50,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 51,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 52,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 53,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 54,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 55,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 56,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 57,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 58,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 59,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 60,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 61,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 62,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 63,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 64,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 65,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 66,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 67,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 68,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 69,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 70,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 71,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 72,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 73,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 74,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 75,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 76,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 77,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 78,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 79,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 80,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 81,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 82,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 83,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 84,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 85,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 86,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 87,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 88,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 89,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 90,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 91,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 92,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 93,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 94,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 95,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 96,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 97,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 98,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 99,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 100,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 101,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 102,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 103,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 104,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 105,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 106,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 107,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 108,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 109,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 110,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 111,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 112,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 113,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 114,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 115,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 116,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 117,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 118,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 119,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 120,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 121,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 122,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 123,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 124,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 125,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 126,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 127,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 128,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 129,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 130,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 131,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 132,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 133,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 134,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 135,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 136,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 137,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 138,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 139,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 140,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 141,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 142,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 143,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 144,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 145,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 146,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 147,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 148,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 149,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 150,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 151,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 152,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 153,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 154,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 155,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 156,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 157,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 158,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 159,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 160,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 161,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 162,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 163,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 164,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 165,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 166,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 167,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 168,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 169,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 170,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 171,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 172,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 173,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 174,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 175,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 176,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 177,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 178,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 179,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 180,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 181,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 182,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 183,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 184,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 185,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 186,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 187,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 188,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 189,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 190,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 191,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 192,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 193,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 194,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 195,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 1.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 196,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 197,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 198,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 199,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    },
+    {
+      "tick": 200,
+      "fc": 0.0,
+      "fi": 0.0,
+      "da": 0.0,
+      "adr": 0.0,
+      "action": "unknown",
+      "factors_substantive": [],
+      "word_counts": {
+        "load": 0,
+        "generation": 0,
+        "frequency": 0,
+        "voltage": 0,
+        "weather": 0,
+        "reserve": 0
+      }
+    }
+  ],
+  "summary": {
+    "mean_fc": 0.005,
+    "mean_da": 0.01,
+    "mean_adr": 0.17,
+    "mean_fi": 0.0012,
+    "da_at_40": 0.05,
+    "da_last": 0.0,
+    "dfg": 0.05,
+    "collapses": false,
+    "fc_first_quarter": 0.02,
+    "fc_last_quarter": 0.0,
+    "fc_drop_q1_to_q4": 0.02,
+    "context_truncations": 0,
+    "context_resets": 0,
+    "interventions": 0,
+    "avg_turn_seconds": 127.66,
+    "intervention_recovery": {},
+    "directional_validation": {
+      "is_directional": false,
+      "early_factor_late_coverage": 0.0,
+      "late_factor_late_coverage": 0.0,
+      "coverage_gap": 0.0,
+      "verdict": "uniform_degradation"
+    },
+    "top_missed_factors": [
+      {
+        "name": "weather",
+        "count": 80
+      },
+      {
+        "name": "reserve",
+        "count": 70
+      },
+      {
+        "name": "generation",
+        "count": 49
+      }
+    ],
+    "common_wrong_actions": [
+      {
+        "name": "unknown",
+        "count": 195
+      },
+      {
+        "name": "hold_steady",
+        "count": 2
+      },
+      {
+        "name": "adjust_voltage",
+        "count": 1
+      }
+    ],
+    "worst_window": {
+      "start_tick": 5,
+      "end_tick": 14,
+      "mean_da": 0.0
+    },
+    "failure_case_count": 200
+  }
+}

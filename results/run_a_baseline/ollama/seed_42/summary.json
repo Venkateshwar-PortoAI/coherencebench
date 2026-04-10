@@ -1,0 +1,59 @@
+{
+  "mean_fc": 0.005,
+  "mean_da": 0.01,
+  "mean_adr": 0.17,
+  "mean_fi": 0.0012,
+  "da_at_40": 0.05,
+  "da_last": 0.0,
+  "dfg": 0.05,
+  "collapses": false,
+  "fc_first_quarter": 0.02,
+  "fc_last_quarter": 0.0,
+  "fc_drop_q1_to_q4": 0.02,
+  "context_truncations": 0,
+  "context_resets": 0,
+  "interventions": 0,
+  "avg_turn_seconds": 127.66,
+  "intervention_recovery": {},
+  "directional_validation": {
+    "is_directional": false,
+    "early_factor_late_coverage": 0.0,
+    "late_factor_late_coverage": 0.0,
+    "coverage_gap": 0.0,
+    "verdict": "uniform_degradation"
+  },
+  "top_missed_factors": [
+    {
+      "name": "weather",
+      "count": 80
+    },
+    {
+      "name": "reserve",
+      "count": 70
+    },
+    {
+      "name": "generation",
+      "count": 49
+    }
+  ],
+  "common_wrong_actions": [
+    {
+      "name": "unknown",
+      "count": 195
+    },
+    {
+      "name": "hold_steady",
+      "count": 2
+    },
+    {
+      "name": "adjust_voltage",
+      "count": 1
+    }
+  ],
+  "worst_window": {
+    "start_tick": 5,
+    "end_tick": 14,
+    "mean_da": 0.0
+  },
+  "failure_case_count": 200
+}
