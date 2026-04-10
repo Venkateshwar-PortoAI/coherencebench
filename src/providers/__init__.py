@@ -15,6 +15,7 @@ PROVIDERS = {
     "openrouter": (".openrouter", "OpenRouterProvider"),
     "groq": (".groq", "GroqProvider"),
     "mlvoca": (".mlvoca", "MLvocaProvider"),
+    "gemini-cli": (".gemini_cli", "GeminiCliProvider"),
 }
 
 
