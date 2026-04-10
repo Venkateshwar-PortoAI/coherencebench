@@ -31,7 +31,7 @@ class GeminiCliProvider(LLMProvider):
         self._turn_count += 1
 
         # Build prompt with conversation history, capped to avoid CLI limits
-        MAX_HISTORY_CHARS = 50_000
+        MAX_HISTORY_CHARS = 25_000
         parts = [
             f"SYSTEM INSTRUCTIONS:\n{system_prompt}\n\n---\n",
         ]
@@ -57,7 +57,7 @@ class GeminiCliProvider(LLMProvider):
             input="",
             capture_output=True,
             text=True,
-            timeout=300,
+            timeout=600,
         )
 
         if result.returncode != 0:
