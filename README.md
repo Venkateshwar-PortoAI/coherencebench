@@ -55,18 +55,20 @@ Each tick, the agent receives sensor readings from 6 subsystems and must pick on
 | Always hold_steady (baseline) | 200 | — | 17.5% | 25.0% | 5.0% | +20.0% | YES* |
 | **Claude Haiku 4.5** | **200** | **1** | **40.0%** | **70.0%** | **0.0%** | **+70.0%** | **YES** |
 | **Gemma 4 31B** | **200** | **1** | **31.5%** | **45.0%** | **27.5%** | **+17.5%** | **YES** |
-| GPT-5.4 (Codex) | 56* | 1 | 42.9% | 47.5% | 45.0% | +2.5% | — |
+| GPT-5.4 (Codex) | 200 | 1 | 43.5% | 47.5% | 37.5% | +10.0% | NO |
 | DeepSeek R1 14B | 200 | 1 | 1.0% | 5.0% | 0.0% | +5.0% | NO** |
 
 > **DA** = Decision Accuracy (% correct actions). **DA@40** = first 40 ticks. **DA@last** = final 40 ticks.
 > **DFG** = DA@40 minus DA@last (positive = accuracy degraded). **Collapses?** = DFG > 15pp.
 >
-> \* `hold_steady` shows high DFG because the benchmark shifts anomalies to later phases — a static "do nothing" strategy happens to match early ticks but misses late ones. This is a baseline artifact, not real coherence collapse. GPT-5.4 run is partial (56 ticks, Codex usage limit) — will resume.
+> \* `hold_steady` shows high DFG because the benchmark shifts anomalies to later phases — a static "do nothing" strategy happens to match early ticks but misses late ones. This is a baseline artifact, not real coherence collapse.
 > \*\* DeepSeek R1 14B could not follow the structured output format (FC=0.5%). This is not coherence collapse — the model never learned the task. Reasoning models (chain-of-thought) may need different prompting for this benchmark.
 >
 > **Claude Haiku 4.5** shows catastrophic collapse: DA drops from 70% to 0% (DFG +70%). Starts as the best performer, then completely falls apart. [Watch it happen.](https://venkateshwar-portoai.github.io/coherencebench/claude-haiku.html)
 >
 > **Gemma 4 31B** shows gradual fade: DA drops from 45% to 27.5% while maintaining FC=100%. [Watch the collapse.](https://venkateshwar-portoai.github.io/coherencebench/)
+>
+> **GPT-5.4** is the most resilient: DA drops only from 47.5% to 37.5% (DFG +10%) with FC=100% throughout. [View the run.](https://venkateshwar-portoai.github.io/coherencebench/gpt54.html)
 
 ### Contributing runs
 

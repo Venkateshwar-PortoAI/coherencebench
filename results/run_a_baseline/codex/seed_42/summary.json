@@ -1,0 +1,46 @@
+{
+  "mean_fc": 1.0,
+  "mean_da": 0.435,
+  "mean_adr": 1.0,
+  "mean_fi": 0.201,
+  "da_at_40": 0.475,
+  "da_last": 0.375,
+  "dfg": 0.1,
+  "collapses": false,
+  "fc_first_quarter": 1.0,
+  "fc_last_quarter": 1.0,
+  "fc_drop_q1_to_q4": 0.0,
+  "context_truncations": 0,
+  "context_resets": 0,
+  "interventions": 0,
+  "avg_turn_seconds": 11.07,
+  "intervention_recovery": {},
+  "directional_validation": {
+    "is_directional": false,
+    "early_factor_late_coverage": 1.0,
+    "late_factor_late_coverage": 1.0,
+    "coverage_gap": 0.0,
+    "verdict": "uniform_degradation"
+  },
+  "top_missed_factors": [],
+  "common_wrong_actions": [
+    {
+      "name": "adjust_voltage",
+      "count": 35
+    },
+    {
+      "name": "curtail_renewable",
+      "count": 32
+    },
+    {
+      "name": "charge_battery",
+      "count": 17
+    }
+  ],
+  "worst_window": {
+    "start_tick": 140,
+    "end_tick": 149,
+    "mean_da": 0.1
+  },
+  "failure_case_count": 113
+}
